@@ -1,0 +1,35 @@
+{
+  "name": "unify-pay",
+  "version": "1.0.0",
+  "description": "\"Package that will integrate multiple payment system\"",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "npm run build && node dist/main.js",
+    "start:dev": "tsc-watch --onSuccess \"node dist/main.js\" --onFailure \"echo Build failed\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DarshilChauhan1/Unify-Pay.git"
+  },
+  "author": "chauhandarshil716@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DarshilChauhan1/Unify-Pay/issues"
+  },
+  "homepage": "https://github.com/DarshilChauhan1/Unify-Pay#readme",
+  "dependencies": {
+    "moment": "^2.30.1",
+    "razorpay": "^2.9.4",
+    "stripe": "^17.2.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.12.0",
+    "globals": "^15.11.0",
+    "nodemon": "^3.1.7",
+    "tsc-watch": "^6.2.0",
+    "typescript": "^5.6.2",
+    "typescript-eslint": "^8.9.0"
+  }
+}
