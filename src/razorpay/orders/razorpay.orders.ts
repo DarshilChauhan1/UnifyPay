@@ -1,9 +1,10 @@
 import Razorpay from "razorpay";
-import { RazorPayCredentials } from "../../common/interfaces/credentials.types";
+import { RazorPayCredentials } from "../../common/types/credentials.types";
 import { CombinedOrderAndCheckoutSessionDto, CreateOrderDto } from "./dto/createOrder.dtot";
 import { GetOneOrderDto, QueryOrderDto } from "./dto/queryOrder.dto";
 import moment from 'moment'
 import { UpdateOrderDto } from "./dto/upateOrder.dto";
+import { parseQueryParams } from "../../common/helpers/parseQueryParams.helper";
 
 export class RazorPayOrders {
     private razorpay: Razorpay
@@ -25,19 +26,19 @@ export class RazorPayOrders {
         }
     }
 
-    async createCheckoutSessionWithOrder(payload: CombinedOrderAndCheckoutSessionDto) : Promise<[any, any]> {
+    async createCheckoutSessionWithOrder(payload: CombinedOrderAndCheckoutSessionDto): Promise<[any, any]> {
         try {
             const { order, checkoutSession } = payload
             this.validateOrder(order)
             const orderData = await this.razorpay.orders.create(order)
 
             const checkoutSessionData = {
-                key : checkoutSession.apiKey,
-                name : checkoutSession.businessName,
-                description : checkoutSession.description,
-                image : checkoutSession.imageUrl,
-                callback_url : checkoutSession.callBackUrl,
-                prefill : checkoutSession.customerInfo,
+                key: checkoutSession.apiKey,
+                name: checkoutSession.businessName,
+                description: checkoutSession.description,
+                image: checkoutSession.imageUrl,
+                callback_url: checkoutSession.callBackUrl,
+                prefill: checkoutSession.customerInfo,
                 order_id: orderData.id,
                 amount: order.amount,
                 currency: order.currency,
@@ -54,11 +55,14 @@ export class RazorPayOrders {
 
     async getAllOrders(payload: QueryOrderDto) {
         try {
-            const queryData = this.parseQueryParams(payload)
-            const orders = await this.razorpay.api.get({
-                url: '/orders',
-                body: queryData
-            })
+            const {orderFromTime, orderUntilTime, authorized, ordersToFetch, receipt, skipOrders} = payload
+            const formattedDates = parseQueryParams({ from : orderFromTime, to : orderUntilTime })
+            const queryData = {
+                receipt,
+                authorized,
+                ...formattedDates
+            }
+            const orders = await this.razorpay.orders.all(queryData)
             return orders
         } catch (error) {
             throw error
@@ -104,26 +108,5 @@ export class RazorPayOrders {
         if (partialPayment && !first_payment_min_amount) {
             throw new Error('first_payment_min_amount is required when partialPayment is true')
         }
-    }
-
-    private parseQueryParams(payload: QueryOrderDto) {
-        const { authorized, orderFromTime, orderUntilTime, ordersToFetch, receipt, skipOrders } = payload
-        const newPayload = {
-            authorized,
-            receipt,
-            ordersToFetch,
-            skipOrders
-        }
-        if (orderFromTime) {
-            if (!moment(orderFromTime).isValid()) throw new Error('Invalid date format')
-            newPayload['from'] = moment(orderFromTime).unix()
-        }
-
-        if (orderUntilTime) {
-            if (!moment(orderUntilTime).isValid()) throw new Error('Invalid date format')
-            newPayload['to'] = moment(orderUntilTime).unix()
-        }
-
-        return newPayload
     }
 }

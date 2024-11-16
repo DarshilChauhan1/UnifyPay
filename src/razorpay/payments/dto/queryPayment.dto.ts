@@ -1,6 +1,6 @@
 export interface QueryPaymentDto {
-    paymentFromTime ?: string
-    paymentUntilTime ?: string
+    paymentFromTime ?: Date
+    paymentUntilTime ?: Date
     paymnetsToFetch ?: number
     skipNumberOfPayments ?: number
 }

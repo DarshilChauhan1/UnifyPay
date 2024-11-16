@@ -1,5 +1,5 @@
 import Razorpay from 'razorpay';
-import { RazorPayCredentials } from '../../common/interfaces/credentials.types';
+import { RazorPayCredentials } from '../../common/types/credentials.types';
 import { CreatePlanDto } from './dtos/createPlan.dto';
 import { parseQueryParams } from '../../common/helpers/parseQueryParams.helper';
 import { QueryPlanDto } from './dtos/queryPlan.dto';

@@ -6,8 +6,8 @@ export enum AuthorizedStatus {
 export interface QueryOrderDto {
     authorized?: AuthorizedStatus;
     receipt ?: string;
-    orderFromTime?: string;
-    orderUntilTime?: string;
+    orderFromTime?: Date;
+    orderUntilTime?: Date;
     ordersToFetch?: number;
     skipOrders?: number;
 }

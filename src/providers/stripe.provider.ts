@@ -1,4 +1,4 @@
-import { StripeCredentials } from '../common/interfaces/credentials.types'
+import { StripeCredentials } from '../common/types/credentials.types'
 import Stripe from 'stripe'
 export class StripePayment {
     private stripe: Stripe;

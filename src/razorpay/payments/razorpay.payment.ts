@@ -1,5 +1,5 @@
 import Razorpay from "razorpay";
-import { RazorPayCredentials } from "../../common/interfaces/credentials.types";
+import { RazorPayCredentials } from "../../common/types/credentials.types";
 import { VerifySignatureDto } from "./dto/verifySignature.dto";
 import crypto from 'crypto'
 import { CapturePaymentDto } from "./dto/createPayment.dto";
@@ -7,6 +7,7 @@ import { QueryOrderPaymentDto, QueryPaymentCardDetailsDto, QueryPaymentDto, Quer
 import moment from "moment";
 import { UpdatePaymentDto } from "./dto/updatePayment.dto";
 import { CustomError } from "../../common/helpers/customError.error";
+import { parseQueryParams } from "../../common/helpers/parseQueryParams.helper";
 export class RazorpayPayment {
     private razorpay: Razorpay
     constructor(credentials: RazorPayCredentials) {
@@ -60,7 +61,13 @@ export class RazorpayPayment {
 
     async getAllPayments(payload: QueryPaymentDto): Promise<any> {
         try {
-            const queryData = this.parseQueryParams(payload)
+            const {paymentFromTime, paymentUntilTime, paymnetsToFetch, skipNumberOfPayments} = payload
+            const formattedDates = parseQueryParams({ from : paymentFromTime, to : paymentUntilTime })
+            const queryData = {
+                count: paymnetsToFetch,
+                skip: skipNumberOfPayments,
+                ...formattedDates
+            }
             const payments = await this.razorpay.payments.all(queryData)
             return payments
         } catch (error) {
@@ -94,30 +101,6 @@ export class RazorpayPayment {
             const { notes, paymentId } = payload
             const updatedPayment = await this.razorpay.payments.edit(paymentId, { notes })
             return updatedPayment
-        } catch (error) {
-            throw error
-        }
-    }
-
-    private parseQueryParams(payload: QueryPaymentDto) {
-        try {
-            const { paymentFromTime, paymentUntilTime, ...rest } = payload
-            const newQuery = {
-                count: payload.paymnetsToFetch,
-                skip: payload.skipNumberOfPayments
-            }
-
-            if (paymentFromTime) {
-                if (!moment(paymentFromTime).isValid()) throw new CustomError(400, 'The Date Format is not valid')
-                newQuery['from'] = moment(paymentFromTime).unix()
-            }
-
-            if (paymentUntilTime) {
-                if (!moment(paymentUntilTime).isValid()) throw new CustomError(400, 'The Date Format is not valid')
-                newQuery['to'] = moment(paymentUntilTime).unix()
-            }
-
-            return newQuery
         } catch (error) {
             throw error
         }
