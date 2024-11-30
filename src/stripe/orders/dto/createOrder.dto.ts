@@ -14,22 +14,24 @@ export interface CheckoutSessionDto {
   successUrl: string;
   // cancelUrl is not allowed if the UI mode is 'embedded'
   cancelUrl: string;
-  customerEmail?: string; // Customer email
-  metadata?: any; // Additional metadata for the session
-  uiMode?: 'embedded' | 'hosted'; // UI mode for the checkout session
+  customerEmail?: string;
+  metadata?: any;
+  uiMode?: 'embedded' | 'hosted';
   lineItems?: {
     adjustableQuantity?: {
-      enabled: boolean; // Enable or disable the quantity adjustment
-      minimum: number; // Minimum quantity allowed  
-      maximum: number; // Maximum quantity
+      enabled: boolean;
+      minimum: number;
+      maximum: number;
     };
-    dynamicTaxRates?: string[]; // Dynamic tax rates to apply
-    taxRates?: string[]; // Tax rates to apply
+    dynamicTaxRates?: string[];
+    taxRates?: string[];
     price: string; // Price ID from the Stripe dashboard
-    quantity: number; // Quantity of the item
+    quantity: number;
   }[];
-  // returnUrl is not allowed if the UI mode is 'hosted'
-  // returnUrl is required if the UI mode is 'embedded'
+  /**
+   * Not allowed if the UI mode is 'hosted'
+   * The URL to redirect your customer back to after they authenticate or cancel their payment on the payment method’s app or site.
+   */
   returnUrl?: string;
 }
 

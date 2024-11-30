@@ -1,9 +1,12 @@
-// create a dto file for the createPlan method in the stripe provider
+import Stripe from "stripe";
+
 export interface CreatePlanDto {
   amount: number;
   currency: Currency;
-  interval: BillingFrequency;
-  product: string;
+  interval: StripeBillingFrequency;
+  product: string |
+  Stripe.PlanCreateParams.Product;
   nickname: string;
   metadata: any;
+  active: boolean;
 }

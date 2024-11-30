@@ -1,7 +1,7 @@
 import { IMap } from "razorpay/dist/types/api";
 
 export interface CreatePlanDto {
-    billingFrequency : BillingFrequency,
+    billingFrequency : RazorPayBillingFrequency,
     billingInterval : number,
     name : string,
     planAmount : number,
