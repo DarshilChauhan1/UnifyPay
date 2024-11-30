@@ -1,6 +1,6 @@
 import Razorpay from "razorpay";
 import { RazorPayCredentials } from "../../common/interfaces/credentials.types";
-import { CombinedOrderAndCheckoutSessionDto, CreateOrderDto } from "./dto/createOrder.dtot";
+import { CombinedOrderAndCheckoutSessionDto, CreateOrderDto } from "./dto/createOrder.dto";
 import { GetOneOrderDto, QueryOrderDto } from "./dto/queryOrder.dto";
 import moment from 'moment'
 import { UpdateOrderDto } from "./dto/upateOrder.dto";
