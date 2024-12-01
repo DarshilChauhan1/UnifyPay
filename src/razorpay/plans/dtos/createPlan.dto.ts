@@ -2,7 +2,7 @@ import { IMap } from "razorpay/dist/types/api";
 import { Currency } from "../../../common/types/currency.type";
 
 export interface CreatePlanDto {
-    billingFrequency : BillingFrequency,
+    billingFrequency : RazorPayBillingFrequency,
     billingInterval : number,
     name : string,
     planAmount : number,
@@ -10,5 +10,3 @@ export interface CreatePlanDto {
     planDescription ?: string,
     notes ?: any
 }
-
-type BillingFrequency = 'daily' | 'weekly' | 'monthly' | 'quarterly' | 'yearly' ;
