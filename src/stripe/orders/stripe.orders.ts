@@ -1,5 +1,5 @@
 import Stripe from 'stripe'
-import { StripeCredentials } from '../../common/interfaces/credentials.types'
+import { StripeCredentials } from '../../common/types/credentials.types'
 import { CombinedOrderAndCheckoutSessionDto, CreateOrderDto } from './dto/createOrder.dto'
 import { GetOneOrderDto, QueryOrderDto } from './dto/queryOrder.dto'
 import { UpdateOrderDto } from './dto/updateOrder.dto'
