@@ -3,5 +3,5 @@
 .env
 /index.html
 .vscode
-.idea
+*.idea
 package-lock.json

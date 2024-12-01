@@ -1,4 +1,4 @@
-import { RazorPayCredentials } from '../common/interfaces/credentials.types'
+import { RazorPayCredentials } from '../common/types/credentials.types'
 import { RazorPayOrders } from '../razorpay/orders/razorpay.orders'
 import { CombinedOrderAndCheckoutSessionDto, CreateOrderDto } from '../razorpay/orders/dto/createOrder.dto';
 import { QueryOrderDto } from '../razorpay/orders/dto/queryOrder.dto';

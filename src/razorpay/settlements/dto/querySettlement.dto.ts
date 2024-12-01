@@ -1,6 +1,6 @@
 export interface QuerySettlementDto {
-    settlementFromTime ?: string
-    settlementUntilTime ?: string
+    settlementFromTime ?: Date
+    settlementUntilTime ?: Date
     settlementsToFetch ?: number
     skipNumberOfSettlements ?: number
 }

@@ -1,3 +1,3 @@
-type RazorPayBillingFrequency = 'daily' | 'weekly' | 'monthly' | 'quarterly' | 'yearly';
+export type RazorPayBillingFrequency = 'daily' | 'weekly' | 'monthly' | 'quarterly' | 'yearly';
 
-type StripeBillingFrequency = 'day' | 'week' | 'month' | 'year';
+export type StripeBillingFrequency = 'day' | 'week' | 'month' | 'year';
