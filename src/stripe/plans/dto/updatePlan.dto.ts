@@ -1,6 +1,6 @@
 export interface UpdatePlanDto {
-    planId: string
-    nickname: string
+    priceId: string
+    active: boolean 
     metadata: any
-    active: boolean
+    nickname: string
 }

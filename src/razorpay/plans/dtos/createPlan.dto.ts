@@ -1,5 +1,5 @@
-import { Currency } from '../../../common/types/currency.type';
 import { RazorPayBillingFrequency } from '../../../common/types/billingFrequency.types';
+import { Currency } from '../../../common/types/currency.types';
 export interface CreatePlanDto {
     billingFrequency: RazorPayBillingFrequency;
     billingInterval: number;

@@ -1,89 +1,103 @@
-import Stripe from 'stripe'
-import { StripeCredentials } from '../../common/interfaces/credentials.types'
-import { CreatePlanDto } from './dto/createPlan.dto'
-import { QueryPlanDto } from './dto/queryPlan.dto'
-import { UpdatePlanDto } from './dto/updatePlan.dto'
+import Stripe from 'stripe';
+import { StripeCredentials } from '../../common/types/credentials.types';
+import { CreatePlanDto } from './dto/createPlan.dto';
+import { QueryPlanDto } from './dto/queryPlan.dto';
+import { UpdatePlanDto } from './dto/updatePlan.dto';
 
 class StripePlans {
-    private stripe: Stripe
+    private stripe: Stripe;
 
-    constructor (credentials: StripeCredentials) {
+    constructor(credentials: StripeCredentials) {
         this.stripe = new Stripe(credentials.apiKey, {
             apiVersion: credentials.apiVersion,
-        })
+        });
     }
 
-    async createPlan (createPlanDto: CreatePlanDto): Promise<Stripe.Plan> {
+    async createPlan(createPlanDto: CreatePlanDto): Promise<Stripe.Price> {
         try {
-            const { amount, currency, interval, product, nickname, active, metadata } = createPlanDto
-            const plan = await this.stripe.plans.create({
-                amount,
+            const { amount, currency, interval, name, nickname, active, metadata, intervalCount } = createPlanDto;
+            const plan = await this.stripe.prices.create({
                 currency,
-                interval,
-                product,
+                unit_amount: amount,
+                recurring: { interval, interval_count: intervalCount ?? 1 },
+                product_data: {
+                    name: name,
+                },
                 nickname,
-                metadata,
                 active,
-            })
-            return plan
+                metadata,
+            });
+            return plan;
         } catch (error) {
-            throw new Error(`Failed to create plan: ${error.message}`)
+            console.error(error);
+            throw error;
         }
     }
 
-    async updatePlan (updatePlanDto: UpdatePlanDto): Promise<Stripe.Plan> {
+    async updatePlan(updatePlanDto: UpdatePlanDto): Promise<Stripe.Price> {
         try {
-            const { planId, ...restPlanDto } = updatePlanDto
-            const plan = await this.stripe.plans.update(planId, restPlanDto)
-            return plan
+            const { priceId, ...restPlanDto } = updatePlanDto;
+            const plan = await this.stripe.prices.update(priceId, restPlanDto);
+            return plan;
         } catch (error) {
-            throw new Error(`Failed to update plan: ${error.message}`)
+            console.error(error);
+            throw error;
         }
     }
 
-    deletePlan (planId: string): Promise<Stripe.DeletedPlan> {
-        return this.stripe.plans.del(planId)
-    }
-
-    getAllPlans (queryPlanDto: QueryPlanDto): Promise<Stripe.ApiList<Stripe.Plan>> {
-        const { active, createdAfter, createdBefore, limit, product } = queryPlanDto
-        if (limit && (limit < 1 || limit > 100)) {
-            throw new Error('Limit must be between 1 and 100')
-        }
-
-        const query = {}
-        if (active !== undefined) {
-            query['active'] = active
-        }
-
-        if (createdAfter) {
-            query['created'] = {
-                ...query['created'],
-                gte: createdAfter,
+    getAllPlans(queryPlanDto: QueryPlanDto): Promise<Stripe.ApiList<Stripe.Price>> {
+        try {
+            const { active, createdAfter, createdBefore, limit, lastRecordId, currency } = queryPlanDto;
+            if (limit && (limit < 1 || limit > 100)) {
+                throw new Error('Limit must be between 1 and 100');
             }
-        }
 
-        if (createdBefore) {
-            query['created'] = {
-                ...query['created'],
-                lte: createdBefore,
+            const query = {};
+            if (active !== undefined) {
+                query['active'] = active;
             }
-        }
 
-        if (limit) {
-            query['limit'] = limit
-        }
+            if (createdAfter) {
+                query['created'] = {
+                    ...query['created'],
+                    gte: createdAfter,
+                };
+            }
 
-        if (product) {
-            query['product'] = product
-        }
+            if (createdBefore) {
+                query['created'] = {
+                    ...query['created'],
+                    lte: createdBefore,
+                };
+            }
 
-        return this.stripe.plans.list(query)
+            if (currency) {
+                query['currency'] = currency;
+            }
+
+            if (limit) {
+                query['limit'] = limit;
+            }
+
+            if (lastRecordId) {
+                query['starting_after'] = lastRecordId;
+            }
+
+            return this.stripe.prices.list(query);
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
     }
 
-    getPlan (planId: string): Promise<Stripe.Plan> {
-        return this.stripe.plans.retrieve(planId)
+    getPlan(priceId: string): Promise<Stripe.Price> {
+        try {
+            return this.stripe.prices.retrieve(priceId);
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
     }
 }
 
-export default StripePlans
+export default StripePlans;

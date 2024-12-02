@@ -1,4 +1,4 @@
-import { Currency } from "../../../common/types/currency.type";
+import { Currency } from "../../../common/types/currency.types";
 
 export interface CreateSubscriptionDto{
     planId : string,
