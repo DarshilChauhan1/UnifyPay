@@ -1,7 +1,10 @@
+import Stripe from 'stripe';
+
 export interface UpdateSubscriptionDto {
-    cancelAtPeriodEnd?: boolean;
     metadata?: any;
     planQuantity?: number;
     priceId?: string;
     offerId?: string;
+    stripeExtraParams?: Stripe.SubscriptionUpdateParams;
+    stripeExtraOptions?: Stripe.RequestOptions;
 }

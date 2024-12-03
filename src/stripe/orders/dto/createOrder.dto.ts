@@ -1,3 +1,4 @@
+import Stripe from 'stripe';
 import { Currency } from '../../../common/types/currency.types';
 
 export interface CreateOrderDto {
@@ -12,4 +13,6 @@ export interface CreateOrderDto {
     cancelUrl?: string;
     name?: string;
     quantity?: number;
+    stripeExtraParams?: Stripe.Checkout.SessionCreateParams;
+    stripeExtraOptions?: Stripe.RequestOptions;
 }

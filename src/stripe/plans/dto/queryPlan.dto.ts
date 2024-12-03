@@ -1,3 +1,4 @@
+import Stripe from 'stripe';
 import { Currency } from '../../../common/types/currency.types';
 
 export interface QueryPlanDto {
@@ -7,4 +8,6 @@ export interface QueryPlanDto {
     createdBefore?: Date; // Inclusive
     limit?: number;
     lastRecordId?: string;
+    stripeExtraParams?: Stripe.PriceListParams;
+    stripeExtraOptions?: Stripe.RequestOptions;
 }
