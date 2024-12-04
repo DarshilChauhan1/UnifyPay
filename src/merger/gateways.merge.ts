@@ -1,10 +1,8 @@
-import { Orders } from 'razorpay/dist/types/orders';
-import { Provider, GatewayProvider } from '../common/types/providers.types';
+import { GatewayProvider, Provider } from '../common/types/providers.types';
 import { RazorpayProvider } from '../providers/razorpay.provider';
 import { StripeProvider } from '../providers/stripe.provider';
 import { MergerGateways } from './interfaces/mergerGateways.interface';
 import { MergeCreaterOrder } from './interfaces/razorpay/mergerOrder.interface';
-import Stripe from 'stripe';
 
 export class GatewaysMerge {
     private providers: Provider[];
@@ -24,8 +22,29 @@ export class GatewaysMerge {
         });
     }
 
-    /* ------------------ Orders ------------------------*/
-    async createOrder<T extends MergeCreaterOrder>(payload: T): Promise<T['returnType']> {
+    /********Working code****** */
+    // async createOrder(payload: MergerRazorPayCreateOrderDto): Promise<MergerRazorPayCreateOrderDto['returnType']>;
+    // async createOrder(payload: MergerStripeCreateOrderDto): Promise<MergerStripeCreateOrderDto['returnType']>;
+
+    // /* ------------------ Orders ------------------------*/
+    // async createOrder(payload: MergeCreaterOrder): Promise<MergeCreaterOrder['returnType']> {
+    //     const { provider } = payload;
+    //     const providerInstance = this.providersMap.get(provider);
+
+    //     if (!providerInstance) {
+    //         throw new Error(`Provider ${provider} is not initialized.`);
+    //     }
+
+    //     return Promise.resolve(providerInstance.createOrder(payload.payload)) as Promise<
+    //         MergeCreaterOrder['returnType']
+    //     >;
+    // }
+    /********Working code****** */
+
+    async createOrder<K extends keyof MergeCreaterOrder>(payload: {
+        provider: K;
+        payload: MergeCreaterOrder[K]['payload'];
+    }): Promise<MergeCreaterOrder[K]['returnType']> {
         const { provider } = payload;
         const providerInstance = this.providersMap.get(provider);
 
@@ -33,35 +52,6 @@ export class GatewaysMerge {
             throw new Error(`Provider ${provider} is not initialized.`);
         }
 
-        //     if (provider === GatewayProvider.Razorpay) {
-        //       return (await providerInstance.createOrder(orderPayload)) as T['returnType'];
-        //     }
-
-        //     if (provider === GatewayProvider.Stripe) {
-        //       return (await providerInstance.createOrder(orderPayload)) as T['returnType'];
-        //     }
-
-        //     throw new Error(`Unsupported provider: ${provider}`);
-        //   }
-        const handlers: Record<GatewayProvider, () => Promise<any>> = {
-            [GatewayProvider.Razorpay]: async () =>
-                Promise.resolve({
-                    id: 'rzp_order_1',
-                    amount: 1000,
-                    currency: 'INR',
-                } as Orders.RazorpayOrder),
-            [GatewayProvider.Stripe]: async () =>
-                Promise.resolve({
-                    id: 'cs_test_session',
-                    url: 'https://checkout.stripe.com/test',
-                } as Stripe.Checkout.Session),
-        };
-
-        const handler = handlers[provider];
-        if (!handler) {
-            throw new Error(`No handler found for provider: ${provider}`);
-        }
-
-        return handler() as Promise<T['returnType']>;
+        return providerInstance.createOrder(payload.payload) as Promise<MergeCreaterOrder[K]['returnType']>;
     }
 }
