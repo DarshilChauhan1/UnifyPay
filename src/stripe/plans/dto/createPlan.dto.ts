@@ -1,13 +1,16 @@
 import Stripe from 'stripe';
 import { StripeBillingFrequency } from '../../../common/types/billingFrequency.types';
-import { Currency } from '../../../common/types/currency.type';
+import { Currency } from '../../../common/types/currency.types';
 
 export interface CreatePlanDto {
-    amount: number;
+    name: string;
     currency: Currency;
-    interval: StripeBillingFrequency;
-    product: string | Stripe.PlanCreateParams.Product;
-    nickname: string;
-    metadata: any;
     active: boolean;
+    amount: number;
+    metadata: any;
+    nickname: string;
+    interval: StripeBillingFrequency;
+    intervalCount?: number; // Required if recurring is set to 'interval'
+    stripeExtraParams?: Stripe.PriceCreateParams;
+    stripeExtraOptions?: Stripe.RequestOptions;
 }

@@ -1,6 +1,10 @@
+import Stripe from 'stripe';
+
 export interface UpdatePlanDto {
-    planId: string
-    nickname: string
-    metadata: any
-    active: boolean
+    priceId: string;
+    active: boolean;
+    metadata: any;
+    nickname: string;
+    stripeExtraParams?: Stripe.PriceUpdateParams;
+    stripeExtraOptions?: Stripe.RequestOptions;
 }
