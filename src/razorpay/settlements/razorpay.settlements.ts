@@ -2,7 +2,7 @@ import Razorpay from 'razorpay';
 import { RazorPayCredentials } from '../../common/types/credentials.types';
 import { QuerySettlementDto } from './dto/querySettlement.dto';
 import moment from 'moment';
-import { parseQueryParams } from '../../common/helpers/parseQueryParams.helper';
+import { convertDateToUnix } from '../../common/helpers/convertDateToUnix';
 
 export class RazorPaySettlements {
     private razorpay: Razorpay;
@@ -17,7 +17,7 @@ export class RazorPaySettlements {
     async getAllSettlements(query: QuerySettlementDto) {
         try {
             const { settlementFromTime, settlementUntilTime, settlementsToFetch, skipNumberOfSettlements } = query;
-            const formattedDates = parseQueryParams({ from: settlementFromTime, to: settlementUntilTime });
+            const formattedDates = convertDateToUnix({ from: settlementFromTime, to: settlementUntilTime });
             const queryData = {
                 ...formattedDates,
                 count: settlementsToFetch,

@@ -1,5 +1,4 @@
 import Razorpay from 'razorpay';
-import { RazorPayCredentials } from '../../common/types/credentials.types';
 import { VerifySignatureDto } from './dto/verifySignature.dto';
 import crypto from 'crypto';
 import { CapturePaymentDto } from './dto/createPayment.dto';
@@ -10,14 +9,11 @@ import {
     QueryPaymentExtendedDto,
 } from './dto/queryPayment.dto';
 import { UpdatePaymentDto } from './dto/updatePayment.dto';
-import { parseQueryParams } from '../../common/helpers/parseQueryParams.helper';
+import { convertDateToUnix } from '../../common/helpers/convertDateToUnix';
 export class RazorpayPayment {
     private razorpay: Razorpay;
-    constructor(credentials: RazorPayCredentials) {
-        this.razorpay = new Razorpay({
-            key_id: credentials.keyId,
-            key_secret: credentials.keySecret,
-        });
+    constructor(razorPayInstance: Razorpay) {
+        this.razorpay = razorPayInstance;
     }
 
     async verifyPaymentSignature(payload: VerifySignatureDto, secret: string): Promise<boolean> {
@@ -69,7 +65,7 @@ export class RazorpayPayment {
     async getAllPayments(payload: QueryPaymentDto): Promise<any> {
         try {
             const { paymentFromTime, paymentUntilTime, paymnetsToFetch, skipNumberOfPayments } = payload;
-            const formattedDates = parseQueryParams({ from: paymentFromTime, to: paymentUntilTime });
+            const formattedDates = convertDateToUnix({ from: paymentFromTime, to: paymentUntilTime });
             const queryData = {
                 count: paymnetsToFetch,
                 skip: skipNumberOfPayments,

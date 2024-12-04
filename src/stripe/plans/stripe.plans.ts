@@ -1,17 +1,13 @@
 import Stripe from 'stripe';
-import { parseQueryParams } from '../../common/helpers/parseQueryParams.helper';
-import { StripeCredentials } from '../../common/types/credentials.types';
+import { convertDateToUnix } from '../../common/helpers/convertDateToUnix';
 import { CreatePlanDto } from './dto/createPlan.dto';
 import { QueryPlanDto } from './dto/queryPlan.dto';
 import { UpdatePlanDto } from './dto/updatePlan.dto';
 
 class StripePlans {
     private stripe: Stripe;
-
-    constructor(credentials: StripeCredentials) {
-        this.stripe = new Stripe(credentials.apiKey, {
-            apiVersion: credentials.apiVersion,
-        });
+    constructor(stripeInstance: Stripe) {
+        this.stripe = stripeInstance;
     }
 
     async createPlan(createPlanDto: CreatePlanDto): Promise<Stripe.Price> {
@@ -80,7 +76,7 @@ class StripePlans {
                 stripeExtraOptions,
                 stripeExtraParams,
             } = queryPlanDto;
-            const formattedDates = parseQueryParams({
+            const formattedDates = convertDateToUnix({
                 createdAfter,
                 createdBefore,
             });

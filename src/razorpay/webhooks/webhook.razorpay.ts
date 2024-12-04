@@ -1,15 +1,11 @@
 import Razorpay from 'razorpay';
-import { RazorPayCredentials } from '../../common/types/credentials.types';
 import moment from 'moment';
 import { UpdateWebhookDto } from './dto/updateWebhook.dto';
 import crypto from 'crypto';
 export class RazorpayWebhook {
     private razorpay: Razorpay;
-    constructor(private credentials: RazorPayCredentials) {
-        this.razorpay = new Razorpay({
-            key_id: credentials.keyId,
-            key_secret: credentials.keySecret,
-        });
+    constructor(razorPayInstance: Razorpay) {
+        this.razorpay = razorPayInstance;
     }
 
     async verifyWebhookSignature(request: any, razorpayWebhookSecret: string) {

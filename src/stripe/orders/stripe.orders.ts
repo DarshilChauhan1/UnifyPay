@@ -1,20 +1,16 @@
 import Stripe from 'stripe';
-import { parseQueryParams } from '../../common/helpers/parseQueryParams.helper';
-import { StripeCredentials } from '../../common/types/credentials.types';
-import { CreateOrderDto } from './dto/createOrder.dto';
+import { convertDateToUnix } from '../../common/helpers/convertDateToUnix';
+import { CreateStripeOrderDto } from './dto/createOrder.dto';
 import { QueryOrderDto } from './dto/queryOrder.dto';
 import { UpdateOrderDto } from './dto/updateOrder.dto';
 
 export class StripeOrders {
     private stripe: Stripe;
-
-    constructor(credentials: StripeCredentials) {
-        this.stripe = new Stripe(credentials.apiKey, {
-            apiVersion: credentials.apiVersion,
-        });
+    constructor(stripeInstance: Stripe) {
+        this.stripe = stripeInstance;
     }
 
-    async createStripeOrder(payload: CreateOrderDto): Promise<Stripe.Checkout.Session> {
+    async createStripeOrder(payload: CreateStripeOrderDto): Promise<Stripe.Checkout.Session> {
         try {
             const {
                 amount,
@@ -22,55 +18,11 @@ export class StripeOrders {
                 customerEmail,
                 metadata,
                 name,
-                returnUrl,
                 quantity,
-                stripeExtraOptions,
-                stripeExtraParams,
-            } = payload;
-            const paymentIntent = await this.stripe.checkout.sessions.create(
-                {
-                    payment_method_types: ['card', 'ideal', 'sepa_debit'],
-                    line_items: [
-                        {
-                            price_data: {
-                                currency,
-                                product_data: {
-                                    name: name ?? 'Order Payment',
-                                },
-                                unit_amount: amount,
-                            },
-                            quantity: quantity ?? 1,
-                        },
-                    ],
-                    mode: 'payment',
-                    ui_mode: 'embedded',
-                    return_url: returnUrl,
-                    customer_email: customerEmail,
-                    metadata,
-                    ...stripeExtraParams,
-                },
-                stripeExtraOptions,
-            );
-            return paymentIntent;
-        } catch (error) {
-            console.error(error);
-            throw error;
-        }
-    }
-
-    async createCheckoutSessionWithOrder(payload: CreateOrderDto): Promise<Stripe.Checkout.Session> {
-        try {
-            const {
-                amount,
-                currency,
-                customerEmail,
-                metadata,
-                name,
                 successUrl,
                 cancelUrl,
-                quantity,
-                stripeExtraParams,
                 stripeExtraOptions,
+                stripeExtraParams,
             } = payload;
 
             const checkoutSessionData = await this.stripe.checkout.sessions.create(
@@ -117,7 +69,7 @@ export class StripeOrders {
                 stripeExtraOptions,
                 stripeExtraParams,
             } = payload;
-            const formattedDates = parseQueryParams({ from: orderFromTime, to: orderUntilTime });
+            const formattedDates = convertDateToUnix({ from: orderFromTime, to: orderUntilTime });
             const query = {};
             const range = {};
             if (formattedDates.from) {

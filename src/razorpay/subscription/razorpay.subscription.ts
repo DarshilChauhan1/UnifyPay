@@ -1,17 +1,13 @@
 import Razorpay from 'razorpay';
-import { RazorPayCredentials } from '../../common/types/credentials.types';
 import { CreateSubscriptionDto } from './dto/createSubscription.dto';
 import moment from 'moment';
-import { parseQueryParams } from '../../common/helpers/parseQueryParams.helper';
+import { convertDateToUnix } from '../../common/helpers/convertDateToUnix';
 import { QuerySubscriptionDto } from './dto/querySubscription.dto';
 import { UpdateSubscriptionDto } from './dto/updateSubscription.dto';
 export class RazorPaySubscription {
     private razorpay: Razorpay;
-    constructor(credentials: RazorPayCredentials) {
-        this.razorpay = new Razorpay({
-            key_id: credentials.keyId,
-            key_secret: credentials.keySecret,
-        });
+    constructor(razorPayInstance: Razorpay) {
+        this.razorpay = razorPayInstance;
     }
 
     // create a subcsription apis
@@ -29,7 +25,7 @@ export class RazorPaySubscription {
                 upfrontAddonsList,
             } = payload;
 
-            const formattedDates = parseQueryParams({ start_at: planStartAt, expire_by: paymentExpiry });
+            const formattedDates = convertDateToUnix({ start_at: planStartAt, expire_by: paymentExpiry });
             const subscriptionPayload = {
                 plan_id: planId,
                 total_count: totalBillingCycles,
@@ -64,7 +60,7 @@ export class RazorPaySubscription {
     async getAllSubscriptions(payload: QuerySubscriptionDto): Promise<object> {
         try {
             const { planId, skipSubscription, subscriptionTo, subscritptionFrom, totalSubscription } = payload;
-            const formatDates = parseQueryParams({ from: subscritptionFrom, to: subscriptionTo });
+            const formatDates = convertDateToUnix({ from: subscritptionFrom, to: subscriptionTo });
             const query = {
                 plan_id: planId,
                 skip: skipSubscription,
@@ -102,7 +98,7 @@ export class RazorPaySubscription {
                 scheduleChangeAt,
                 customerNotify,
             } = payload;
-            const formattedDates = parseQueryParams({
+            const formattedDates = convertDateToUnix({
                 start_at: subscriptionStartAt,
                 schedule_change_at: scheduleChangeAt,
             });

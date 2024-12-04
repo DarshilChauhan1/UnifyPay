@@ -1,6 +1,5 @@
 import Stripe from 'stripe';
 import { StripeCredentials } from '../common/types/credentials.types';
-import { CreateOrderDto } from '../stripe/orders/dto/createOrder.dto';
 import { QueryOrderDto } from '../stripe/orders/dto/queryOrder.dto';
 import { UpdateOrderDto } from '../stripe/orders/dto/updateOrder.dto';
 import { StripeOrders } from '../stripe/orders/stripe.orders';
@@ -12,13 +11,14 @@ import { CreateSubscriptionDto } from '../stripe/subscription/dto/createSubscrip
 import { QuerySubscriptionDto } from '../stripe/subscription/dto/querySubscription.dto';
 import { UpdateSubscriptionDto } from '../stripe/subscription/dto/updateSubcription.dto';
 import StripeSubscription from '../stripe/subscription/stripe.subscription';
-export class StripeProvider {
-    private stripe: Stripe;
+import { CreateStripeOrderDto } from '../stripe/orders/dto/createOrder.dto';
+import { MergerGateways } from '../merger/interfaces/mergerGateways.interface';
+export class StripeProvider implements MergerGateways {
     private stripeOrders: StripeOrders;
     private stipePlans: StripePlans;
     private stripeSubscription: StripeSubscription;
     constructor(credentials: StripeCredentials) {
-        this.stripe = new Stripe(credentials.apiKey, {
+        const stripeInstance = new Stripe(credentials.apiKey, {
             apiVersion: credentials.apiVersion,
             appInfo: credentials.appInfo,
             host: credentials.host,
@@ -27,34 +27,30 @@ export class StripeProvider {
             timeout: credentials.timeout,
             port: credentials.port,
         });
-        this.stripeOrders = new StripeOrders(credentials);
-        this.stipePlans = new StripePlans(credentials);
-        this.stripeSubscription = new StripeSubscription(credentials);
+        this.stripeOrders = new StripeOrders(stripeInstance);
+        this.stipePlans = new StripePlans(stripeInstance);
+        this.stripeSubscription = new StripeSubscription(stripeInstance);
     }
 
     // order methods
-    async createStripeOrder(payload: CreateOrderDto) {
+    async createOrder(payload: CreateStripeOrderDto) {
         return await this.stripeOrders.createStripeOrder(payload);
     }
 
-    async createStripeCheckoutSessionWithOrder(payload: CreateOrderDto) {
-        return await this.stripeOrders.createCheckoutSessionWithOrder(payload);
-    }
-
-    async getAllStripeOrders(payload: QueryOrderDto) {
+    async getAllOrders(payload: QueryOrderDto) {
         return await this.stripeOrders.getAllOrders(payload);
     }
 
-    async getStripeOrderById(orderId: string) {
+    async getOrderById(orderId: string) {
         return await this.stripeOrders.getOrderById(orderId);
     }
 
-    async updateStripeOrder(payload: UpdateOrderDto) {
+    async updateOrder(payload: UpdateOrderDto) {
         return await this.stripeOrders.updateOrder(payload);
     }
 
     // plan methods
-    async createStripePlan(payload: CreatePlanDto) {
+    async createPlan(payload: CreatePlanDto) {
         return await this.stipePlans.createPlan(payload);
     }
 

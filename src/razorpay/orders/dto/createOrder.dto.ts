@@ -1,5 +1,4 @@
-export interface CreateOrderDto {
-    // pass the amount in paise suppose if price is 299 then pass 29900
+export interface CreateRazorPayOrderDto {
     amount: number;
     // ISO currency code
     currency: string;
@@ -8,9 +7,6 @@ export interface CreateOrderDto {
     notes?: any;
     partialPayment?: boolean;
     first_payment_min_amount?: number;
-}
-
-export interface CheckoutSessionDto {
     apiKey: string;
     businessName?: string;
     description?: string;
@@ -21,13 +17,7 @@ export interface CheckoutSessionDto {
         email?: string;
         contact?: string;
     };
-    notes?: any;
     theme?: {
         color?: string;
     };
-}
-
-export interface CombinedOrderAndCheckoutSessionDto {
-    order: CreateOrderDto;
-    checkoutSession: CheckoutSessionDto;
 }

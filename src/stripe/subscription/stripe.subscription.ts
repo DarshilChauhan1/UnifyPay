@@ -1,6 +1,5 @@
 import Stripe from 'stripe';
-import { parseQueryParams } from '../../common/helpers/parseQueryParams.helper';
-import { StripeCredentials } from '../../common/types/credentials.types';
+import { convertDateToUnix } from '../../common/helpers/convertDateToUnix';
 import StripeCustomer from '../customer/stripe.customer';
 import { CreateSubscriptionDto } from './dto/createSubscription.dto';
 import { QuerySubscriptionDto } from './dto/querySubscription.dto';
@@ -9,10 +8,8 @@ import { UpdateSubscriptionDto } from './dto/updateSubcription.dto';
 class StripeSubscription {
     private stripe: Stripe;
     private stripeCustomer: StripeCustomer;
-    constructor(credentials: StripeCredentials) {
-        this.stripe = new Stripe(credentials.apiKey, {
-            apiVersion: credentials.apiVersion,
-        });
+    constructor(stripeInstance: Stripe) {
+        this.stripe = stripeInstance;
     }
 
     async createSubscription(payload: CreateSubscriptionDto): Promise<Stripe.Subscription> {
@@ -63,7 +60,7 @@ class StripeSubscription {
                 stripeExtraOptions,
                 stripeExtraParams,
             } = payload;
-            const formatDates = parseQueryParams({ from: subscritptionFrom, to: subscriptionTo });
+            const formatDates = convertDateToUnix({ from: subscritptionFrom, to: subscriptionTo });
             const query = {};
             if (priceId) {
                 query['price'] = priceId;

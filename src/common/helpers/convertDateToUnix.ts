@@ -1,7 +1,7 @@
 import moment from 'moment';
 import { CustomError } from './customError.error';
 
-export const parseQueryParams = (payload: Record<string, Date>): Record<string, number> => {
+export const convertDateToUnix = (payload: Record<string, Date>): Record<string, number> => {
     const formattedObj: Record<string, number> = {};
     for (const key in payload) {
         const value = payload[key];
