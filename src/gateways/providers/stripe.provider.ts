@@ -62,7 +62,7 @@ export class StripeProvider implements MergerGateways {
         return await this.stipePlans.createPlan(payload);
     }
 
-    async getAllStripePlans(payload: QueryStripePlanDto) {
+    async getAllPlans(payload: QueryStripePlanDto) {
         return await this.stipePlans.getAllPlans(payload);
     }
 
@@ -70,40 +70,40 @@ export class StripeProvider implements MergerGateways {
         return await this.stipePlans.updatePlan(planId, payload);
     }
 
-    async getStripePlanById(payload: QueryStripeOnePlanDto) {
+    async getPlanById(payload: QueryStripeOnePlanDto) {
         return await this.stipePlans.getPlan(payload);
     }
 
     // subscription methods
-    async createStripeSubscription(payload: CreateStripeSubscriptionDto) {
+    async createSubscription(payload: CreateStripeSubscriptionDto) {
         return await this.stripeSubscription.createSubscription(payload);
     }
 
-    async getStripeAllSubscriptions(payload: QueryStripeSubscriptionDto) {
+    async getAllSubscriptions(payload: QueryStripeSubscriptionDto) {
         return await this.stripeSubscription.getAllSubscriptions(payload);
     }
 
-    async getStripeSubscriptionById(payload: QueryStripeOneSubscriptionDto) {
+    async getSubscriptionById(payload: QueryStripeOneSubscriptionDto) {
         return await this.stripeSubscription.getSubscriptionById(payload);
     }
 
-    async updateStripeSubscription(subscriptionId: string, payload: UpdateStripeSubscriptionDto) {
+    async updateSubscription(subscriptionId: string, payload: UpdateStripeSubscriptionDto) {
         return await this.stripeSubscription.updateSubscription(subscriptionId, payload);
     }
 
-    async cancelStripeSubscription(payload: CancelStripeSubscriptionDto) {
+    async cancelSubscription(payload: CancelStripeSubscriptionDto) {
         return await this.stripeSubscription.cancelSubscription(payload);
     }
 
-    async deleteOfferFromStripeSubscription(payload: DeleteStripeSubscriptionDto) {
+    async deleteOfferOfSubscription(payload: DeleteStripeSubscriptionDto) {
         return await this.stripeSubscription.deleteOfferFromSubscription(payload);
     }
 
-    async pauseStripeSubscription(payload: CancelStripeSubscriptionDto) {
+    async pauseSubscription(payload: CancelStripeSubscriptionDto) {
         return await this.stripeSubscription.pauseSubscription(payload);
     }
 
-    async resumeStripeSubscription(payload: ResumeStripeSubscriptionDto) {
+    async resumeSubscription(payload: ResumeStripeSubscriptionDto) {
         return await this.stripeSubscription.resumeSubscription(payload);
     }
 }

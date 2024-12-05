@@ -9,7 +9,7 @@ import { QueryStripeOneOrderDto, QueryStripeOrderDto } from '../../gateways/stri
 import { UpdateStripeOrderDto } from '../../gateways/stripe/orders/dto/updateOrder.dto';
 
 export interface MergerOrdersInterface {
-    createOrder(payload: CreateRazorPayOrderDto | CreateStripeOrderDto): Promise<
+    create(payload: CreateRazorPayOrderDto | CreateStripeOrderDto): Promise<
         | {
               orderData: Orders.RazorpayOrder;
               checkoutSessionData: RazorpayCheckoutSession;
@@ -17,7 +17,7 @@ export interface MergerOrdersInterface {
         | Stripe.Checkout.Session
     >;
 
-    getAllOrders(payload: QueryRazorpayOrderDto | QueryStripeOrderDto): Promise<
+    getAll(payload: QueryRazorpayOrderDto | QueryStripeOrderDto): Promise<
         | {
               entity: string;
               count: number;
@@ -26,7 +26,7 @@ export interface MergerOrdersInterface {
         | Stripe.ApiList<Stripe.Checkout.Session>
     >;
 
-    getOrderById(
+    get(
         payload: QueryRazorpayOneOrderDto | QueryStripeOneOrderDto,
     ): Promise<Orders.RazorpayOrder | Stripe.Checkout.Session>;
 

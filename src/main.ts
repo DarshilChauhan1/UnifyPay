@@ -5,7 +5,7 @@ const unify = new GatewaysMerge([
     {
         type: GatewayProvider.Stripe,
         config: {
-            apiKey: 'stripe-api-key',
+            apiKey: '',
         },
     },
     {
@@ -18,15 +18,13 @@ const unify = new GatewaysMerge([
 ]);
 
 const createOrder = async () => {
-    const response = await unify.createOrder({
+    const response = await unify.orders.get({
         provider: GatewayProvider.Razorpay,
         payload: {
-            amount: 100,
-            currency: 'INR',
-            apiKey: '',
+            orderId: '',
         },
     });
-    console.log(response);
+    console.log('response', response);
 };
 
 createOrder();

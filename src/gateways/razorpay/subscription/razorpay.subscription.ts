@@ -1,4 +1,3 @@
-import moment from 'moment';
 import Razorpay from 'razorpay';
 import { convertDateToUnix } from '../../../common/helpers/convertDateToUnix';
 import { CreateRazorpaySubscriptionDto } from './dto/createSubscription.dto';
@@ -10,6 +9,7 @@ import {
     ResumeRazorpaySubscriptionDto,
     UpdateRazorpaySubscriptionDto,
 } from './dto/updateSubscription.dto';
+import { Subscriptions } from 'razorpay/dist/types/subscriptions';
 export class RazorPaySubscription {
     private razorpay: Razorpay;
     constructor(razorPayInstance: Razorpay) {
@@ -17,7 +17,9 @@ export class RazorPaySubscription {
     }
 
     // create a subcsription apis
-    async createRazorPaySubscription(payload: CreateRazorpaySubscriptionDto): Promise<object> {
+    async createRazorPaySubscription(
+        payload: CreateRazorpaySubscriptionDto,
+    ): Promise<Subscriptions.RazorpaySubscription> {
         try {
             const {
                 planId,
@@ -57,13 +59,17 @@ export class RazorPaySubscription {
                 });
             }
             const response = await this.razorpay.subscriptions.create(subscriptionPayload);
-            return this.updateRazorpaySubsciptionResponse(response as unknown as Record<string, string | number>);
+            return response;
         } catch (error) {
             throw error;
         }
     }
 
-    async getAllSubscriptions(payload: QueryRazorpaySubscriptionDto): Promise<object> {
+    async getAllSubscriptions(payload: QueryRazorpaySubscriptionDto): Promise<{
+        entity: string;
+        count: number;
+        items: Array<Subscriptions.RazorpaySubscription>;
+    }> {
         try {
             const { planId, skipSubscription, subscriptionTo, subscritptionFrom, totalSubscription } = payload;
             const formatDates = convertDateToUnix({ from: subscritptionFrom, to: subscriptionTo });
@@ -74,26 +80,25 @@ export class RazorPaySubscription {
                 ...formatDates,
             };
             const response = await this.razorpay.subscriptions.all(query);
-            const updatedResponse: Record<string, any>[] = [];
-            response.items.forEach((item: any) => {
-                updatedResponse.push(this.updateRazorpaySubsciptionResponse(item));
-            });
-            return updatedResponse;
+            return response;
         } catch (error) {
             throw error;
         }
     }
 
-    async getSubscriptionById(payload: QueryRazorpayOneSubscriptionDto): Promise<object> {
+    async getSubscriptionById(payload: QueryRazorpayOneSubscriptionDto): Promise<Subscriptions.RazorpaySubscription> {
         try {
             const response = await this.razorpay.subscriptions.fetch(payload.subscriptionId);
-            return this.updateRazorpaySubsciptionResponse(response as unknown as Record<string, string | number>);
+            return response;
         } catch (error) {
             throw error;
         }
     }
 
-    async updateSubscription(subscriptionId: string, payload: UpdateRazorpaySubscriptionDto): Promise<object> {
+    async updateSubscription(
+        subscriptionId: string,
+        payload: UpdateRazorpaySubscriptionDto,
+    ): Promise<Subscriptions.RazorpaySubscription> {
         try {
             const {
                 planId,
@@ -117,74 +122,53 @@ export class RazorPaySubscription {
                 ...formattedDates,
             };
             const response = await this.razorpay.subscriptions.update(subscriptionId, updatePayload);
-            return this.updateRazorpaySubsciptionResponse(response as unknown as Record<string, string | number>);
+            return response;
         } catch (error) {
             throw error;
         }
     }
 
-    async cancelSubscription(payload: CancelRazorpaySubscriptionDto): Promise<object> {
+    async cancelSubscription(payload: CancelRazorpaySubscriptionDto): Promise<Subscriptions.RazorpaySubscription> {
         try {
             const response = await this.razorpay.subscriptions.cancel(payload.subscriptionId, payload.cancelAtCycleEnd);
-            return this.updateRazorpaySubsciptionResponse(response as unknown as Record<string, string | number>);
+            return response;
         } catch (error) {
             throw error;
         }
     }
 
-    async pauseSubscription(payload: PauseRazorpaySubscriptionDto): Promise<object> {
+    async pauseSubscription(payload: PauseRazorpaySubscriptionDto): Promise<Subscriptions.RazorpaySubscription> {
         try {
             const response = await this.razorpay.subscriptions.pause(
                 payload.subscriptionId,
                 payload.razorpayExtraParams,
             );
-            return this.updateRazorpaySubsciptionResponse(response as unknown as Record<string, string | number>);
+            return response;
         } catch (error) {
             throw error;
         }
     }
 
-    async deleteOfferOfSubscription(payload: DeleteOfferOfRazorpaySubscriptionDto): Promise<object> {
+    async deleteOfferOfSubscription(
+        payload: DeleteOfferOfRazorpaySubscriptionDto,
+    ): Promise<Subscriptions.RazorpaySubscription> {
         try {
             const response = await this.razorpay.subscriptions.deleteOffer(payload.subscriptionId, payload.offerId);
-            return this.updateRazorpaySubsciptionResponse(response as unknown as Record<string, string | number>);
+            return response;
         } catch (error) {
             throw error;
         }
     }
 
-    async resumeSubscription(payload: ResumeRazorpaySubscriptionDto): Promise<object> {
+    async resumeSubscription(payload: ResumeRazorpaySubscriptionDto): Promise<Subscriptions.RazorpaySubscription> {
         try {
             const response = await this.razorpay.subscriptions.resume(
                 payload.subscriptionId,
                 payload.razorpayExtraParams,
             );
-            return this.updateRazorpaySubsciptionResponse(response as unknown as Record<string, string | number>);
+            return response;
         } catch (error) {
             throw error;
         }
-    }
-
-    updateRazorpaySubsciptionResponse(payload: Record<string, string | number>) {
-        const updatedResponse = {
-            subscriptionId: payload.id,
-            planId: payload.plan_id,
-            status: payload.status,
-            customerId: payload.customer_id,
-            billingCycleStartAt: moment.unix(payload.current_start as number).toDate(),
-            billingCycleEndAt: moment.unix(payload.current_end as number).toDate(),
-            subscriptionEndedAt: moment.unix(payload.ended_at as number).toDate(),
-            planQuantity: payload.quantity,
-            nextPaymentDue: moment.unix(payload.current_end as number).toDate(),
-            offerId: payload.offer_id,
-            notes: payload.notes,
-            totalBillingCycles: payload.total_count,
-            subscriptionStartAt: moment.unix(payload.start_at as number).toDate(),
-            subscriptionExpireBy: moment.unix(payload.end_at as number).toDate(),
-            totalSubscriptionPaid: payload.paid_count,
-            shortPaymentUrl: payload.short_url,
-            remainingBillingCycles: payload.remaining_count,
-        };
-        return updatedResponse;
     }
 }

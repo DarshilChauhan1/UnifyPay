@@ -2,12 +2,15 @@ import { GatewayProvider, Provider } from '../common/types/providers.types';
 import { RazorpayProvider } from '../gateways/providers/razorpay.provider';
 import { StripeProvider } from '../gateways/providers/stripe.provider';
 import { MergerGateways } from './interfaces/merger.gateways.interface';
+import { MergerOrders } from './order/merger.order';
 
 export class GatewaysMerge {
     private providers: Provider[];
     private providersMap = new Map<string, MergerGateways>();
+    public readonly orders: MergerOrders;
     constructor(providers: Provider[]) {
         providers.forEach(({ type, config }) => {
+            console.log('type', type);
             switch (type) {
                 case GatewayProvider.Razorpay:
                     this.providersMap.set(type, new RazorpayProvider(config));
@@ -19,6 +22,7 @@ export class GatewaysMerge {
                     throw new Error(`Unknown provider type: ${type}`);
             }
         });
+        this.orders = new MergerOrders(this);
     }
 
     /********Working code****** */
@@ -40,18 +44,15 @@ export class GatewaysMerge {
     // }
     /********Working code****** */
 
-    // async createOrder<K extends keyof MergeCreateOrder>(payload: {
-    //     provider: K;
-    //     payload: MergeCreateOrder[K]['payload'];
-    // }): Promise<MergeCreateOrder[K]['returnType']> {
-    //     const { provider } = payload;
-    //     const providerInstance = this.providersMap.get(provider);
+    private getProvider(name: string): MergerGateways {
+        const provider = this.providersMap.get(name);
+        if (!provider) {
+            throw new Error(`Provider ${name} is not initialized.`);
+        }
+        return provider;
+    }
 
-    //     if (!providerInstance) {
-    //         throw new Error(`Provider ${provider} is not initialized.`);
-    //     }
-
-    //     return providerInstance.createOrder(payload.payload) as Promise<MergeCreateOrder[K]['returnType']>;
-    //     providerInstance.
-    // }
+    public getProviderInstance(name: string): MergerGateways {
+        return this.getProvider(name); // Controlled access through this method
+    }
 }
