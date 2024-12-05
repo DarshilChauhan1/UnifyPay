@@ -1,8 +1,7 @@
 import { GatewayProvider, Provider } from '../common/types/providers.types';
-import { RazorpayProvider } from '../providers/razorpay.provider';
-import { StripeProvider } from '../providers/stripe.provider';
-import { MergerGateways } from './interfaces/mergerGateways.interface';
-import { MergeCreaterOrder } from './interfaces/razorpay/mergerOrder.interface';
+import { RazorpayProvider } from '../gateways/providers/razorpay.provider';
+import { StripeProvider } from '../gateways/providers/stripe.provider';
+import { MergerGateways } from './interfaces/merger.gateways.interface';
 
 export class GatewaysMerge {
     private providers: Provider[];
@@ -27,7 +26,7 @@ export class GatewaysMerge {
     // async createOrder(payload: MergerStripeCreateOrderDto): Promise<MergerStripeCreateOrderDto['returnType']>;
 
     // /* ------------------ Orders ------------------------*/
-    // async createOrder(payload: MergeCreaterOrder): Promise<MergeCreaterOrder['returnType']> {
+    // async createOrder(payload: MergeCreateOrder): Promise<MergeCreateOrder['returnType']> {
     //     const { provider } = payload;
     //     const providerInstance = this.providersMap.get(provider);
 
@@ -36,22 +35,23 @@ export class GatewaysMerge {
     //     }
 
     //     return Promise.resolve(providerInstance.createOrder(payload.payload)) as Promise<
-    //         MergeCreaterOrder['returnType']
+    //         MergeCreateOrder['returnType']
     //     >;
     // }
     /********Working code****** */
 
-    async createOrder<K extends keyof MergeCreaterOrder>(payload: {
-        provider: K;
-        payload: MergeCreaterOrder[K]['payload'];
-    }): Promise<MergeCreaterOrder[K]['returnType']> {
-        const { provider } = payload;
-        const providerInstance = this.providersMap.get(provider);
+    // async createOrder<K extends keyof MergeCreateOrder>(payload: {
+    //     provider: K;
+    //     payload: MergeCreateOrder[K]['payload'];
+    // }): Promise<MergeCreateOrder[K]['returnType']> {
+    //     const { provider } = payload;
+    //     const providerInstance = this.providersMap.get(provider);
 
-        if (!providerInstance) {
-            throw new Error(`Provider ${provider} is not initialized.`);
-        }
+    //     if (!providerInstance) {
+    //         throw new Error(`Provider ${provider} is not initialized.`);
+    //     }
 
-        return providerInstance.createOrder(payload.payload) as Promise<MergeCreaterOrder[K]['returnType']>;
-    }
+    //     return providerInstance.createOrder(payload.payload) as Promise<MergeCreateOrder[K]['returnType']>;
+    //     providerInstance.
+    // }
 }
