@@ -21,7 +21,8 @@ import {
     UpdateStripeSubscriptionDto,
 } from '../stripe/subscription/dto/updateSubcription.dto';
 import StripeSubscription from '../stripe/subscription/stripe.subscription';
-export class StripeProvider implements MergerGateways {
+import { StripeSpecificMethods } from '../../merger/interfaces/stripeSpecific.interface';
+export class StripeProvider implements MergerGateways, StripeSpecificMethods {
     private stripeOrders: StripeOrders;
     private stipePlans: StripePlans;
     private stripeSubscription: StripeSubscription;

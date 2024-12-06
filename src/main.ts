@@ -1,34 +1,48 @@
-import { GatewayProvider } from './common/types/providers.types';
-import { GatewaysMerge } from './merger/gateways.merge';
+import { GatewayProvider, Provider } from '../src/common/types/providers.types';
+import { RazorpayProvider } from '../src/gateways/providers/razorpay.provider';
+import { StripeProvider } from '../src/gateways/providers/stripe.provider';
+import { MergerGateways } from './merger/interfaces/merger.gateways.interface';
+import { RazorpaySpecificMethods } from './merger/interfaces/razorpaySpecific.interface';
+import { StripeSpecificMethods } from './merger/interfaces/stripeSpecific.interface';
+import { MergerOrders } from './merger/order/merger.order';
+import { MergerPlan } from './merger/plan/merger.plan';
+import { ProviderManager } from './merger/providerManager.merger';
+import { MergerSubscription } from './merger/subscription/merger.subscription';
 
-const unify = new GatewaysMerge([
-    {
-        type: GatewayProvider.Stripe,
-        config: {
-            apiKey: '',
-        },
-    },
-    {
-        type: GatewayProvider.Razorpay,
-        config: {
-            keyId: '',
-            keySecret: '',
-        },
-    },
-]);
+export class UnifyPay {
+    protected providers: Provider[];
+    private providersMap = new Map<string, MergerGateways>();
+    public readonly orders: MergerOrders;
+    public readonly plans: MergerPlan;
+    public readonly subscriptions: MergerSubscription;
+    private razorpayProvider: RazorpayProvider | null = null;
+    private stripeProvider: StripeProvider | null = null;
+    private providerManager: ProviderManager;
 
-const createOrder = async () => {
-    const response = await unify.orders.update({
-        provider: GatewayProvider.Stripe,
-        orderId: 'order_123',
-        payload: {
-            metadata: {
-                key: 'value',
-            },
-        },
-    });
+    constructor(providers: Provider[]) {
+        this.providerManager = new ProviderManager(providers);
+        this.orders = new MergerOrders(this.providerManager);
+        this.plans = new MergerPlan(this.providerManager);
+        this.subscriptions = new MergerSubscription(this.providerManager);
+    }
 
-    console.log('response', response);
-};
+    private getProvider(name: string): MergerGateways {
+        const provider = this.providersMap.get(name);
+        if (!provider) {
+            throw new Error(`Provider ${name} is not initialized.`);
+        }
+        return provider;
+    }
 
-createOrder();
+    public getProviderInstance(name: string): MergerGateways {
+        return this.getProvider(name); // Controlled access through this method
+    }
+
+    public get razorpay(): RazorpaySpecificMethods {
+        return this.providerManager.getProvider(GatewayProvider.Razorpay) as RazorpayProvider;
+    }
+
+    public get stripe(): StripeSpecificMethods {
+        return this.providerManager.getProvider(GatewayProvider.Stripe) as StripeProvider;
+    }
+}

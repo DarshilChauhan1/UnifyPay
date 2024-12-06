@@ -1,5 +1,5 @@
-import { GatewaysMerge } from '../gateways.merge';
 import { MergerGateways } from '../interfaces/merger.gateways.interface';
+import { ProviderManager } from '../providerManager.merger';
 import { MergerCancelSubscription } from './types/cancelSubscription.types';
 import { MergerCreateSubscription } from './types/createSubscription.types';
 import { MergerDeleteSubscriptionOffer } from './types/deleteSubscriptionOffer.types';
@@ -10,7 +10,7 @@ import { MergerResumeSubscription } from './types/resumeSubscription.types';
 import { MergerUpdateSubscription } from './types/updateSubscription.types';
 
 export class MergerSubscription {
-    constructor(private providerGateway: GatewaysMerge) {}
+    constructor(private providerGateway: ProviderManager) {}
 
     async create<K extends keyof MergerCreateSubscription>(payload: {
         provider: K;
@@ -168,7 +168,7 @@ export class MergerSubscription {
     }
 
     private getProvider(name: string): MergerGateways {
-        const provider = this.providerGateway.getProviderInstance(name);
+        const provider = this.providerGateway.getProvider(name);
         if (!provider) {
             throw new Error(`Provider ${name} is not initialized.`);
         }

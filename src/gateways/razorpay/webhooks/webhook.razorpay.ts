@@ -1,7 +1,7 @@
-import Razorpay from 'razorpay';
-import moment from 'moment';
-import { UpdateWebhookDto } from './dto/updateWebhook.dto';
 import crypto from 'crypto';
+import moment from 'moment';
+import Razorpay from 'razorpay';
+import { UpdateWebhookDto } from './dto/updateWebhook.dto';
 export class RazorpayWebhook {
     private razorpay: Razorpay;
     constructor(razorPayInstance: Razorpay) {
@@ -17,7 +17,6 @@ export class RazorpayWebhook {
                 .digest('hex');
             return signature === expectedSignature;
         } catch (error) {
-            console.log(error);
             throw error;
         }
     }
@@ -39,7 +38,6 @@ export class RazorpayWebhook {
             };
             return formattedResponse;
         } catch (error) {
-            console.log(error);
             throw error;
         }
     }
@@ -69,7 +67,6 @@ export class RazorpayWebhook {
 
             return formattedResponse;
         } catch (error) {
-            console.log(error);
             throw error;
         }
     }
@@ -81,7 +78,6 @@ export class RazorpayWebhook {
                 message: 'Webhook deleted successfully',
             };
         } catch (error) {
-            console.log(error);
             throw error;
         }
     }

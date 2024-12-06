@@ -25,7 +25,8 @@ import {
     UpdateRazorpaySubscriptionDto,
 } from '../razorpay/subscription/dto/updateSubscription.dto';
 import { RazorPaySubscription } from '../razorpay/subscription/razorpay.subscription';
-export class RazorpayProvider implements MergerGateways {
+import { RazorpaySpecificMethods } from '../../merger/interfaces/razorpaySpecific.interface';
+export class RazorpayProvider implements MergerGateways, RazorpaySpecificMethods {
     private razorPayOrder: RazorPayOrders;
     private razorPayPayment: RazorpayPayment;
     private razorPaySubscription: RazorPaySubscription;
@@ -39,7 +40,6 @@ export class RazorpayProvider implements MergerGateways {
         this.razorPayPayment = new RazorpayPayment(instance);
         this.razorPaySubscription = new RazorPaySubscription(instance);
         this.razorPayPlans = new RazorpayPlan(instance);
-        this.razorPaySubscription = new RazorPaySubscription(instance);
     }
 
     // order methods
@@ -110,7 +110,7 @@ export class RazorpayProvider implements MergerGateways {
 
     /* Razorpay Specific methods */
     // payment methods
-    async verifyPaymentSignature(payload: VerifySignatureDto, secret: string) {
-        return this.razorPayPayment.verifyPaymentSignature(payload, secret);
+    async verifyPaymentSignature(payload: VerifySignatureDto) {
+        return this.razorPayPayment.verifyPaymentSignature(payload);
     }
 }

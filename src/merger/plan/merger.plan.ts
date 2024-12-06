@@ -1,11 +1,11 @@
-import { GatewaysMerge } from '../gateways.merge';
 import { MergerGateways } from '../interfaces/merger.gateways.interface';
+import { ProviderManager } from '../providerManager.merger';
 import { MergerCreatePlan } from './types/createPlan.types';
 import { MergerGetAllPlans } from './types/getAllPlan.types';
 import { MergerGetPlanById } from './types/getPlanById.types';
 
 export class MergerPlan {
-    constructor(private providerGateway: GatewaysMerge) {}
+    constructor(private providerGateway: ProviderManager) {}
 
     async create<K extends keyof MergerCreatePlan>(payload: {
         provider: K;
@@ -64,21 +64,8 @@ export class MergerPlan {
         }
     }
 
-    // /**
-    //  * Only for Stripe
-    //  * @param payload
-    //  */
-    // async update(payload: UpdateStripePlanDto): Promise<Stripe.Price> {
-    //     try {
-    //         return await this.providerGateway.stripe.plan.update(payload);
-    //     } catch (error) {
-    //         console.error('Error updating plan:', error);
-    //         throw error;
-    //     }
-    // }
-
     private getProvider(name: string): MergerGateways {
-        const provider = this.providerGateway.getProviderInstance(name);
+        const provider = this.providerGateway.getProvider(name);
         if (!provider) {
             throw new Error(`Provider ${name} is not initialized.`);
         }

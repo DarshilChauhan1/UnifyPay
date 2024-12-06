@@ -16,9 +16,9 @@ export class RazorpayPayment {
         this.razorpay = razorPayInstance;
     }
 
-    async verifyPaymentSignature(payload: VerifySignatureDto, secret: string): Promise<boolean> {
+    async verifyPaymentSignature(payload: VerifySignatureDto): Promise<boolean> {
         try {
-            const { orderId, paymentId, razorpaySignature } = payload;
+            const { orderId, paymentId, razorpaySignature, secret } = payload;
             if (!orderId || !paymentId || !razorpaySignature) throw new Error('Missing required fields');
 
             const hash = crypto.createHmac('sha256', secret);
