@@ -15,8 +15,6 @@ export class UnifyPay {
     public readonly orders: MergerOrders;
     public readonly plans: MergerPlan;
     public readonly subscriptions: MergerSubscription;
-    private razorpayProvider: RazorpayProvider | null = null;
-    private stripeProvider: StripeProvider | null = null;
     private providerManager: ProviderManager;
 
     constructor(providers: Provider[]) {
