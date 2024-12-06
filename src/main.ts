@@ -18,12 +18,16 @@ const unify = new GatewaysMerge([
 ]);
 
 const createOrder = async () => {
-    const response = await unify.orders.get({
-        provider: GatewayProvider.Razorpay,
+    const response = await unify.orders.update({
+        provider: GatewayProvider.Stripe,
+        orderId: 'order_123',
         payload: {
-            orderId: '',
+            metadata: {
+                key: 'value',
+            },
         },
     });
+
     console.log('response', response);
 };
 

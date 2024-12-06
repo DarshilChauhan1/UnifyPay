@@ -2,7 +2,7 @@ import Stripe from 'stripe';
 import { convertDateToUnix } from '../../../common/helpers/convertDateToUnix';
 import StripeCustomer from '../customer/stripe.customer';
 import { CreateStripeSubscriptionDto } from './dto/createSubscription.dto';
-import { DeleteStripeSubscriptionDto } from './dto/deleteSubscription.dto';
+import { DeleteOfferOfStripeSubscriptionDto } from './dto/deleteSubscription.dto';
 import { QueryStripeOneSubscriptionDto, QueryStripeSubscriptionDto } from './dto/querySubscription.dto';
 import {
     CancelStripeSubscriptionDto,
@@ -149,7 +149,7 @@ class StripeSubscription {
         subscriptionId,
         stripeExtraOptions,
         stripeExtraParams,
-    }: DeleteStripeSubscriptionDto): Promise<Stripe.DeletedDiscount> {
+    }: DeleteOfferOfStripeSubscriptionDto): Promise<Stripe.DeletedDiscount> {
         try {
             return await this.stripe.subscriptions.deleteDiscount(
                 subscriptionId,

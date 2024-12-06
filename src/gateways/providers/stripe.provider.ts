@@ -10,7 +10,7 @@ import { QueryStripeOnePlanDto, QueryStripePlanDto } from '../stripe/plans/dto/q
 import { UpdateStripePlanDto } from '../stripe/plans/dto/updatePlan.dto';
 import StripePlans from '../stripe/plans/stripe.plans';
 import { CreateStripeSubscriptionDto } from '../stripe/subscription/dto/createSubscription.dto';
-import { DeleteStripeSubscriptionDto } from '../stripe/subscription/dto/deleteSubscription.dto';
+import { DeleteOfferOfStripeSubscriptionDto } from '../stripe/subscription/dto/deleteSubscription.dto';
 import {
     QueryStripeOneSubscriptionDto,
     QueryStripeSubscriptionDto,
@@ -42,68 +42,69 @@ export class StripeProvider implements MergerGateways {
 
     // order methods
     async createOrder(payload: CreateStripeOrderDto) {
-        return await this.stripeOrders.createStripeOrder(payload);
+        return this.stripeOrders.createStripeOrder(payload);
     }
 
     async getAllOrders(payload: QueryStripeOrderDto) {
-        return await this.stripeOrders.getAllOrders(payload);
+        return this.stripeOrders.getAllOrders(payload);
     }
 
     async getOrderById(payload: QueryStripeOneOrderDto) {
-        return await this.stripeOrders.getOrderById(payload);
+        return this.stripeOrders.getOrderById(payload);
     }
 
     async updateOrder(orderId: string, payload: UpdateStripeOrderDto) {
-        return await this.stripeOrders.updateOrder(orderId, payload);
+        return this.stripeOrders.updateOrder(orderId, payload);
     }
 
     // plan methods
     async createPlan(payload: CreateStripePlanDto) {
-        return await this.stipePlans.createPlan(payload);
+        return this.stipePlans.createPlan(payload);
     }
 
     async getAllPlans(payload: QueryStripePlanDto) {
-        return await this.stipePlans.getAllPlans(payload);
-    }
-
-    async updateStripePlan(planId: string, payload: UpdateStripePlanDto) {
-        return await this.stipePlans.updatePlan(planId, payload);
+        return this.stipePlans.getAllPlans(payload);
     }
 
     async getPlanById(payload: QueryStripeOnePlanDto) {
-        return await this.stipePlans.getPlan(payload);
+        return this.stipePlans.getPlan(payload);
     }
 
     // subscription methods
     async createSubscription(payload: CreateStripeSubscriptionDto) {
-        return await this.stripeSubscription.createSubscription(payload);
+        return this.stripeSubscription.createSubscription(payload);
     }
 
     async getAllSubscriptions(payload: QueryStripeSubscriptionDto) {
-        return await this.stripeSubscription.getAllSubscriptions(payload);
+        return this.stripeSubscription.getAllSubscriptions(payload);
     }
 
     async getSubscriptionById(payload: QueryStripeOneSubscriptionDto) {
-        return await this.stripeSubscription.getSubscriptionById(payload);
+        return this.stripeSubscription.getSubscriptionById(payload);
     }
 
     async updateSubscription(subscriptionId: string, payload: UpdateStripeSubscriptionDto) {
-        return await this.stripeSubscription.updateSubscription(subscriptionId, payload);
+        return this.stripeSubscription.updateSubscription(subscriptionId, payload);
     }
 
     async cancelSubscription(payload: CancelStripeSubscriptionDto) {
-        return await this.stripeSubscription.cancelSubscription(payload);
+        return this.stripeSubscription.cancelSubscription(payload);
     }
 
-    async deleteOfferOfSubscription(payload: DeleteStripeSubscriptionDto) {
-        return await this.stripeSubscription.deleteOfferFromSubscription(payload);
+    async deleteOfferOfSubscription(payload: DeleteOfferOfStripeSubscriptionDto) {
+        return this.stripeSubscription.deleteOfferFromSubscription(payload);
     }
 
     async pauseSubscription(payload: CancelStripeSubscriptionDto) {
-        return await this.stripeSubscription.pauseSubscription(payload);
+        return this.stripeSubscription.pauseSubscription(payload);
     }
 
     async resumeSubscription(payload: ResumeStripeSubscriptionDto) {
-        return await this.stripeSubscription.resumeSubscription(payload);
+        return this.stripeSubscription.resumeSubscription(payload);
+    }
+
+    /* Stripe Specific methods */
+    async updateStripePlan(planId: string, payload: UpdateStripePlanDto) {
+        return this.stipePlans.updatePlan(planId, payload);
     }
 }

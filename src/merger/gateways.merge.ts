@@ -3,11 +3,15 @@ import { RazorpayProvider } from '../gateways/providers/razorpay.provider';
 import { StripeProvider } from '../gateways/providers/stripe.provider';
 import { MergerGateways } from './interfaces/merger.gateways.interface';
 import { MergerOrders } from './order/merger.order';
+import { MergerPlan } from './plan/merger.plan';
+import { MergerSubscription } from './subscription/merger.subscription';
 
 export class GatewaysMerge {
     private providers: Provider[];
     private providersMap = new Map<string, MergerGateways>();
     public readonly orders: MergerOrders;
+    public readonly plans: MergerPlan;
+    public readonly subscriptions: MergerSubscription;
     constructor(providers: Provider[]) {
         providers.forEach(({ type, config }) => {
             console.log('type', type);
@@ -23,26 +27,9 @@ export class GatewaysMerge {
             }
         });
         this.orders = new MergerOrders(this);
+        this.plans = new MergerPlan(this);
+        this.subscriptions = new MergerSubscription(this);
     }
-
-    /********Working code****** */
-    // async createOrder(payload: MergerRazorPayCreateOrderDto): Promise<MergerRazorPayCreateOrderDto['returnType']>;
-    // async createOrder(payload: MergerStripeCreateOrderDto): Promise<MergerStripeCreateOrderDto['returnType']>;
-
-    // /* ------------------ Orders ------------------------*/
-    // async createOrder(payload: MergeCreateOrder): Promise<MergeCreateOrder['returnType']> {
-    //     const { provider } = payload;
-    //     const providerInstance = this.providersMap.get(provider);
-
-    //     if (!providerInstance) {
-    //         throw new Error(`Provider ${provider} is not initialized.`);
-    //     }
-
-    //     return Promise.resolve(providerInstance.createOrder(payload.payload)) as Promise<
-    //         MergeCreateOrder['returnType']
-    //     >;
-    // }
-    /********Working code****** */
 
     private getProvider(name: string): MergerGateways {
         const provider = this.providersMap.get(name);

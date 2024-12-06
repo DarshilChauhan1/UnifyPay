@@ -1,7 +1,9 @@
 import { GatewaysMerge } from '../gateways.merge';
+import { MergerGateways } from '../interfaces/merger.gateways.interface';
 import { MergeCreateOrder } from './types/createOrder.types';
 import { MergerGetAllOrders } from './types/getAllOrder.types';
 import { MergerGetOrderById } from './types/getOrderById.types';
+import { MergerUpdateOrder } from './types/updateOrder.types';
 
 export class MergerOrders {
     constructor(private providerGateway: GatewaysMerge) {}
@@ -18,7 +20,7 @@ export class MergerOrders {
                 throw new Error(`Provider ${provider} is not initialized.`);
             }
 
-            return (await providerInstance.createOrder(payload.payload)) as Promise<MergeCreateOrder[K]['returnType']>;
+            return providerInstance.createOrder(payload.payload) as Promise<MergeCreateOrder[K]['returnType']>;
         } catch (error) {
             console.error('Error creating order:', error);
             throw error; // Re-throw the error after logging it
@@ -37,7 +39,7 @@ export class MergerOrders {
                 throw new Error(`Provider ${provider} is not initialized.`);
             }
 
-            return await providerInstance.getAllOrders(payload.payload);
+            return providerInstance.getAllOrders(payload.payload);
         } catch (error) {
             console.error('Error fetching orders:', error);
             throw error; // Re-throw the error after logging it
@@ -56,14 +58,34 @@ export class MergerOrders {
                 throw new Error(`Provider ${provider} is not initialized.`);
             }
 
-            return await providerInstance.getOrder(payload.payload);
+            return providerInstance.getOrderById(payload.payload);
         } catch (error) {
             console.error('Error fetching order:', error);
             throw error; // Re-throw the error after logging it
         }
     }
 
-    private getProvider(name: string): any {
+    async update<K extends keyof MergerUpdateOrder>(payload: {
+        provider: K;
+        orderId: string;
+        payload: MergerUpdateOrder[K]['payload'];
+    }): Promise<MergerUpdateOrder[K]['returnType']> {
+        try {
+            const { provider } = payload;
+            const providerInstance = this.getProvider(provider);
+
+            if (!providerInstance) {
+                throw new Error(`Provider ${provider} is not initialized.`);
+            }
+
+            return providerInstance.updateOrder(payload.orderId, payload.payload);
+        } catch (error) {
+            console.error('Error updating order:', error);
+            throw error; // Re-throw the error after logging it
+        }
+    }
+
+    private getProvider(name: string): MergerGateways {
         const provider = this.providerGateway.getProviderInstance(name);
         if (!provider) {
             throw new Error(`Provider ${name} is not initialized.`);
