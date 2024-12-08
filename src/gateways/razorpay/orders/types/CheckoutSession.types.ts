@@ -1,5 +1,4 @@
 export type RazorpayCheckoutSession = {
-    key: string;
     name: string;
     description: string;
     image: string;

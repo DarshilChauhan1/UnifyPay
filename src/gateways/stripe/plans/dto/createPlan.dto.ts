@@ -7,8 +7,8 @@ export interface CreateStripePlanDto {
     currency: Currency;
     active: boolean;
     amount: number;
-    metadata: any;
-    nickname: string;
+    metadata?: any;
+    nickname?: string;
     interval: StripeBillingFrequency;
     intervalCount?: number; // Required if recurring is set to 'interval'
     stripeExtraParams?: Stripe.PriceCreateParams;

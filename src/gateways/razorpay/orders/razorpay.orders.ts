@@ -16,22 +16,21 @@ export class RazorPayOrders {
         checkoutSessionData: RazorpayCheckoutSession;
     }> {
         try {
-            const { apiKey, ...orderPayload } = payload;
+            const { imageUrl, businessName, callBackUrl, description, customerInfo, theme, ...orderPayload } = payload;
             this.validateOrder(payload);
             const orderData = await this.razorpay.orders.create(orderPayload);
 
             const checkoutSessionData = {
-                key: apiKey,
-                name: payload.businessName,
-                description: payload.description,
-                image: payload.imageUrl,
-                callback_url: payload.callBackUrl,
-                prefill: payload.customerInfo,
+                name: businessName,
+                description: description,
+                image: imageUrl,
+                callback_url: callBackUrl,
+                prefill: customerInfo,
                 order_id: orderData.id,
                 amount: payload.amount,
                 currency: orderData.currency,
                 notes: orderData.notes,
-                theme: payload.theme,
+                theme: theme,
             };
 
             return { orderData, checkoutSessionData };
