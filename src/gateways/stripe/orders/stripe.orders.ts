@@ -23,6 +23,7 @@ export class StripeOrders {
                 cancelUrl,
                 stripeExtraOptions,
                 stripeExtraParams,
+                returnUrl,
             } = payload;
 
             const checkoutSessionData = await this.stripe.checkout.sessions.create(
@@ -46,6 +47,7 @@ export class StripeOrders {
                     cancel_url: cancelUrl,
                     customer_email: customerEmail,
                     metadata,
+                    return_url: returnUrl,
                     ...stripeExtraParams,
                 },
                 stripeExtraOptions,
@@ -117,9 +119,9 @@ export class StripeOrders {
         }
     }
 
-    async updateOrder(orderId: string, payload: UpdateStripeOrderDto): Promise<Stripe.Checkout.Session> {
+    async updateOrder(payload: UpdateStripeOrderDto): Promise<Stripe.Checkout.Session> {
         try {
-            const { metadata, stripeExtraParams, stripeExtraOptions } = payload;
+            const { metadata, stripeExtraParams, stripeExtraOptions, orderId } = payload;
             const updatedCheckoutSession = await this.stripe.checkout.sessions.update(
                 orderId,
                 {

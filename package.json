@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "start": "npm run build && node dist/src/test.js",
-    "start:dev": "tsc-watch --onSuccess \"node dist/main.js\" --onFailure \"echo Build failed\"",
+    "start:dev": "tsc-watch --onSuccess \"node dist/src/test.js\" --onFailure \"echo Build failed\"",
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "husky",
     "precommit": "eslint ."

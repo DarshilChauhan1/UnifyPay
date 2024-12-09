@@ -14,6 +14,7 @@ export class MergerOrders {
     }): Promise<MergeCreateOrder[K]['returnType']> {
         try {
             const { provider } = payload;
+            console.log('payload', payload);
             const providerInstance = this.getProvider(provider);
 
             if (!providerInstance) {
@@ -22,8 +23,8 @@ export class MergerOrders {
 
             return providerInstance.createOrder(payload.payload) as Promise<MergeCreateOrder[K]['returnType']>;
         } catch (error) {
-            console.error('Error creating order:', error);
-            throw error; // Re-throw the error after logging it
+            console.log(error);
+            throw error;
         }
     }
 
@@ -67,7 +68,6 @@ export class MergerOrders {
 
     async update<K extends keyof MergerUpdateOrder>(payload: {
         provider: K;
-        orderId: string;
         payload: MergerUpdateOrder[K]['payload'];
     }): Promise<MergerUpdateOrder[K]['returnType']> {
         try {
@@ -78,7 +78,7 @@ export class MergerOrders {
                 throw new Error(`Provider ${provider} is not initialized.`);
             }
 
-            return providerInstance.updateOrder(payload.orderId, payload.payload);
+            return providerInstance.updateOrder(payload.payload);
         } catch (error) {
             console.error('Error updating order:', error);
             throw error; // Re-throw the error after logging it

@@ -1,3 +1,4 @@
+import moment from 'moment';
 import Razorpay from 'razorpay';
 import { Orders } from 'razorpay/dist/types/orders';
 import { Payments } from 'razorpay/dist/types/payments';
@@ -46,13 +47,18 @@ export class RazorPayOrders {
     }> {
         try {
             const { orderFromTime, orderUntilTime, authorized, ordersToFetch, receipt, skipOrders } = payload;
-            const formattedDates = convertDateToUnix({ from: orderFromTime, to: orderUntilTime });
+            const formattedDates = convertDateToUnix({
+                orderFromTime: moment(orderFromTime).toDate(),
+                orderUntilTime: moment(orderUntilTime).add(1, 'days').toDate(),
+            });
+
             const queryData = {
                 receipt,
                 authorized,
                 count: ordersToFetch,
-                from: skipOrders,
-                ...formattedDates,
+                from: formattedDates.orderFromTime,
+                to: formattedDates.orderUntilTime,
+                skip: skipOrders,
             };
             const orders = await this.razorpay.orders.all(queryData);
             return orders;
@@ -85,9 +91,9 @@ export class RazorPayOrders {
         }
     }
 
-    async updateOrder(orderId: string, payload: UpdateRazorpayOrderDto): Promise<Orders.RazorpayOrder> {
+    async updateOrder(payload: UpdateRazorpayOrderDto): Promise<Orders.RazorpayOrder> {
         try {
-            const { notes } = payload;
+            const { notes, orderId } = payload;
             const order = await this.razorpay.orders.edit(orderId, { notes: notes });
             return order;
         } catch (error) {

@@ -1,6 +1,7 @@
 import Stripe from 'stripe';
 import { StripeCredentials } from '../../common/types/credentials.types';
 import { MergerGateways } from '../../merger/interfaces/merger.gateways.interface';
+import { StripeSpecificMethods } from '../../merger/interfaces/stripeSpecific.interface';
 import { CreateStripeOrderDto } from '../stripe/orders/dto/createOrder.dto';
 import { QueryStripeOneOrderDto, QueryStripeOrderDto } from '../stripe/orders/dto/queryOrder.dto';
 import { UpdateStripeOrderDto } from '../stripe/orders/dto/updateOrder.dto';
@@ -21,7 +22,6 @@ import {
     UpdateStripeSubscriptionDto,
 } from '../stripe/subscription/dto/updateSubcription.dto';
 import StripeSubscription from '../stripe/subscription/stripe.subscription';
-import { StripeSpecificMethods } from '../../merger/interfaces/stripeSpecific.interface';
 export class StripeProvider implements MergerGateways, StripeSpecificMethods {
     private stripeOrders: StripeOrders;
     private stipePlans: StripePlans;
@@ -54,8 +54,8 @@ export class StripeProvider implements MergerGateways, StripeSpecificMethods {
         return this.stripeOrders.getOrderById(payload);
     }
 
-    async updateOrder(orderId: string, payload: UpdateStripeOrderDto) {
-        return this.stripeOrders.updateOrder(orderId, payload);
+    async updateOrder(payload: UpdateStripeOrderDto) {
+        return this.stripeOrders.updateOrder(payload);
     }
 
     // plan methods

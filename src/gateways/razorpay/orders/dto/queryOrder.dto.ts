@@ -6,8 +6,8 @@ export enum AuthorizedStatus {
 export interface QueryRazorpayOrderDto {
     authorized?: AuthorizedStatus;
     receipt?: string;
-    orderFromTime?: Date;
-    orderUntilTime?: Date;
+    orderFromTime?: Date | string;
+    orderUntilTime?: Date | string;
     ordersToFetch?: number;
     skipOrders?: number;
 }

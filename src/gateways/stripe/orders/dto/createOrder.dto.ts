@@ -8,7 +8,7 @@ export interface CreateStripeOrderDto {
     currency: Currency;
     customerEmail?: string;
     metadata?: any;
-    returnUrl?: string;
+    returnUrl: string;
     successUrl?: string;
     cancelUrl?: string;
     name?: string;

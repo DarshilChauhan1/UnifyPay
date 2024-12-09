@@ -62,7 +62,6 @@ export interface MergerGateways {
     ): Promise<Orders.RazorpayOrder | Stripe.Checkout.Session>;
 
     updateOrder(
-        orderId: string,
         payload: UpdateRazorpayOrderDto | UpdateStripeOrderDto,
     ): Promise<Orders.RazorpayOrder | Stripe.Checkout.Session>;
 

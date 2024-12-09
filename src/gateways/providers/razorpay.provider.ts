@@ -2,6 +2,7 @@ import Razorpay from 'razorpay';
 import { Orders } from 'razorpay/dist/types/orders';
 import { RazorPayCredentials } from '../../common/types/credentials.types';
 import { MergerGateways } from '../../merger/interfaces/merger.gateways.interface';
+import { RazorpaySpecificMethods } from '../../merger/interfaces/razorpaySpecific.interface';
 import { CreateRazorPayOrderDto } from '../razorpay/orders/dto/createOrder.dto';
 import { QueryRazorpayOneOrderDto, QueryRazorpayOrderDto } from '../razorpay/orders/dto/queryOrder.dto';
 import { UpdateRazorpayOrderDto } from '../razorpay/orders/dto/upateOrder.dto';
@@ -25,7 +26,6 @@ import {
     UpdateRazorpaySubscriptionDto,
 } from '../razorpay/subscription/dto/updateSubscription.dto';
 import { RazorPaySubscription } from '../razorpay/subscription/razorpay.subscription';
-import { RazorpaySpecificMethods } from '../../merger/interfaces/razorpaySpecific.interface';
 export class RazorpayProvider implements MergerGateways, RazorpaySpecificMethods {
     private razorPayOrder: RazorPayOrders;
     private razorPayPayment: RazorpayPayment;
@@ -58,8 +58,8 @@ export class RazorpayProvider implements MergerGateways, RazorpaySpecificMethods
         return this.razorPayOrder.getOrderById(payload);
     }
 
-    async updateOrder(orderId: string, payload: UpdateRazorpayOrderDto) {
-        return this.razorPayOrder.updateOrder(orderId, payload);
+    async updateOrder(payload: UpdateRazorpayOrderDto) {
+        return this.razorPayOrder.updateOrder(payload);
     }
 
     //plan methods
