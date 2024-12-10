@@ -2,6 +2,6 @@ import Stripe from 'stripe';
 
 export interface DeleteOfferOfStripeSubscriptionDto {
     subscriptionId: string;
-    stripeExtraParams?: Stripe.SubscriptionDeleteDiscountParams;
+    stripeExtraParams?: Partial<Stripe.SubscriptionDeleteDiscountParams>;
     stripeExtraOptions?: Stripe.RequestOptions;
 }

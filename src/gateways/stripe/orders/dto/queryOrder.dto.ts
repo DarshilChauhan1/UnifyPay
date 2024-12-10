@@ -6,12 +6,12 @@ export interface QueryStripeOrderDto {
     customerId?: string; // Filter order by customer ID
     orderFromTime?: Date;
     orderUntilTime?: Date;
-    stripeExtraParams?: Stripe.Checkout.SessionListParams;
+    stripeExtraParams?: Partial<Stripe.Checkout.SessionListParams>;
     stripeExtraOptions?: Stripe.RequestOptions;
 }
 
 export interface QueryStripeOneOrderDto {
     orderId: string;
-    stripeExtraParams?: Stripe.Checkout.SessionListParams;
+    stripeExtraParams?: Partial<Stripe.Checkout.SessionListParams>;
     stripeExtraOptions?: Stripe.RequestOptions;
 }

@@ -9,6 +9,6 @@ export class CreateStripeSubscriptionDto {
     offerId?: string;
     planQuantity?: number;
     metadata?: any;
-    stripeExtraParams?: Stripe.SubscriptionCreateParams;
+    stripeExtraParams?: Partial<Stripe.SubscriptionCreateParams>;
     stripeExtraOptions?: Stripe.RequestOptions;
 }

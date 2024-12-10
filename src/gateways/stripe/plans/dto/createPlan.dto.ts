@@ -11,6 +11,6 @@ export interface CreateStripePlanDto {
     nickname?: string;
     interval: StripeBillingFrequency;
     intervalCount?: number; // Required if recurring is set to 'interval'
-    stripeExtraParams?: Stripe.PriceCreateParams;
+    stripeExtraParams?: Partial<Stripe.PriceCreateParams>;
     stripeExtraOptions?: Stripe.RequestOptions;
 }

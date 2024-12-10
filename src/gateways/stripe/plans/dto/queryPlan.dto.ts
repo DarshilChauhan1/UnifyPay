@@ -8,12 +8,12 @@ export interface QueryStripePlanDto {
     createdBefore?: Date; // Inclusive
     limit?: number;
     lastRecordId?: string;
-    stripeExtraParams?: Stripe.PriceListParams;
+    stripeExtraParams?: Partial<Stripe.PriceListParams>;
     stripeExtraOptions?: Stripe.RequestOptions;
 }
 
 export interface QueryStripeOnePlanDto {
     planId: string;
-    stripeExtraParams?: Stripe.PriceRetrieveParams;
+    stripeExtraParams?: Partial<Stripe.PriceRetrieveParams>;
     stripeExtraOptions?: Stripe.RequestOptions;
 }

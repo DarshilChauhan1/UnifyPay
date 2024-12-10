@@ -5,24 +5,24 @@ export interface UpdateStripeSubscriptionDto {
     planQuantity?: number;
     priceId?: string;
     offerId?: string;
-    stripeExtraParams?: Stripe.SubscriptionUpdateParams;
+    stripeExtraParams?: Partial<Stripe.SubscriptionUpdateParams>;
     stripeExtraOptions?: Stripe.RequestOptions;
 }
 
 export interface CancelStripeSubscriptionDto {
     subscriptionId: string;
-    stripeExtraParams?: Stripe.SubscriptionCancelParams;
+    stripeExtraParams?: Partial<Stripe.SubscriptionCancelParams>;
     stripeExtraOptions?: Stripe.RequestOptions;
 }
 
 export interface PauseStripeSubscriptionDto {
     subscriptionId: string;
-    stripeExtraParams?: Stripe.SubscriptionUpdateParams;
+    stripeExtraParams?: Partial<Stripe.SubscriptionUpdateParams>;
     stripeExtraOptions?: Stripe.RequestOptions;
 }
 
 export interface ResumeStripeSubscriptionDto {
     subscriptionId: string;
-    stripeExtraParams?: Stripe.SubscriptionResumeParams;
+    stripeExtraParams?: Partial<Stripe.SubscriptionResumeParams>;
     stripeExtraOptions?: Stripe.RequestOptions;
 }

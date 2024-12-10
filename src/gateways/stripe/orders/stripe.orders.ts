@@ -17,45 +17,54 @@ export class StripeOrders {
                 currency,
                 customerEmail,
                 metadata,
-                name,
-                quantity,
+                name = 'Order Payment',
+                quantity = 1,
                 successUrl,
                 cancelUrl,
                 stripeExtraOptions,
                 stripeExtraParams,
                 returnUrl,
+                uiMode = 'embedded', // Default to 'embedded'
             } = payload;
 
-            const checkoutSessionData = await this.stripe.checkout.sessions.create(
-                {
-                    payment_method_types: ['card'],
-                    line_items: [
-                        {
-                            price_data: {
-                                currency,
-                                product_data: {
-                                    name: name ?? 'Order Payment',
-                                },
-                                unit_amount: amount,
-                            },
-                            quantity: quantity ?? 1,
+            // Validation
+            if (uiMode === 'hosted' && (!successUrl || !cancelUrl)) {
+                throw new Error('successUrl and cancelUrl are required for hosted uiMode.');
+            }
+
+            if (uiMode === 'embedded' && !returnUrl) {
+                throw new Error('returnUrl is required for embedded uiMode.');
+            }
+
+            const sessionParams: Stripe.Checkout.SessionCreateParams = {
+                payment_method_types: ['card'],
+                line_items: [
+                    {
+                        price_data: {
+                            currency,
+                            product_data: { name },
+                            unit_amount: amount,
                         },
-                    ],
-                    ui_mode: 'embedded',
-                    mode: 'payment',
-                    success_url: successUrl,
-                    cancel_url: cancelUrl,
-                    customer_email: customerEmail,
-                    metadata,
-                    return_url: returnUrl,
-                    ...stripeExtraParams,
-                },
-                stripeExtraOptions,
-            );
+                        quantity,
+                    },
+                ],
+                mode: 'payment',
+                customer_email: customerEmail,
+                metadata,
+                ...stripeExtraParams,
+            };
+
+            if (uiMode === 'hosted') {
+                sessionParams.success_url = successUrl;
+                sessionParams.cancel_url = cancelUrl;
+            } else if (uiMode === 'embedded') {
+                sessionParams.return_url = returnUrl;
+            }
+
+            const checkoutSessionData = await this.stripe.checkout.sessions.create(sessionParams, stripeExtraOptions);
 
             return checkoutSessionData;
         } catch (error) {
-            console.error(error);
             throw error;
         }
     }

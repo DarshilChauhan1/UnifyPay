@@ -6,12 +6,12 @@ export interface QueryStripeSubscriptionDto {
     subscriptionTo?: Date;
     limit?: number;
     lastRecordId?: string;
-    stripeExtraParams?: Stripe.SubscriptionListParams;
+    stripeExtraParams?: Partial<Stripe.SubscriptionListParams>;
     stripeExtraOptions?: Stripe.RequestOptions;
 }
 
 export interface QueryStripeOneSubscriptionDto {
     subscriptionId: string;
-    stripeExtraParams?: Stripe.SubscriptionRetrieveParams;
+    stripeExtraParams?: Partial<Stripe.SubscriptionRetrieveParams>;
     stripeExtraOptions?: Stripe.RequestOptions;
 }
