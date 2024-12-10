@@ -11,5 +11,5 @@ export class CreateCustomerDto {
         postal_code: string;
         country: string;
     };
-    metadata?: any;
+    metadata?: Record<string, any>;
 }

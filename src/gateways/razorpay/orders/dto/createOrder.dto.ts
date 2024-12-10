@@ -6,7 +6,7 @@ export interface CreateRazorPayOrderDto {
     currency: Currency;
     // can have max 40 characters
     receipt?: string;
-    notes?: any;
+    notes?: Record<string, any>;
     partialPayment?: boolean;
     first_payment_min_amount?: number;
     businessName?: string;

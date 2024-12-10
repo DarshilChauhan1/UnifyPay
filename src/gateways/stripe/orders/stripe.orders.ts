@@ -115,12 +115,8 @@ export class StripeOrders {
 
     async getOrderById(payload: QueryStripeOneOrderDto): Promise<Stripe.Checkout.Session> {
         try {
-            const { orderId, stripeExtraOptions, stripeExtraParams } = payload;
-            const checkoutSession = await this.stripe.checkout.sessions.retrieve(
-                orderId,
-                stripeExtraParams,
-                stripeExtraOptions,
-            );
+            const { orderId, stripeExtraOptions } = payload;
+            const checkoutSession = await this.stripe.checkout.sessions.retrieve(orderId, stripeExtraOptions);
             return checkoutSession;
         } catch (error) {
             console.error(error);

@@ -170,7 +170,7 @@ createPlan();
             currency: Currency;
             active: boolean;
             amount: number;
-            metadata?: any;
+            metadata?: Record<string, any>;
             nickname?: string;
             interval: StripeBillingFrequency;
             intervalCount?: number;
@@ -200,7 +200,7 @@ createPlan();
             planAmount: number;
             currency: Currency;
             planDescription?: string;
-            notes?: any;
+            notes?: Record<string, any>;
         }
         ```
 
@@ -239,6 +239,8 @@ createPlan();
     });
     ```
 
+---
+
 #### `getAll`
 
 **Description**: Fetches all plans from the specified gateway.
@@ -248,7 +250,7 @@ createPlan();
     ```typescript
     {
         provider: GatewayProvider; // Gateway type
-        payload: QueryRazorpayPlanDto | QueryStripePlanDto; // DTO for querying plans
+        payload?: QueryRazorpayPlanDto | QueryStripePlanDto; // DTO for querying plans
     }
     ```
 
@@ -295,6 +297,429 @@ createPlan();
         }
         ```
         [Razorpay Documentation - Fetch Plans](https://razorpay.com/docs/api/payments/plans/fetch-plans/)
+
+- **Example**:
+
+    ````typescript
+    const stripePlans = await unify.plans.getAll({
+    provider: GatewayProvider.Stripe,
+    payload: { ... },
+    });
+
+              const razorpayPlans = await unify.plans.getAll({
+                  provider: GatewayProvider.Razorpay,
+                  payload: { ... },
+              });
+              ```
+    ````
+
+---
+
+#### `get`
+
+**Description**: Fetches a plan by ID from the specified gateway.
+
+- **Parameters**:
+
+    ```typescript
+    {
+        provider: GatewayProvider; // Gateway type
+        payload: QueryRazorpayOnePlanDto | QueryStripeOnePlanDto; // DTO for querying a single plan
+    }
+    ```
+
+    - **Stripe**:
+
+        ```typescript
+        {
+            planId: string;
+            stripeExtraParams?: Record<string, any>;
+            stripeExtraOptions?: Record<string, any>;
+        }
+        ```
+
+        **Stripe Extra Params**:
+
+        - [Stripe Params Documentation - Retrieve Price](https://stripe.com/docs/api/prices/retrieve)
+
+    - **Razorpay**:
+
+        ```typescript
+        {
+            planId: string;
+        }
+        ```
+
+- **Returns**:
+
+    - Stripe: `Stripe.Price`
+
+        [Stripe Documentation - Retrieve Price](https://stripe.com/docs/api/prices/retrieve)
+
+    - Razorpay: `Plans.RazorPayPlans`
+      [Razorpay Documentation - Fetch Plan](https://razorpay.com/docs/api/payments/plans/fetch-a-plan)
+
+- **Example**:
+
+    ```typescript
+    const stripePlan = await unify.plans.get({
+        provider: GatewayProvider.Stripe,
+        payload: { ... },
+    });
+
+    const razorpayPlan = await unify.plans.get({
+        provider: GatewayProvider.Razorpay,
+        payload: { ... },
+    });
+    ```
+
+---
+
+#### `update`
+
+**Desclaimer**: This method is only available for Stripe.
+
+**Description**: Updates a plan by ID.
+
+- **Parameters**:
+
+    ```typescript
+    {
+        planId: string;
+        active?: boolean;
+        metadata?: Record<string, any>;
+        nickname?: string;
+        stripeExtraParams?: Record<string, any>;
+        stripeExtraOptions?: Record<string, any>;
+    }
+    ```
+
+    **Stripe Billing Frequency**:
+
+    - `day`
+    - `week`
+    - `month`
+    - `year`
+
+    **Stripe Extra Params**:
+
+    - [Stripe Params Documentation - Update Price](https://stripe.com/docs/api/prices/update)
+
+- **Returns**:
+
+    - Stripe: `Stripe.Price`
+
+        [Stripe Documentation - Update Price](https://stripe.com/docs/api/prices/update)
+
+- **Example**:
+    ```typescript
+    const stripePlan = await unify.stripe.updateStripePlan({
+        planId: '<stripe-plan-id>',
+        // Add more Stripe parameters here
+    });
+    ```
+
+---
+
+### Orders API
+
+#### `create`
+
+**Description**: Creates a new order in the specified gateway.
+
+- **Parameters**:
+
+    ```typescript
+    {
+        provider: GatewayProvider; // Gateway type
+        payload: CreateRazorPayOrderDto | CreateStripeOrderDto; // DTO for each provider
+    }
+    ```
+
+    - **Stripe**:
+
+        ```typescript
+        {
+            amount: number; // pass the amount in paise, e.g., 29900 for 299
+            currency: Currency; // ISO currency code
+            customerEmail?: string;
+            metadata?: Record<string, any>;
+            name?: string;
+            quantity?: number;
+            uiMode?: 'embedded' | 'hosted'; // Default: 'embedded'
+            successUrl?: string; // required for hosted mode
+            cancelUrl?: string; // required for hosted mode
+            returnUrl?: string; // required for embedded mode
+            stripeExtraParams?: Record<string, any>;
+            stripeExtraOptions?: Record<string, any>;
+        }
+        ```
+
+        **Stripe Extra Params**:
+
+        - [Stripe Params Documentation - Create Order](https://stripe.com/docs/api/orders/create)
+
+    - **Razorpay**:
+
+        ```typescript
+        {
+            amount: number;
+            // ISO currency code
+            currency: Currency;
+            // can have max 40 characters
+            receipt?: string;
+            notes?: Record<string, any>;
+            partialPayment?: boolean;
+            first_payment_min_amount?: number;
+            businessName?: string;
+            description?: string;
+            imageUrl?: string;
+            callBackUrl?: string;
+            customerInfo?: {
+                name?: string;
+                email?: string;
+                contact?: string;
+            };
+            theme?: {
+                color?: string;
+            };
+        }
+        ```
+
+- **Returns**:
+
+    - Stripe: `Stripe.Order`
+
+        [Stripe Documentation - Create Order](https://docs.stripe.com/api/checkout/sessions/create)
+
+    - Razorpay: `Orders.RazorPayOrder`
+
+        [Razorpay Documentation - Create Order](https://razorpay.com/docs/api/orders/create/)
+
+    **Note**: The return type may vary based on the gateway provider.
+
+- **Example**:
+
+    ```typescript
+    const stripeOrder = await unify.orders.create({
+        provider: GatewayProvider.Stripe,
+        payload: { ... },
+    });
+
+    const razorpayOrder = await unify.orders.create({
+        provider: GatewayProvider.Razorpay,
+        payload: { ... },
+    });
+    ```
+
+---
+
+#### `getAll`
+
+**Description**: Fetches all orders from the specified gateway.
+
+- **Parameters**:
+
+    ```typescript
+    {
+        provider: GatewayProvider; // Gateway type
+        payload?: QueryRazorpayOrderDto | QueryStripeOrderDto; // DTO for querying orders
+    }
+    ```
+
+    - **Stripe**:
+
+        ```typescript
+        {
+            limit?: number; // Maximum number of order to fetch
+            lastRecordId?: string; // ID of the last order fetched
+            customerId?: string; // Filter order by customer ID
+            orderFromTime?: Date;
+            orderUntilTime?: Date;
+            stripeExtraParams?: Partial<Stripe.Checkout.SessionListParams>;
+            stripeExtraOptions?: Stripe.RequestOptions;
+        }
+        ```
+
+        **Stripe Extra Params**:
+
+        - [Stripe Params Documentation - List Orders](https://docs.stripe.com/api/checkout/sessions/list)
+
+    - **Razorpay**:
+
+        ```typescript
+        {
+            authorized?: AuthorizedStatus;
+            receipt?: string;
+            orderFromTime?: Date | string;
+            orderUntilTime?: Date | string;
+            ordersToFetch?: number;
+            skipOrders?: number;
+        }
+        ```
+
+        **Razorpay Authorized Status**:
+        ```typescript
+        {
+            AUTHORIZED_PAYMENT = 0,
+            UNAUTHORIZED_PAYMENT = 1,
+        }
+        ```
+
+- **Returns**:
+
+    - Stripe: `Stripe.ApiList<Stripe.Order>`
+
+        [Stripe Documentation - List Orders](https://stripe.com/docs/api/orders/list)
+
+    - Razorpay:
+        ```typescript
+        {
+            entity: string;
+            count: string;
+            items: Array<Orders.RazorPayOrder>;
+        }
+        ```
+        [Razorpay Documentation - Fetch Orders](https://razorpay.com/docs/api/orders/fetch-all)
+
+- **Example**:
+
+    ```typescript
+    const stripeOrders = await unify.orders.getAll({
+        provider: GatewayProvider.Stripe,
+        payload: { ... },
+    });
+
+    const razorpayOrders = await unify.orders.getAll({
+        provider: GatewayProvider.Razorpay,
+        payload: { ... },
+    });
+    ```
+
+---
+
+#### `get`
+
+**Description**: Fetches an order by ID from the specified gateway.
+
+- **Parameters**:
+
+    ```typescript
+    {
+        provider: GatewayProvider; // Gateway type
+        payload: QueryRazorpayOneOrderDto | QueryStripeOneOrderDto; // DTO for querying a single order
+    }
+    ```
+
+    - **Stripe**:
+
+        ```typescript
+        {
+            orderId: string;
+            stripeExtraOptions?: Record<string, any>;
+        }
+        ```
+
+    - **Razorpay**:
+
+        ```typescript
+        {
+            orderId: string;
+        }
+        ```
+
+- **Returns**:
+
+    - Stripe: `Stripe.Order`
+
+        [Stripe Documentation - Retrieve Order](https://stripe.com/docs/api/checkout/sessions/retrieve)
+
+    - Razorpay: `Orders.RazorPayOrder`
+
+        [Razorpay Documentation - Fetch Order](https://razorpay.com/docs/api/orders/fetch-with-id)
+
+- **Example**:
+
+    ```typescript
+    const stripeOrder = await unify.orders.get({
+        provider: GatewayProvider.Stripe,
+        payload: {
+            orderId: '<stripe-order-id>',
+        },
+    });
+
+    const razorpayOrder = await unify.orders.get({
+        provider: GatewayProvider.Razorpay,
+        payload: {
+            orderId: '<razorpay-order-id>',
+        },
+    });
+    ```
+
+---
+
+#### `update`
+
+**Description**: Updates an order by ID.
+
+- **Parameters**:
+
+    ```typescript
+    {
+        provider: GatewayProvider; // Gateway type
+        payload: UpdateRazorPayOrderDto | UpdateStripeOrderDto; // DTO for each provider
+    }
+    ```
+
+    - **Stripe**:
+
+        ```typescript
+        {
+            orderId: string;
+            metadata?: Record<string, any>;
+            stripeExtraParams?: Record<string, any>;
+            stripeExtraOptions?: Record<string, any>;
+        }
+        ```
+
+        **Stripe Extra Params**:
+
+        - [Stripe Params Documentation - Update Order](https://stripe.com/docs/api/checkout/sessions/update)
+
+    - **Razorpay**:
+
+        ```typescript
+        {
+            orderId: string;
+            notes: Record<string, any>;
+        }
+        ```
+
+- **Returns**:
+
+    - Stripe: `Stripe.Order`
+
+        [Stripe Documentation - Update Order](https://stripe.com/docs/api/checkout/sessions/update)
+
+    - Razorpay: `Orders.RazorPayOrder`
+
+        [Razorpay Documentation - Update Order](https://razorpay.com/docs/api/orders/update/)
+
+    **Note**: The return type may vary based on the gateway provider.
+
+- **Example**:
+
+    ```typescript
+    const stripeOrder = await unify.orders.update({
+        provider: GatewayProvider.Stripe,
+        payload: { ... },
+    });
+
+    const razorpayOrder = await unify.orders.update({
+        provider: GatewayProvider.Razorpay,
+        payload: { ... },
+    });
+    ```
 
 ---
 

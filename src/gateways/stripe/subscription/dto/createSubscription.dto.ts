@@ -8,7 +8,7 @@ export class CreateStripeSubscriptionDto {
     description?: string;
     offerId?: string;
     planQuantity?: number;
-    metadata?: any;
+    metadata?: Record<string, any>;
     stripeExtraParams?: Partial<Stripe.SubscriptionCreateParams>;
     stripeExtraOptions?: Stripe.RequestOptions;
 }

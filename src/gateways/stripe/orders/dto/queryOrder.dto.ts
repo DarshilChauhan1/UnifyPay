@@ -12,6 +12,5 @@ export interface QueryStripeOrderDto {
 
 export interface QueryStripeOneOrderDto {
     orderId: string;
-    stripeExtraParams?: Partial<Stripe.Checkout.SessionListParams>;
     stripeExtraOptions?: Stripe.RequestOptions;
 }

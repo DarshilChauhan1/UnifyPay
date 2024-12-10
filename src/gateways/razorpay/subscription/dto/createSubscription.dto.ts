@@ -9,7 +9,7 @@ export interface CreateRazorpaySubscriptionDto {
     notifyCustomer?: boolean;
     upfrontAddonsList?: UpFrontAmountDto[];
     offerId?: string;
-    notes?: any;
+    notes?: Record<string, any>;
 }
 
 export interface UpFrontAmountDto {
