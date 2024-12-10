@@ -69,7 +69,7 @@ export class StripeOrders {
         }
     }
 
-    async getAllOrders(payload: QueryStripeOrderDto): Promise<Stripe.ApiList<Stripe.Checkout.Session>> {
+    async getAllOrders(payload?: QueryStripeOrderDto): Promise<Stripe.ApiList<Stripe.Checkout.Session>> {
         try {
             const {
                 limit,

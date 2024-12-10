@@ -48,7 +48,7 @@ export interface MergerGateways {
         | Stripe.Checkout.Session
     >;
 
-    getAllOrders(payload: QueryRazorpayOrderDto | QueryStripeOrderDto): Promise<
+    getAllOrders(payload?: QueryRazorpayOrderDto | QueryStripeOrderDto): Promise<
         | {
               entity: string;
               count: number;
@@ -68,7 +68,7 @@ export interface MergerGateways {
     // Plans
     createPlan(payload: CreateRazorpayPlanDto | CreateStripePlanDto): Promise<Plans.RazorPayPlans | Stripe.Price>;
 
-    getAllPlans(payload: QueryRazorpayPlanDto | QueryStripePlanDto): Promise<
+    getAllPlans(payload?: QueryRazorpayPlanDto | QueryStripePlanDto): Promise<
         | {
               entity: string;
               count: string;
@@ -84,7 +84,7 @@ export interface MergerGateways {
         payload: CreateRazorpaySubscriptionDto | CreateStripeSubscriptionDto,
     ): Promise<Subscriptions.RazorpaySubscription | Stripe.Subscription>;
 
-    getAllSubscriptions(payload: QueryRazorpaySubscriptionDto | QueryStripeSubscriptionDto): Promise<
+    getAllSubscriptions(payload?: QueryRazorpaySubscriptionDto | QueryStripeSubscriptionDto): Promise<
         | {
               entity: string;
               count: number;
@@ -98,7 +98,6 @@ export interface MergerGateways {
     ): Promise<Subscriptions.RazorpaySubscription | Stripe.Subscription>;
 
     updateSubscription(
-        subscriptionId: string,
         payload: UpdateRazorpaySubscriptionDto | UpdateStripeSubscriptionDto,
     ): Promise<Subscriptions.RazorpaySubscription | Stripe.Subscription>;
 

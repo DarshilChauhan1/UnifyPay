@@ -1,8 +1,8 @@
 import Razorpay from 'razorpay';
+import { Plans } from 'razorpay/dist/types/plans';
 import { convertDateToUnix } from '../../../common/helpers/convertDateToUnix';
 import { CreateRazorpayPlanDto } from './dto/createPlan.dto';
 import { QueryRazorpayOnePlanDto, QueryRazorpayPlanDto } from './dto/queryPlan.dto';
-import { Plans } from 'razorpay/dist/types/plans';
 export class RazorpayPlan {
     private razorPay: Razorpay;
     constructor(razorPayInstance: Razorpay) {
@@ -31,7 +31,7 @@ export class RazorpayPlan {
         }
     }
 
-    async getAllPlans(payload: QueryRazorpayPlanDto): Promise<{
+    async getAllPlans(payload?: QueryRazorpayPlanDto): Promise<{
         entity: string;
         count: string;
         items: Array<Plans.RazorPayPlans>;

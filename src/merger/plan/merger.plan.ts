@@ -28,7 +28,7 @@ export class MergerPlan {
 
     async getAll<K extends keyof MergerGetAllPlans>(payload: {
         provider: K;
-        payload: MergerGetAllPlans[K]['payload'];
+        payload?: MergerGetAllPlans[K]['payload'];
     }): Promise<MergerGetAllPlans[K]['returnType']> {
         try {
             const { provider } = payload;

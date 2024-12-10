@@ -50,7 +50,7 @@ export class RazorpayProvider implements MergerGateways, RazorpaySpecificMethods
         return this.razorPayOrder.createOrder(payload);
     }
 
-    async getAllOrders(payload: QueryRazorpayOrderDto) {
+    async getAllOrders(payload?: QueryRazorpayOrderDto) {
         return this.razorPayOrder.getAllOrders(payload);
     }
 
@@ -67,7 +67,7 @@ export class RazorpayProvider implements MergerGateways, RazorpaySpecificMethods
         return this.razorPayPlans.createPlan(payload);
     }
 
-    async getAllPlans(payload: QueryRazorpayPlanDto) {
+    async getAllPlans(payload?: QueryRazorpayPlanDto) {
         return this.razorPayPlans.getAllPlans(payload);
     }
 
@@ -80,7 +80,7 @@ export class RazorpayProvider implements MergerGateways, RazorpaySpecificMethods
         return this.razorPaySubscription.createRazorPaySubscription(payload);
     }
 
-    async getAllSubscriptions(payload: QueryRazorpaySubscriptionDto) {
+    async getAllSubscriptions(payload?: QueryRazorpaySubscriptionDto) {
         return this.razorPaySubscription.getAllSubscriptions(payload);
     }
 
@@ -88,8 +88,8 @@ export class RazorpayProvider implements MergerGateways, RazorpaySpecificMethods
         return this.razorPaySubscription.getSubscriptionById(payload);
     }
 
-    async updateSubscription(subscriptionId: string, payload: UpdateRazorpaySubscriptionDto) {
-        return this.razorPaySubscription.updateSubscription(subscriptionId, payload);
+    async updateSubscription(payload: UpdateRazorpaySubscriptionDto) {
+        return this.razorPaySubscription.updateSubscription(payload);
     }
 
     async cancelSubscription(payload: CancelRazorpaySubscriptionDto) {

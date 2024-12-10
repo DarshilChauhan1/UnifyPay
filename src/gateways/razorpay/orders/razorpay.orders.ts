@@ -40,7 +40,7 @@ export class RazorPayOrders {
         }
     }
 
-    async getAllOrders(payload: QueryRazorpayOrderDto): Promise<{
+    async getAllOrders(payload?: QueryRazorpayOrderDto): Promise<{
         entity: string;
         count: number;
         items: Array<Orders.RazorpayOrder>;

@@ -55,7 +55,7 @@ class StripeSubscription {
         }
     }
 
-    async getAllSubscriptions(payload: QueryStripeSubscriptionDto): Promise<Stripe.ApiList<Stripe.Subscription>> {
+    async getAllSubscriptions(payload?: QueryStripeSubscriptionDto): Promise<Stripe.ApiList<Stripe.Subscription>> {
         try {
             const {
                 priceId,
@@ -112,14 +112,12 @@ class StripeSubscription {
         }
     }
 
-    async updateSubscription(
-        subscriptionId: string,
-        payload: UpdateStripeSubscriptionDto,
-    ): Promise<Stripe.Subscription> {
+    async updateSubscription(payload: UpdateStripeSubscriptionDto): Promise<Stripe.Subscription> {
         try {
-            const { metadata, offerId, planQuantity, priceId, stripeExtraOptions, stripeExtraParams } = payload;
+            const { subscriptionId, metadata, offerId, planQuantity, priceId, stripeExtraOptions, stripeExtraParams } =
+                payload;
             return await this.stripe.subscriptions.update(
-                priceId,
+                subscriptionId,
                 {
                     metadata,
                     items: [{ id: priceId, quantity: planQuantity }],

@@ -46,7 +46,7 @@ export class StripeProvider implements MergerGateways, StripeSpecificMethods {
         return this.stripeOrders.createStripeOrder(payload);
     }
 
-    async getAllOrders(payload: QueryStripeOrderDto) {
+    async getAllOrders(payload?: QueryStripeOrderDto) {
         return this.stripeOrders.getAllOrders(payload);
     }
 
@@ -63,7 +63,7 @@ export class StripeProvider implements MergerGateways, StripeSpecificMethods {
         return this.stipePlans.createPlan(payload);
     }
 
-    async getAllPlans(payload: QueryStripePlanDto) {
+    async getAllPlans(payload?: QueryStripePlanDto) {
         return this.stipePlans.getAllPlans(payload);
     }
 
@@ -76,7 +76,7 @@ export class StripeProvider implements MergerGateways, StripeSpecificMethods {
         return this.stripeSubscription.createSubscription(payload);
     }
 
-    async getAllSubscriptions(payload: QueryStripeSubscriptionDto) {
+    async getAllSubscriptions(payload?: QueryStripeSubscriptionDto) {
         return this.stripeSubscription.getAllSubscriptions(payload);
     }
 
@@ -84,8 +84,8 @@ export class StripeProvider implements MergerGateways, StripeSpecificMethods {
         return this.stripeSubscription.getSubscriptionById(payload);
     }
 
-    async updateSubscription(subscriptionId: string, payload: UpdateStripeSubscriptionDto) {
-        return this.stripeSubscription.updateSubscription(subscriptionId, payload);
+    async updateSubscription(payload: UpdateStripeSubscriptionDto) {
+        return this.stripeSubscription.updateSubscription(payload);
     }
 
     async cancelSubscription(payload: CancelStripeSubscriptionDto) {
@@ -105,7 +105,7 @@ export class StripeProvider implements MergerGateways, StripeSpecificMethods {
     }
 
     /* Stripe Specific methods */
-    async updateStripePlan(planId: string, payload: UpdateStripePlanDto) {
-        return this.stipePlans.updatePlan(planId, payload);
+    async updateStripePlan(payload: UpdateStripePlanDto) {
+        return this.stipePlans.updatePlan(payload);
     }
 }

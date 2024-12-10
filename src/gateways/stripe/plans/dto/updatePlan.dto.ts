@@ -1,6 +1,7 @@
 import Stripe from 'stripe';
 
 export interface UpdateStripePlanDto {
+    planId: string;
     active: boolean;
     metadata: any;
     nickname: string;

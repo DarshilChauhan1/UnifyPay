@@ -1,6 +1,7 @@
 import Stripe from 'stripe';
 
 export interface UpdateStripeSubscriptionDto {
+    subscriptionId: string;
     metadata?: any;
     planQuantity?: number;
     priceId?: string;

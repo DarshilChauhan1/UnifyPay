@@ -30,7 +30,7 @@ export class MergerOrders {
 
     async getAll<K extends keyof MergerGetAllOrders>(payload: {
         provider: K;
-        payload: MergerGetAllOrders[K]['payload'];
+        payload?: MergerGetAllOrders[K]['payload'];
     }): Promise<MergerGetAllOrders[K]['returnType']> {
         try {
             const { provider } = payload;

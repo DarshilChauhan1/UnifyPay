@@ -35,7 +35,7 @@ export class MergerSubscription {
 
     async getAll<K extends keyof MergerGetAllSubscription>(payload: {
         provider: K;
-        payload: MergerGetAllSubscription[K]['payload'];
+        payload?: MergerGetAllSubscription[K]['payload'];
     }): Promise<MergerGetAllSubscription[K]['returnType']> {
         try {
             const { provider } = payload;
@@ -73,7 +73,6 @@ export class MergerSubscription {
 
     async update<K extends keyof MergerUpdateSubscription>(payload: {
         provider: K;
-        subscriptionId: string;
         payload: MergerUpdateSubscription[K]['payload'];
     }): Promise<MergerUpdateSubscription[K]['returnType']> {
         try {
@@ -84,7 +83,7 @@ export class MergerSubscription {
                 throw new Error(`Provider ${provider} is not initialized.`);
             }
 
-            return providerInstance.updateSubscription(payload.subscriptionId, payload.payload);
+            return providerInstance.updateSubscription(payload.payload);
         } catch (error) {
             console.error('Error updating subscription:', error);
             throw error; // Re-throw the error after logging it

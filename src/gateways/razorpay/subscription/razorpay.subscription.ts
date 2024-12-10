@@ -1,4 +1,5 @@
 import Razorpay from 'razorpay';
+import { Subscriptions } from 'razorpay/dist/types/subscriptions';
 import { convertDateToUnix } from '../../../common/helpers/convertDateToUnix';
 import { CreateRazorpaySubscriptionDto } from './dto/createSubscription.dto';
 import { QueryRazorpayOneSubscriptionDto, QueryRazorpaySubscriptionDto } from './dto/querySubscription.dto';
@@ -9,7 +10,6 @@ import {
     ResumeRazorpaySubscriptionDto,
     UpdateRazorpaySubscriptionDto,
 } from './dto/updateSubscription.dto';
-import { Subscriptions } from 'razorpay/dist/types/subscriptions';
 export class RazorPaySubscription {
     private razorpay: Razorpay;
     constructor(razorPayInstance: Razorpay) {
@@ -65,7 +65,7 @@ export class RazorPaySubscription {
         }
     }
 
-    async getAllSubscriptions(payload: QueryRazorpaySubscriptionDto): Promise<{
+    async getAllSubscriptions(payload?: QueryRazorpaySubscriptionDto): Promise<{
         entity: string;
         count: number;
         items: Array<Subscriptions.RazorpaySubscription>;
@@ -95,12 +95,10 @@ export class RazorPaySubscription {
         }
     }
 
-    async updateSubscription(
-        subscriptionId: string,
-        payload: UpdateRazorpaySubscriptionDto,
-    ): Promise<Subscriptions.RazorpaySubscription> {
+    async updateSubscription(payload: UpdateRazorpaySubscriptionDto): Promise<Subscriptions.RazorpaySubscription> {
         try {
             const {
+                subscriptionId,
                 planId,
                 offerId,
                 planQuantity,

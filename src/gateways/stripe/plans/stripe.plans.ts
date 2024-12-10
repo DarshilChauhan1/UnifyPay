@@ -46,9 +46,9 @@ class StripePlans {
         }
     }
 
-    async updatePlan(planId: string, updatePlanDto: UpdateStripePlanDto): Promise<Stripe.Price> {
+    async updatePlan(updatePlanDto: UpdateStripePlanDto): Promise<Stripe.Price> {
         try {
-            const { stripeExtraOptions, stripeExtraParams, ...restPlanDto } = updatePlanDto;
+            const { planId, stripeExtraOptions, stripeExtraParams, ...restPlanDto } = updatePlanDto;
             const plan = await this.stripe.prices.update(
                 planId,
                 {
@@ -64,7 +64,7 @@ class StripePlans {
         }
     }
 
-    async getAllPlans(queryPlanDto: QueryStripePlanDto): Promise<Stripe.ApiList<Stripe.Price>> {
+    async getAllPlans(queryPlanDto?: QueryStripePlanDto): Promise<Stripe.ApiList<Stripe.Price>> {
         try {
             const {
                 active,
