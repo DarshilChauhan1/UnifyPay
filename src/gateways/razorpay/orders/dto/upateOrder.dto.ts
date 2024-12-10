@@ -1,4 +1,4 @@
 export interface UpdateRazorpayOrderDto {
     orderId: string;
-    notes: any;
+    notes: Record<string, string>;
 }

@@ -46,20 +46,25 @@ export class RazorPayOrders {
         items: Array<Orders.RazorpayOrder>;
     }> {
         try {
-            const { orderFromTime, orderUntilTime, authorized, ordersToFetch, receipt, skipOrders } = payload;
-            const formattedDates = convertDateToUnix({
-                orderFromTime: moment(orderFromTime).toDate(),
-                orderUntilTime: moment(orderUntilTime).add(1, 'days').toDate(),
-            });
+            let formattedDates: Record<string, number> = {};
+
+            if (payload?.ordersFromDate || payload?.ordersTillDate) {
+                formattedDates = convertDateToUnix({
+                    ordersFromDate: payload?.ordersFromDate,
+                    ordersTillDate: payload?.ordersTillDate
+                        ? moment(payload.ordersTillDate).add(1, 'days').toDate()
+                        : undefined,
+                });
+            }
 
             const queryData = {
-                receipt,
-                authorized,
-                count: ordersToFetch,
-                from: formattedDates.orderFromTime,
-                to: formattedDates.orderUntilTime,
-                skip: skipOrders,
+                ...(payload?.receipt && { receipt: payload.receipt }),
+                ...(payload?.ordersToFetch && { count: payload.ordersToFetch }),
+                ...(payload?.skipOrders && { skip: payload.skipOrders }),
+                ...(formattedDates['ordersFromDate'] && { from: formattedDates['ordersFromDate'] }),
+                ...(formattedDates['ordersTillDate'] && { to: formattedDates['ordersTillDate'] }),
             };
+
             const orders = await this.razorpay.orders.all(queryData);
             return orders;
         } catch (error) {

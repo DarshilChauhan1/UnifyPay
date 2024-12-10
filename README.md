@@ -133,8 +133,6 @@ async function createPlan() {
             },
         });
 
-        console.log('Stripe Plan:', stripePlan);
-        console.log('Razorpay Plan:', razorpayPlan);
     } catch (error) {
         console.error('Error creating plans:', error);
     }
@@ -200,7 +198,7 @@ createPlan();
             planAmount: number;
             currency: Currency;
             planDescription?: string;
-            notes?: any;
+            notes?: Record<string, string>;
         }
         ```
 
@@ -258,8 +256,8 @@ createPlan();
         {
             active?: boolean;
             currency?: Currency;
-            createdAfter?: Date; // Inclusive
-            createdBefore?: Date; // Inclusive
+            plansFromDate?: Date; // Inclusive
+            plansTillDate?: Date; // Inclusive
             limit?: number;
             lastRecordId?: string;
             stripeExtraParams?: Record<string, any>;
@@ -274,8 +272,8 @@ createPlan();
     - **Razorpay**:
         ```typescript
         {
-            planFromDate?: Date;
-            planToDate?: Date;
+            plansFromDate?: Date;
+            plansTillDate?: Date;
             numberOfPlansToFetch?: number;
             skipNumberOfPlans?: number;
         }

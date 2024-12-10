@@ -1,3 +1,4 @@
+import moment from 'moment';
 import Razorpay from 'razorpay';
 import { Plans } from 'razorpay/dist/types/plans';
 import { convertDateToUnix } from '../../../common/helpers/convertDateToUnix';
@@ -37,16 +38,22 @@ export class RazorpayPlan {
         items: Array<Plans.RazorPayPlans>;
     }> {
         try {
-            const { numberOfPlansToFetch, planFromDate, planToDate, skipNumberOfPlans } = payload;
             let formattedDates: object = {};
-            if (planFromDate || planToDate) {
-                formattedDates = convertDateToUnix({ from: planFromDate, to: planToDate });
+            if (payload?.plansFromDate || payload?.plansTillDate) {
+                formattedDates = convertDateToUnix({
+                    plansFromDate: payload?.plansFromDate,
+                    plansTillDate: payload?.plansTillDate
+                        ? moment(payload?.plansTillDate).add(1, 'days').toDate()
+                        : undefined,
+                });
             }
             const updatedPayload = {
-                skip: skipNumberOfPlans,
-                count: numberOfPlansToFetch,
-                ...formattedDates,
+                ...(payload?.numberOfPlansToFetch && { count: payload.numberOfPlansToFetch }),
+                ...(payload?.skipNumberOfPlans && { skip: payload.skipNumberOfPlans }),
+                ...(formattedDates['plansFromDate'] && { from: formattedDates['plansFromDate'] }),
+                ...(formattedDates['plansTillDate'] && { to: formattedDates['plansTillDate'] }),
             };
+
             const allPlans = await this.razorPay.plans.all(updatedPayload);
             return allPlans;
         } catch (error) {

@@ -1,3 +1,4 @@
+import moment from 'moment';
 import Stripe from 'stripe';
 import { convertDateToUnix } from '../../../common/helpers/convertDateToUnix';
 import { CreateStripePlanDto } from './dto/createPlan.dto';
@@ -64,62 +65,36 @@ class StripePlans {
         }
     }
 
-    async getAllPlans(queryPlanDto?: QueryStripePlanDto): Promise<Stripe.ApiList<Stripe.Price>> {
+    async getAllPlans(payload?: QueryStripePlanDto): Promise<Stripe.ApiList<Stripe.Price>> {
         try {
-            const {
-                active,
-                createdAfter,
-                createdBefore,
-                limit,
-                lastRecordId,
-                currency,
-                stripeExtraOptions,
-                stripeExtraParams,
-            } = queryPlanDto;
-            const formattedDates = convertDateToUnix({
-                createdAfter,
-                createdBefore,
-            });
-            if (limit && (limit < 1 || limit > 100)) {
+            let formattedDates: Record<string, number> = {};
+            if (payload?.plansFromDate || payload?.plansTillDate) {
+                formattedDates = convertDateToUnix({
+                    plansFromDate: payload?.plansFromDate,
+                    plansTillDate: payload?.plansTillDate
+                        ? moment(payload.plansTillDate).add(1, 'days').toDate()
+                        : undefined,
+                });
+            }
+            if (payload?.limit && (payload?.limit < 1 || payload?.limit > 100)) {
                 throw new Error('Limit must be between 1 and 100');
             }
 
-            const query = {};
-            const range = {};
-            if (active !== undefined) {
-                query['active'] = active;
-            }
-
-            if (formattedDates.createdAfter) {
-                range['gte'] = formattedDates.createdAfter;
-            }
-
-            if (formattedDates.createdBefore) {
-                range['lte'] = formattedDates.createdBefore;
-            }
-
-            if (currency) {
-                query['currency'] = currency;
-            }
-
-            if (limit) {
-                query['limit'] = limit;
-            }
-
-            if (lastRecordId) {
-                query['starting_after'] = lastRecordId;
-            }
-
-            if (Object.keys(range).length > 0) {
-                query['created'] = range;
-            }
+            const query = {
+                ...(payload?.limit && { limit: payload.limit }),
+                ...(payload?.lastRecordId && { starting_after: payload.lastRecordId }),
+                ...(payload?.active && { active: payload.active }),
+                ...(formattedDates['plansFromDate'] && { created: { gte: formattedDates['plansFromDate'] } }),
+                ...(formattedDates['plansTillDate'] && { created: { lte: formattedDates['plansTillDate'] } }),
+                ...(payload?.currency && { currency: payload.currency }),
+                ...(payload?.stripeExtraParams && { ...payload.stripeExtraParams }),
+            };
 
             return this.stripe.prices.list(
                 {
                     ...query,
-                    ...stripeExtraParams,
                 },
-                stripeExtraOptions,
+                payload?.stripeExtraOptions,
             );
         } catch (error) {
             console.error(error);

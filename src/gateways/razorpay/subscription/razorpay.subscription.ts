@@ -1,3 +1,4 @@
+import moment from 'moment';
 import Razorpay from 'razorpay';
 import { Subscriptions } from 'razorpay/dist/types/subscriptions';
 import { convertDateToUnix } from '../../../common/helpers/convertDateToUnix';
@@ -71,14 +72,25 @@ export class RazorPaySubscription {
         items: Array<Subscriptions.RazorpaySubscription>;
     }> {
         try {
-            const { planId, skipSubscription, subscriptionTo, subscritptionFrom, totalSubscription } = payload;
-            const formatDates = convertDateToUnix({ from: subscritptionFrom, to: subscriptionTo });
+            let formattedDates: Record<string, number> = {};
+
+            if (payload?.subscritptionsFromDate || payload?.subscriptionTillDate) {
+                formattedDates = convertDateToUnix({
+                    subscritptionsFromDate: payload?.subscritptionsFromDate,
+                    subscriptionTillDate: payload?.subscriptionTillDate
+                        ? moment(payload?.subscriptionTillDate).add(1, 'days').toDate()
+                        : undefined,
+                });
+            }
+
             const query = {
-                plan_id: planId,
-                skip: skipSubscription,
-                to: totalSubscription,
-                ...formatDates,
+                ...(payload?.totalSubscription && { count: payload.totalSubscription }),
+                ...(payload?.skipSubscription && { skip: payload.skipSubscription }),
+                ...(payload?.planId && { plan_id: payload.planId }),
+                ...(formattedDates['subscritptionsFromDate'] && { from: formattedDates['subscritptionsFromDate'] }),
+                ...(formattedDates['subscriptionTillDate'] && { to: formattedDates['subscriptionTillDate'] }),
             };
+
             const response = await this.razorpay.subscriptions.all(query);
             return response;
         } catch (error) {

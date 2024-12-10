@@ -8,5 +8,5 @@ export interface CreateRazorpayPlanDto {
     planAmount: number;
     currency: Currency;
     planDescription?: string;
-    notes?: any;
+    notes?: Record<string, string>;
 }

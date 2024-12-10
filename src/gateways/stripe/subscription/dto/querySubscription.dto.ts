@@ -2,8 +2,8 @@ import Stripe from 'stripe';
 
 export interface QueryStripeSubscriptionDto {
     priceId?: string;
-    subscritptionFrom?: Date;
-    subscriptionTo?: Date;
+    subscritptionsFromDate?: Date | string;
+    subscriptionsTillDate?: Date | string;
     limit?: number;
     lastRecordId?: string;
     stripeExtraParams?: Partial<Stripe.SubscriptionListParams>;
