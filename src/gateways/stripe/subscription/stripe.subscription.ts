@@ -1,3 +1,4 @@
+import moment from 'moment';
 import Stripe from 'stripe';
 import { convertDateToUnix } from '../../../common/helpers/convertDateToUnix';
 import StripeCustomer from '../customer/stripe.customer';
@@ -57,36 +58,33 @@ class StripeSubscription {
 
     async getAllSubscriptions(payload?: QueryStripeSubscriptionDto): Promise<Stripe.ApiList<Stripe.Subscription>> {
         try {
-            const {
-                priceId,
-                limit,
-                lastRecordId,
-                subscriptionTo,
-                subscritptionFrom,
-                stripeExtraOptions,
-                stripeExtraParams,
-            } = payload;
-            const formatDates = convertDateToUnix({ from: subscritptionFrom, to: subscriptionTo });
-            const query = {};
-            if (priceId) {
-                query['price'] = priceId;
+            let formattedDates: Record<string, number> = {};
+            if (payload?.subscritptionsFromDate || payload?.subscriptionsTillDate) {
+                formattedDates = convertDateToUnix({
+                    subscritptionsFromDate: payload?.subscritptionsFromDate,
+                    subscriptionsTillDate: payload?.subscriptionsTillDate
+                        ? moment(payload.subscriptionsTillDate).add(1, 'days').toDate()
+                        : undefined,
+                });
             }
-
-            if (limit) {
-                query['limit'] = limit;
-            }
-
-            if (lastRecordId) {
-                query['starting_after'] = lastRecordId;
-            }
+            const query = {
+                ...(payload?.limit && { limit: payload.limit }),
+                ...(payload?.lastRecordId && { starting_after: payload.lastRecordId }),
+                ...(payload?.priceId && { price: payload.priceId }),
+                ...(formattedDates['subscritptionsFromDate'] && {
+                    created: { gte: formattedDates['subscritptionsFromDate'] },
+                }),
+                ...(formattedDates['subscriptionsTillDate'] && {
+                    created: { lte: formattedDates['subscriptionsTillDate'] },
+                }),
+                ...(payload?.stripeExtraParams && { ...payload.stripeExtraParams }),
+            };
 
             const subscriptions = await this.stripe.subscriptions.list(
                 {
                     ...query,
-                    ...formatDates,
-                    ...stripeExtraParams,
                 },
-                stripeExtraOptions,
+                payload?.stripeExtraOptions,
             );
 
             return subscriptions;

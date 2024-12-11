@@ -4,8 +4,8 @@ import { Currency } from '../../../../common/types/currency.types';
 export interface QueryStripePlanDto {
     active?: boolean;
     currency?: Currency;
-    createdAfter?: Date; // Inclusive
-    createdBefore?: Date; // Inclusive
+    plansFromDate?: Date | string; // Inclusive
+    plansTillDate?: Date | string; // Inclusive
     limit?: number;
     lastRecordId?: string;
     stripeExtraParams?: Partial<Stripe.PriceListParams>;

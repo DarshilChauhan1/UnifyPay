@@ -14,7 +14,6 @@ export class MergerOrders {
     }): Promise<MergeCreateOrder[K]['returnType']> {
         try {
             const { provider } = payload;
-            console.log('payload', payload);
             const providerInstance = this.getProvider(provider);
 
             if (!providerInstance) {
@@ -23,7 +22,6 @@ export class MergerOrders {
 
             return providerInstance.createOrder(payload.payload) as Promise<MergeCreateOrder[K]['returnType']>;
         } catch (error) {
-            console.log(error);
             throw error;
         }
     }

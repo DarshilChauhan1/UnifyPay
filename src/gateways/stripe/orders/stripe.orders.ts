@@ -1,3 +1,4 @@
+import moment from 'moment';
 import Stripe from 'stripe';
 import { convertDateToUnix } from '../../../common/helpers/convertDateToUnix';
 import { CreateStripeOrderDto } from './dto/createOrder.dto';
@@ -48,6 +49,7 @@ export class StripeOrders {
                         quantity,
                     },
                 ],
+                ui_mode: uiMode,
                 mode: 'payment',
                 customer_email: customerEmail,
                 metadata,
@@ -71,41 +73,30 @@ export class StripeOrders {
 
     async getAllOrders(payload?: QueryStripeOrderDto): Promise<Stripe.ApiList<Stripe.Checkout.Session>> {
         try {
-            const {
-                limit,
-                customerId,
-                lastRecordId,
-                orderFromTime,
-                orderUntilTime,
-                stripeExtraOptions,
-                stripeExtraParams,
-            } = payload;
-            const formattedDates = convertDateToUnix({ from: orderFromTime, to: orderUntilTime });
-            const query = {};
-            const range = {};
-            if (formattedDates.from) {
-                range['gte'] = formattedDates.from;
+            let formattedDates: Record<string, number> = {};
+            if (payload?.ordersFromDate || payload?.ordersTillDate) {
+                formattedDates = convertDateToUnix({
+                    ordersFromDate: payload?.ordersFromDate,
+                    ordersTillDate: payload?.ordersTillDate
+                        ? moment(payload.ordersTillDate).add(1, 'days').toDate()
+                        : undefined,
+                });
             }
-            if (formattedDates.to) {
-                range['lte'] = formattedDates.to;
-            }
-            if (Object.keys(range).length > 0) {
-                query['created'] = range;
-            }
-            if (limit) {
-                query['limit'] = limit;
-            }
-            if (lastRecordId) {
-                query['starting_after'] = lastRecordId;
-            }
+
+            const query = {
+                ...(payload?.limit && { limit: payload.limit }),
+                ...(payload?.lastRecordId && { starting_after: payload.lastRecordId }),
+                ...(payload?.customerId && { customer: payload.customerId }),
+                ...(formattedDates['ordersFromDate'] && { created: { gte: formattedDates['ordersFromDate'] } }),
+                ...(formattedDates['ordersTillDate'] && { created: { lte: formattedDates['ordersTillDate'] } }),
+                ...(payload?.stripeExtraParams && { ...payload.stripeExtraParams }),
+            };
 
             return await this.stripe.checkout.sessions.list(
                 {
-                    customer: customerId,
                     ...query,
-                    ...stripeExtraParams,
                 },
-                stripeExtraOptions,
+                payload?.stripeExtraOptions,
             );
         } catch (error) {
             console.error(error);
