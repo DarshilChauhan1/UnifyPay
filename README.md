@@ -237,8 +237,6 @@ createPlan();
     });
     ```
 
----
-
 #### `getAll`
 
 **Description**: Fetches all plans from the specified gateway.
@@ -298,20 +296,17 @@ createPlan();
 
 - **Example**:
 
-    ````typescript
+    ```typescript
     const stripePlans = await unify.plans.getAll({
     provider: GatewayProvider.Stripe,
     payload: { ... },
     });
 
-              const razorpayPlans = await unify.plans.getAll({
-                  provider: GatewayProvider.Razorpay,
-                  payload: { ... },
-              });
-              ```
-    ````
-
----
+    const razorpayPlans = await unify.plans.getAll({
+        provider: GatewayProvider.Razorpay,
+        payload: { ... },
+    });
+    ```
 
 #### `get`
 
@@ -371,11 +366,9 @@ createPlan();
     });
     ```
 
----
-
 #### `update`
 
-**Desclaimer**: This method is only available for Stripe.
+**Disclaimer**: This method is only available for Stripe.
 
 **Description**: Updates a plan by ID.
 
@@ -510,8 +503,6 @@ createPlan();
     });
     ```
 
----
-
 #### `getAll`
 
 **Description**: Fetches all orders from the specified gateway.
@@ -557,6 +548,7 @@ createPlan();
         ```
 
         **Razorpay Authorized Status**:
+
         ```typescript
         {
             AUTHORIZED_PAYMENT = 0,
@@ -593,8 +585,6 @@ createPlan();
         payload: { ... },
     });
     ```
-
----
 
 #### `get`
 
@@ -653,8 +643,6 @@ createPlan();
         },
     });
     ```
-
----
 
 #### `update`
 
@@ -720,6 +708,555 @@ createPlan();
     ```
 
 ---
+
+### Subscriptions API
+
+#### `create`
+
+**Description**: Creates a new subscription in the specified gateway.
+
+- **Parameters**:
+
+    ```typescript
+    {
+        provider: GatewayProvider; // Gateway type
+        payload: CreateRazorPaySubscriptionDto | CreateStripeSubscriptionDto; // DTO for each provider
+    }
+    ```
+
+    - **Stripe**:
+
+        ```typescript
+        {
+            name: string;
+            email?: string;
+            phone?: string;
+            priceId: string;
+            description?: string;
+            offerId?: string;
+            planQuantity?: number;
+            metadata?: Record<string, any>;
+            stripeExtraParams?: Record<string, any>;
+            stripeExtraOptions?: Record<string, any>;
+        }
+        ```
+
+        **Stripe Extra Params**:
+
+        - [Stripe Params Documentation - Create Subscription](https://stripe.com/docs/api/subscriptions/create)
+
+    - **Razorpay**:
+
+        ```typescript
+        {
+            planId: string;
+            totalBillingCycles: number;
+            planQuantity?: number;
+            planStartAt?: Date;
+            paymentExpiry?: Date;
+            notifyCustomer?: boolean;
+            upfrontAddonsList?: UpFrontAmountDto[];
+            offerId?: string;
+            notes?: Record<string, any>;
+        }
+        ```
+
+        **Upfront Amount DTO**:
+
+        ```typescript
+        {
+            name?: string;
+            amount?: number;
+            currency?: Currency;
+        }
+        ```
+
+- **Returns**:
+
+    - Stripe: `Stripe.Subscription`
+
+        [Stripe Documentation - Create Subscription](https://stripe.com/docs/api/subscriptions/create)
+
+    - Razorpay: `Subscriptions.RazorPaySubscription`
+
+        [Razorpay Documentation - Create Subscription](htthttps://razorpay.com/docs/api/payments/subscriptions/create-subscription/)
+
+    **Note**: The return type may vary based on the gateway provider.
+
+- **Example**:
+
+    ```typescript
+    const stripeSubscription = await unify.subscriptions.create({
+        provider: GatewayProvider.Stripe,
+        payload: { ... },
+    });
+
+    const razorpaySubscription = await unify.subscriptions.create({
+        provider: GatewayProvider.Razorpay,
+        payload: { ... },
+    });
+    ```
+
+#### `getAll`
+
+**Description**: Fetches all subscriptions from the specified gateway.
+
+- **Parameters**:
+
+    ```typescript
+    {
+        provider: GatewayProvider; // Gateway type
+        payload?: QueryRazorpaySubscriptionDto | QueryStripeSubscriptionDto; // DTO for querying subscriptions
+    }
+    ```
+
+    - **Stripe**:
+
+        ```typescript
+        {
+            priceId?: string;
+            subscritptionsFromDate?: Date | string;
+            subscriptionsTillDate?: Date | string;
+            limit?: number;
+            lastRecordId?: string;
+            stripeExtraParams?: Record<string, any>;
+            stripeExtraOptions?: Record<string, any>;
+        }
+        ```
+
+        **Stripe Extra Params**:
+
+        - [Stripe Params Documentation - List Subscriptions](https://stripe.com/docs/api/subscriptions/list)
+
+    - **Razorpay**:
+
+        ```typescript
+        {
+            planId?: string;
+            subscritptionsFromDate?: Date | string;
+            subscriptionTillDate?: Date | string;
+            totalSubscription?: number;
+            skipSubscription?: number;
+        }
+        ```
+- **Returns**:
+    
+    - Stripe: `Stripe.ApiList<Stripe.Subscription>`
+
+        [Stripe Documentation - List Subscriptions](https://stripe.com/docs/api/subscriptions/list)
+
+    - Razorpay:
+        ```typescript
+        {
+            entity: string;
+            count: number;
+            items: Array<Subscriptions.RazorPaySubscription>;
+        }
+        ```
+        [Razorpay Documentation - Fetch Subscriptions](https://razorpay.com/docs/api/payments/subscriptions/fetch-subscriptions)
+
+- **Example**:
+    
+    ```typescript
+    const stripeSubscriptions = await unify.subscriptions.getAll({
+        provider: GatewayProvider.Stripe,
+        payload: { ... },
+    });
+
+    const razorpaySubscriptions = await unify.subscriptions.getAll({
+        provider: GatewayProvider.Razorpay,
+        payload: { ... },
+    });
+    ```
+
+#### `get`
+
+**Description**: Fetches a subscription by ID from the specified gateway.
+
+- **Parameters**:
+
+    ```typescript
+    {
+        provider: GatewayProvider; // Gateway type
+        payload: QueryRazorpayOneSubscriptionDto | QueryStripeOneSubscriptionDto; // DTO for querying a single subscription
+    }
+    ```
+
+    - **Stripe**:
+
+        ```typescript
+        {
+            subscriptionId: string;
+            stripeExtraParams?: Record<string, any>;
+            stripeExtraOptions?: Record<string, any>;
+        }
+        ```
+
+        **Stripe Extra Params**:
+        ```typescript
+        {
+            expand?: string[];
+        }
+        ```
+
+    - **Razorpay**:
+
+        ```typescript
+        {
+            subscriptionId: string;
+        }
+        ```
+
+- **Returns**:
+    
+    - Stripe: `Stripe.Subscription`
+
+        [Stripe Documentation - Retrieve Subscription](https://stripe.com/docs/api/subscriptions/retrieve)
+
+    - Razorpay: `Subscriptions.RazorPaySubscription`
+
+        [Razorpay Documentation - Fetch Subscription](https://razorpay.com/docs/api/payments/subscriptions/fetch-subscription-id)
+
+- **Example**:
+        
+    ```typescript
+    const stripeSubscription = await unify.subscriptions.get({
+        provider: GatewayProvider.Stripe,
+        payload: { ... },
+    });
+
+    const razorpaySubscription = await unify.subscriptions.get({
+        provider: GatewayProvider.Razorpay,
+        payload: { ... },
+    });
+    ```
+
+#### `update`
+
+**Description**: Updates a subscription by ID.
+
+- **Parameters**:
+
+    ```typescript
+    {
+        provider: GatewayProvider; // Gateway type
+        payload: UpdateRazorPaySubscriptionDto | UpdateStripeSubscriptionDto; // DTO for each provider
+    }
+    ```
+
+    - **Stripe**:
+
+        ```typescript
+        {
+            subscriptionId: string;
+            metadata?: Record<string, any>;
+            planQuantity?: number;
+            priceId?: string;
+            offerId?: string;
+            stripeExtraParams?: Record<string, any>;
+            stripeExtraOptions?: Record<string, any>;
+        }
+        ```
+
+        **Stripe Extra Params**:
+
+        - [Stripe Params Documentation - Update Subscription](https://stripe.com/docs/api/subscriptions/update)
+
+    - **Razorpay**:
+
+        ```typescript
+        {
+            subscriptionId: string;
+            planId?: string;
+            offerId?: string;
+            planQuantity?: number;
+            totalBillingCycles?: number;
+            subscriptionStartAt?: Date;
+            scheduleChangeAt?: Date;
+            customerNotify?: boolean;
+        }
+        ```
+
+- **Returns**:
+    
+    - Stripe: `Stripe.Subscription`
+
+        [Stripe Documentation - Update Subscription](https://stripe.com/docs/api/subscriptions/update)
+
+    - Razorpay: `Subscriptions.RazorPaySubscription`
+
+        [Razorpay Documentation - Update Subscription](https://razorpay.com/docs/api/payments/subscriptions/update-subscription)
+
+    **Note**: The return type may vary based on the gateway provider.
+
+- **Example**:
+    
+    ```typescript
+    const stripeSubscription = await unify.subscriptions.update({
+        provider: GatewayProvider.Stripe,
+        payload: { ... },
+    });
+
+    const razorpaySubscription = await unify.subscriptions.update({
+        provider: GatewayProvider.Razorpay,
+        payload: { ... },
+    });
+    ```
+
+// cancel, pause, resume, and delete offer
+
+#### `cancel`
+
+**Description**: Cancels a subscription by ID.
+
+- **Parameters**:
+
+    ```typescript
+    {
+        provider: GatewayProvider; // Gateway type
+        payload: CancelRazorPaySubscriptionDto | CancelStripeSubscriptionDto; // DTO for each provider
+    }
+    ```
+
+    - **Stripe**:
+
+        ```typescript
+        {
+            subscriptionId: string;
+            stripeExtraParams?: Record<string, any>;
+            stripeExtraOptions?: Record<string, any>;
+        }
+        ```
+
+        **Stripe Extra Params**:
+
+        - [Stripe Params Documentation - Cancel Subscription](https://stripe.com/docs/api/subscriptions/cancel)
+
+    - **Razorpay**:
+
+        ```typescript
+        {
+            subscriptionId: string;
+            cancelAtCycleEnd?: boolean;
+        }
+        ```
+
+- **Returns**:
+
+    - Stripe: `Stripe.Subscription`
+
+        [Stripe Documentation - Cancel Subscription](https://stripe.com/docs/api/subscriptions/cancel)
+
+    - Razorpay: `Subscriptions.RazorPaySubscription`
+
+        [Razorpay Documentation - Cancel Subscription](https://razorpay.com/docs/api/payments/subscriptions/cancel-subscription)
+
+    **Note**: The return type may vary based on the gateway provider.
+
+- **Example**:
+
+    ```typescript
+    const stripeSubscription = await unify.subscriptions.cancel({
+        provider: GatewayProvider.Stripe,
+        payload: { ... },
+    });
+
+    const razorpaySubscription = await unify.subscriptions.cancel({
+        provider: GatewayProvider.Razorpay,
+        payload: { ... },
+    });
+    ```
+
+#### `pause`
+
+**Description**: Pauses a subscription by ID.
+
+- **Parameters**:
+
+    ```typescript
+    {
+        provider: GatewayProvider; // Gateway type
+        payload: PauseRazorPaySubscriptionDto | PauseStripeSubscriptionDto; // DTO for each provider
+    }
+    ```
+
+    - **Stripe**:
+
+        ```typescript
+        {
+            subscriptionId: string;
+            stripeExtraParams?: Record<string, any>;
+            stripeExtraOptions?: Record<string, any>;
+        }
+        ```
+
+        **Stripe Extra Params**:
+
+        - [Stripe Params Documentation - Pause Subscription](https://stripe.com/docs/api/subscriptions/pause)
+
+    - **Razorpay**:
+
+        ```typescript
+        {
+            subscriptionId: string;
+            razorpayExtraParams?: {
+                pause_at: 'now';
+            }
+        }
+        ```
+- **Returns**:
+    
+    - Stripe: `Stripe.Subscription`
+
+        [Stripe Documentation - Pause Subscription](https://stripe.com/docs/api/subscriptions/pause)
+
+    - Razorpay: `Subscriptions.RazorPaySubscription`
+
+        [Razorpay Documentation - Pause Subscription](https://razorpay.com/docs/api/payments/subscriptions/pause-subscription)
+
+    **Note**: The return type may vary based on the gateway provider.
+
+- **Example**:
+        
+    ```typescript
+    const stripeSubscription = await unify.subscriptions.pause({
+        provider: GatewayProvider.Stripe,
+        payload: { ... },
+    });
+
+    const razorpaySubscription = await unify.subscriptions.pause({
+        provider: GatewayProvider.Razorpay,
+        payload: { ... },
+    });
+    ```
+
+#### `resume`
+
+**Description**: Resumes a subscription by ID.
+
+- **Parameters**:
+
+    ```typescript
+    {
+        provider: GatewayProvider; // Gateway type
+        payload: ResumeRazorPaySubscriptionDto | ResumeStripeSubscriptionDto; // DTO for each provider
+    }
+    ```
+
+    - **Stripe**:
+
+        ```typescript
+        {
+            subscriptionId: string;
+            stripeExtraParams?: Record<string, any>;
+            stripeExtraOptions?: Record<string, any>;
+        }
+        ```
+
+        **Stripe Extra Params**:
+
+        - [Stripe Params Documentation - Resume Subscription](https://razorpay.com/docs/api/payments/subscriptions/resume-subscription)
+
+    - **Razorpay**:
+
+        ```typescript
+        {
+            subscriptionId: string;
+            razorpayExtraParams?: {
+                resume_at: 'now';
+            }
+        }
+        ```
+- **Returns**:
+    
+    - Stripe: `Stripe.Subscription`
+
+        [Stripe Documentation - Resume Subscription](https://stripe.com/docs/api/subscriptions/resume)
+
+    - Razorpay: `Subscriptions.RazorPaySubscription`
+
+        [Razorpay Documentation - Resume Subscription](https://razorpay.com/docs/api/payments/subscriptions/resume-subscription)
+    
+        **Note**: The return type may vary based on the gateway provider.
+
+- **Example**:
+        
+    ```typescript
+    const stripeSubscription = await unify.subscriptions.resume({
+        provider: GatewayProvider.Stripe,
+        payload: { ... },
+    });
+
+    const razorpaySubscription = await unify.subscriptions.resume({
+        provider: GatewayProvider.Razorpay,
+        payload: { ... },
+    });
+    ```
+
+#### `deleteOffer`
+
+**Description**: Deletes an offer from subscription by ID.
+
+- **Parameters**:
+
+    ```typescript
+    {
+        provider: GatewayProvider; // Gateway type
+        payload: DeleteOfferRazorPaySubscriptionDto | DeleteOfferStripeSubscriptionDto; // DTO for each provider
+    }
+    ```
+
+    - **Stripe**:
+
+        ```typescript
+        {
+            subscriptionId: string;
+            stripeExtraParams?: Record<string, any>;
+            stripeExtraOptions?: Record<string, any>;
+        }
+        ```
+
+        **Stripe Extra Params**:
+
+        - [Stripe Params Documentation - Delete Offer](https://docs.stripe.com/api/discounts/subscription_delete)
+
+    - **Razorpay**:
+
+        ```typescript
+        {
+            subscriptionId: string;
+            offerId: string;
+        }
+        ```
+
+- **Returns**:
+
+    - Stripe: `Stripe.Subscription`
+
+        [Stripe Documentation - Delete Offer](https://stripe.com/docs/api/subscriptions/delete_discount)
+
+    - Razorpay: `Subscriptions.RazorPaySubscription`
+
+        [Razorpay Documentation - Delete Offer](https://razorpay.com/docs/api/payments/subscriptions/delete-offer)
+
+    **Note**: The return type may vary based on the gateway provider.
+
+- **Example**:
+
+    ```typescript
+    const stripeSubscription = await unify.subscriptions.deleteOffer({
+        provider: GatewayProvider.Stripe,
+        payload: { ... },
+    });
+
+    const razorpaySubscription = await unify.subscriptions.deleteOffer({
+        provider: GatewayProvider.Razorpay,
+        payload: { ... },
+    });
+    ```
+
+---
+
 
 ## Contribution
 
