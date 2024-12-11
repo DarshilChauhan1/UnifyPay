@@ -74,7 +74,7 @@ class StripeSubscription {
                 });
             }
             const query = {
-                ...(payload?.limit && { limit: payload.limit }),
+                ...(payload?.subscriptionsToFetch && { limit: payload.subscriptionsToFetch }),
                 ...(payload?.lastRecordId && { starting_after: payload.lastRecordId }),
                 ...(payload?.priceId && { price: payload.priceId }),
                 ...(formattedDates['subscritptionsFromDate'] && {
