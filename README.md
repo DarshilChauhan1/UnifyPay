@@ -1003,8 +1003,6 @@ createPlan();
     });
     ```
 
-// cancel, pause, resume, and delete offer
-
 #### `cancel`
 
 **Description**: Cancels a subscription by ID.
