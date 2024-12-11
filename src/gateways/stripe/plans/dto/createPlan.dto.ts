@@ -9,8 +9,8 @@ export interface CreateStripePlanDto {
     amount: number;
     metadata?: Record<string, any>;
     nickname?: string;
-    interval: StripeBillingFrequency;
-    intervalCount?: number; // Required if recurring is set to 'interval'
+    billingFrequency: StripeBillingFrequency;
+    billingInterval?: number; // Required if recurring is set to 'interval'
     stripeExtraParams?: Partial<Stripe.PriceCreateParams>;
     stripeExtraOptions?: Stripe.RequestOptions;
 }

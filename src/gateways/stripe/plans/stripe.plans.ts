@@ -16,12 +16,12 @@ class StripePlans {
             const {
                 amount,
                 currency,
-                interval,
+                billingFrequency,
                 name,
                 nickname,
                 active,
                 metadata,
-                intervalCount,
+                billingInterval,
                 stripeExtraOptions,
                 stripeExtraParams,
             } = createPlanDto;
@@ -29,7 +29,7 @@ class StripePlans {
                 {
                     currency,
                     unit_amount: amount,
-                    recurring: { interval, interval_count: intervalCount ?? 1 },
+                    recurring: { interval: billingFrequency, interval_count: billingInterval ?? 1 },
                     product_data: {
                         name: name,
                     },
@@ -76,12 +76,12 @@ class StripePlans {
                         : undefined,
                 });
             }
-            if (payload?.limit && (payload?.limit < 1 || payload?.limit > 100)) {
+            if (payload?.plansToFetch && (payload?.plansToFetch < 1 || payload?.plansToFetch > 100)) {
                 throw new Error('Limit must be between 1 and 100');
             }
 
             const query = {
-                ...(payload?.limit && { limit: payload.limit }),
+                ...(payload?.plansToFetch && { limit: payload.plansToFetch }),
                 ...(payload?.lastRecordId && { starting_after: payload.lastRecordId }),
                 ...(payload?.active && { active: payload.active }),
                 ...(formattedDates['plansFromDate'] && { created: { gte: formattedDates['plansFromDate'] } }),

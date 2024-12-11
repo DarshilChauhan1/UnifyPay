@@ -4,7 +4,7 @@ export interface QueryStripeSubscriptionDto {
     priceId?: string;
     subscritptionsFromDate?: Date | string;
     subscriptionsTillDate?: Date | string;
-    limit?: number;
+    subscriptionsToFetch?: number;
     lastRecordId?: string;
     stripeExtraParams?: Partial<Stripe.SubscriptionListParams>;
     stripeExtraOptions?: Stripe.RequestOptions;

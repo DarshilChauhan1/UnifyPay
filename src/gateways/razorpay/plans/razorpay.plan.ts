@@ -48,8 +48,8 @@ export class RazorpayPlan {
                 });
             }
             const updatedPayload = {
-                ...(payload?.numberOfPlansToFetch && { count: payload.numberOfPlansToFetch }),
-                ...(payload?.skipNumberOfPlans && { skip: payload.skipNumberOfPlans }),
+                ...(payload?.plansToFetch && { count: payload.plansToFetch }),
+                ...(payload?.skipPlans && { skip: payload.skipPlans }),
                 ...(formattedDates['plansFromDate'] && { from: formattedDates['plansFromDate'] }),
                 ...(formattedDates['plansTillDate'] && { to: formattedDates['plansTillDate'] }),
             };

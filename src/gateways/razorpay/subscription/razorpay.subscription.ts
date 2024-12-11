@@ -84,7 +84,7 @@ export class RazorPaySubscription {
             }
 
             const query = {
-                ...(payload?.totalSubscription && { count: payload.totalSubscription }),
+                ...(payload?.subscriptionsToFetch && { count: payload.subscriptionsToFetch }),
                 ...(payload?.skipSubscription && { skip: payload.skipSubscription }),
                 ...(payload?.planId && { plan_id: payload.planId }),
                 ...(formattedDates['subscritptionsFromDate'] && { from: formattedDates['subscritptionsFromDate'] }),

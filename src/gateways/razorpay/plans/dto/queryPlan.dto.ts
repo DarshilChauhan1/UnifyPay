@@ -1,8 +1,8 @@
 export interface QueryRazorpayPlanDto {
     plansFromDate?: Date | string;
     plansTillDate?: Date | string;
-    numberOfPlansToFetch?: number;
-    skipNumberOfPlans?: number;
+    plansToFetch?: number;
+    skipPlans?: number;
 }
 
 export interface QueryRazorpayOnePlanDto {

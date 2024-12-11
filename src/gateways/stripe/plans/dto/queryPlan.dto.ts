@@ -6,7 +6,7 @@ export interface QueryStripePlanDto {
     currency?: Currency;
     plansFromDate?: Date | string; // Inclusive
     plansTillDate?: Date | string; // Inclusive
-    limit?: number;
+    plansToFetch?: number;
     lastRecordId?: string;
     stripeExtraParams?: Partial<Stripe.PriceListParams>;
     stripeExtraOptions?: Stripe.RequestOptions;
