@@ -1,15 +1,11 @@
 import Stripe from 'stripe';
-import { StripeCredentials } from '../../../common/types/credentials.types';
 import { CreateCustomerDto } from './dto/createCustomer.dto';
 import { UpdateCustomerDto } from './dto/updateCustomer.dto';
 
 class StripeCustomer {
     private stripe: Stripe;
-
-    constructor(credentials: StripeCredentials) {
-        this.stripe = new Stripe(credentials.apiKey, {
-            apiVersion: credentials.apiVersion,
-        });
+    constructor(stripeInstance: Stripe) {
+        this.stripe = stripeInstance;
     }
 
     async createCustomer(payload: CreateCustomerDto): Promise<Stripe.Customer> {

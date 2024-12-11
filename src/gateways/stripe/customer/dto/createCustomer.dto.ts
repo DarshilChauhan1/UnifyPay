@@ -1,3 +1,5 @@
+import Stripe from 'stripe';
+
 export class CreateCustomerDto {
     email: string;
     name: string;
@@ -12,4 +14,5 @@ export class CreateCustomerDto {
         country: string;
     };
     metadata?: Record<string, any>;
+    stripeExtraParams?: Partial<Stripe.CustomerCreateParams>;
 }

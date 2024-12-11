@@ -17,6 +17,7 @@ class StripeSubscription {
     private stripeCustomer: StripeCustomer;
     constructor(stripeInstance: Stripe) {
         this.stripe = stripeInstance;
+        this.stripeCustomer = new StripeCustomer(stripeInstance);
     }
 
     async createSubscription(payload: CreateStripeSubscriptionDto): Promise<Stripe.Subscription> {
@@ -27,21 +28,26 @@ class StripeSubscription {
                 description,
                 offerId,
                 planQuantity,
-                name,
+                customerName,
                 email,
                 phone,
                 stripeExtraParams,
                 stripeExtraOptions,
+                customerId,
+                stripeCustomerExtraParams,
             } = payload;
-
-            const customer = await this.stripeCustomer.createCustomer({
-                name: name ?? 'Guest',
-                email,
-                phone,
-            });
+            let customer;
+            if (!customerId) {
+                customer = await this.stripeCustomer.createCustomer({
+                    name: customerName ?? 'Guest',
+                    email,
+                    phone,
+                    stripeExtraParams: stripeCustomerExtraParams,
+                });
+            }
             const subscription = await this.stripe.subscriptions.create(
                 {
-                    customer: customer.id,
+                    customer: customerId ?? customer.id,
                     items: [{ price: priceId, quantity: planQuantity }],
                     metadata,
                     description,
