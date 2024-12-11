@@ -84,7 +84,7 @@ export class StripeOrders {
             }
 
             const query = {
-                ...(payload?.limit && { limit: payload.limit }),
+                ...(payload?.ordersToFetch && { limit: payload.ordersToFetch }),
                 ...(payload?.lastRecordId && { starting_after: payload.lastRecordId }),
                 ...(payload?.customerId && { customer: payload.customerId }),
                 ...(formattedDates['ordersFromDate'] && { created: { gte: formattedDates['ordersFromDate'] } }),

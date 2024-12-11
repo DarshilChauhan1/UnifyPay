@@ -2,7 +2,7 @@ export interface QueryRazorpaySubscriptionDto {
     planId?: string;
     subscritptionsFromDate?: Date | string;
     subscriptionTillDate?: Date | string;
-    totalSubscription?: number;
+    subscriptionsToFetch?: number;
     skipSubscription?: number;
 }
 
