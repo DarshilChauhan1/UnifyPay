@@ -10,7 +10,7 @@ class StripeCustomer {
 
     async createCustomer(payload: CreateCustomerDto): Promise<Stripe.Customer> {
         try {
-            const { email, name, description, phone, address, metadata } = payload;
+            const { email, name, description, phone, address, metadata, stripeExtraParams } = payload;
             const customer = await this.stripe.customers.create({
                 email,
                 name,
@@ -18,6 +18,7 @@ class StripeCustomer {
                 phone,
                 address,
                 metadata,
+                ...stripeExtraParams,
             });
             return customer;
         } catch (error) {

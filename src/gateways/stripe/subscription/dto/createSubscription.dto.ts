@@ -1,9 +1,9 @@
 import Stripe from 'stripe';
 
 export class CreateStripeSubscriptionDto {
-    customerName: string;
-    email?: string;
-    phone?: string;
+    customerName?: string;
+    customerEmail?: string;
+    customerPhone?: string;
     priceId: string;
     description?: string;
     offerId?: string;

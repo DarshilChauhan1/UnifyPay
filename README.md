@@ -728,22 +728,27 @@ createPlan();
 
         ```typescript
         {
-            name: string;
-            email?: string;
-            phone?: string;
+            customerId?: string;
+            customerName?: string;
+            customerEmail?: string;
+            customerPhone?: string;
             priceId: string;
             description?: string;
             offerId?: string;
             planQuantity?: number;
             metadata?: Record<string, any>;
+            metadata?: Record<string, any>;
             stripeExtraParams?: Record<string, any>;
             stripeExtraOptions?: Record<string, any>;
+            stripeCustomerExtraParams?: Record<string, any>;
         }
         ```
 
         **Stripe Extra Params**:
 
         - [Stripe Params Documentation - Create Subscription](https://stripe.com/docs/api/subscriptions/create)
+
+        - [Stripe Customer Params Documentation](https://stripe.com/docs/api/customers/create)
 
     - **Razorpay**:
 
@@ -797,6 +802,11 @@ createPlan();
     });
     ```
 
+- **Extras**
+
+    - **Stripe**:
+      Please refer to the [Stripe Github Example](https://github.com/stripe-samples/subscription-use-cases/tree/main/fixed-price-subscriptions) for client side implementation.
+
 #### `getAll`
 
 **Description**: Fetches all subscriptions from the specified gateway.
@@ -839,8 +849,9 @@ createPlan();
             skipSubscription?: number;
         }
         ```
+
 - **Returns**:
-    
+
     - Stripe: `Stripe.ApiList<Stripe.Subscription>`
 
         [Stripe Documentation - List Subscriptions](https://stripe.com/docs/api/subscriptions/list)
@@ -856,7 +867,7 @@ createPlan();
         [Razorpay Documentation - Fetch Subscriptions](https://razorpay.com/docs/api/payments/subscriptions/fetch-subscriptions)
 
 - **Example**:
-    
+
     ```typescript
     const stripeSubscriptions = await unify.subscriptions.getAll({
         provider: GatewayProvider.Stripe,
@@ -893,6 +904,7 @@ createPlan();
         ```
 
         **Stripe Extra Params**:
+
         ```typescript
         {
             expand?: string[];
@@ -908,7 +920,7 @@ createPlan();
         ```
 
 - **Returns**:
-    
+
     - Stripe: `Stripe.Subscription`
 
         [Stripe Documentation - Retrieve Subscription](https://stripe.com/docs/api/subscriptions/retrieve)
@@ -918,7 +930,7 @@ createPlan();
         [Razorpay Documentation - Fetch Subscription](https://razorpay.com/docs/api/payments/subscriptions/fetch-subscription-id)
 
 - **Example**:
-        
+
     ```typescript
     const stripeSubscription = await unify.subscriptions.get({
         provider: GatewayProvider.Stripe,
@@ -978,7 +990,7 @@ createPlan();
         ```
 
 - **Returns**:
-    
+
     - Stripe: `Stripe.Subscription`
 
         [Stripe Documentation - Update Subscription](https://stripe.com/docs/api/subscriptions/update)
@@ -990,7 +1002,7 @@ createPlan();
     **Note**: The return type may vary based on the gateway provider.
 
 - **Example**:
-    
+
     ```typescript
     const stripeSubscription = await unify.subscriptions.update({
         provider: GatewayProvider.Stripe,
@@ -1067,7 +1079,9 @@ createPlan();
 
 #### `pause`
 
-**Description**: Pauses a subscription by ID.
+**Description**: Pauses collection for subscription by ID
+
+**Caution** This will not change subscription status to pause. It just pause collection for that subscription. For more information, please read this [Stripe Pause Collection Documentation](https://docs.stripe.com/billing/subscriptions/pause-payment)
 
 - **Parameters**:
 
@@ -1083,6 +1097,7 @@ createPlan();
         ```typescript
         {
             subscriptionId: string;
+            behaviour?: 'keep_as_draft' | 'mark_uncollectible' | 'void'; // default void
             stripeExtraParams?: Record<string, any>;
             stripeExtraOptions?: Record<string, any>;
         }
@@ -1102,8 +1117,9 @@ createPlan();
             }
         }
         ```
+
 - **Returns**:
-    
+
     - Stripe: `Stripe.Subscription`
 
         [Stripe Documentation - Pause Subscription](https://stripe.com/docs/api/subscriptions/pause)
@@ -1115,7 +1131,7 @@ createPlan();
     **Note**: The return type may vary based on the gateway provider.
 
 - **Example**:
-        
+
     ```typescript
     const stripeSubscription = await unify.subscriptions.pause({
         provider: GatewayProvider.Stripe,
@@ -1130,7 +1146,7 @@ createPlan();
 
 #### `resume`
 
-**Description**: Resumes a subscription by ID.
+**Description**: Resumes a paused subscription by ID.
 
 - **Parameters**:
 
@@ -1165,8 +1181,9 @@ createPlan();
             }
         }
         ```
+
 - **Returns**:
-    
+
     - Stripe: `Stripe.Subscription`
 
         [Stripe Documentation - Resume Subscription](https://stripe.com/docs/api/subscriptions/resume)
@@ -1174,11 +1191,11 @@ createPlan();
     - Razorpay: `Subscriptions.RazorPaySubscription`
 
         [Razorpay Documentation - Resume Subscription](https://razorpay.com/docs/api/payments/subscriptions/resume-subscription)
-    
+
         **Note**: The return type may vary based on the gateway provider.
 
 - **Example**:
-        
+
     ```typescript
     const stripeSubscription = await unify.subscriptions.resume({
         provider: GatewayProvider.Stripe,
@@ -1254,7 +1271,6 @@ createPlan();
     ```
 
 ---
-
 
 ## Contribution
 

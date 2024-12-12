@@ -29,8 +29,8 @@ class StripeSubscription {
                 offerId,
                 planQuantity,
                 customerName,
-                email,
-                phone,
+                customerEmail,
+                customerPhone,
                 stripeExtraParams,
                 stripeExtraOptions,
                 customerId,
@@ -40,8 +40,8 @@ class StripeSubscription {
             if (!customerId) {
                 customer = await this.stripeCustomer.createCustomer({
                     name: customerName ?? 'Guest',
-                    email,
-                    phone,
+                    email: customerEmail,
+                    phone: customerPhone,
                     stripeExtraParams: stripeCustomerExtraParams,
                 });
             }
@@ -51,6 +51,8 @@ class StripeSubscription {
                     items: [{ price: priceId, quantity: planQuantity }],
                     metadata,
                     description,
+                    payment_behavior: 'default_incomplete',
+                    expand: ['latest_invoice.payment_intent', ...(stripeExtraParams?.expand ?? [])],
                     discounts: offerId ? [{ coupon: offerId }] : [],
                     ...stripeExtraParams,
                 },
@@ -165,6 +167,7 @@ class StripeSubscription {
 
     async pauseSubscription({
         subscriptionId,
+        behaviour,
         stripeExtraOptions,
         stripeExtraParams,
     }: PauseStripeSubscriptionDto): Promise<Stripe.Subscription> {
@@ -172,7 +175,7 @@ class StripeSubscription {
             return await this.stripe.subscriptions.update(
                 subscriptionId,
                 {
-                    pause_collection: { behavior: 'void' },
+                    pause_collection: { behavior: behaviour ?? 'void' },
                     ...stripeExtraParams,
                 },
                 stripeExtraOptions,

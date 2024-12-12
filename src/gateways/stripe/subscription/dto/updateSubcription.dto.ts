@@ -18,6 +18,7 @@ export interface CancelStripeSubscriptionDto {
 
 export interface PauseStripeSubscriptionDto {
     subscriptionId: string;
+    behaviour?: 'keep_as_draft' | 'mark_uncollectible' | 'void'; // default void
     stripeExtraParams?: Partial<Stripe.SubscriptionUpdateParams>;
     stripeExtraOptions?: Stripe.RequestOptions;
 }
