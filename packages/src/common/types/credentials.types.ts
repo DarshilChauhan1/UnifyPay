@@ -9,8 +9,7 @@ export interface StripeCredentials {
     port?: number;
 }
 
-
 export interface RazorPayCredentials {
-    keyId : string;
-    keySecret : string;
+    keyId: string;
+    keySecret: string;
 }
