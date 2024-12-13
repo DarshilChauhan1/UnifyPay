@@ -6,9 +6,9 @@
  *
  * Disclaimer: This library is not affiliated with or endorsed by Stripe or Razorpay.
  */
-import { GatewayProvider, Provider } from '../src/common/types/providers.types';
-import { RazorpayProvider } from '../src/gateways/providers/razorpay.provider';
-import { StripeProvider } from '../src/gateways/providers/stripe.provider';
+import { GatewayProvider, Provider } from './common/types/providers.types';
+import { RazorpayProvider } from './gateways/providers/razorpay.provider';
+import { StripeProvider } from './gateways/providers/stripe.provider';
 import { MergerGateways } from './merger/interfaces/merger.gateways.interface';
 import { RazorpaySpecificMethods } from './merger/interfaces/razorpaySpecific.interface';
 import { StripeSpecificMethods } from './merger/interfaces/stripeSpecific.interface';
