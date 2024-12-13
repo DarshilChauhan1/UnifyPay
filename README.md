@@ -1079,9 +1079,11 @@ createPlan();
 
 #### `pause`
 
-**Description**: Pauses collection for subscription by ID
+**Description**: Pauses collection for subscription by ID. Pausing payment collection is often used to temporarily offer your services for free. This is sometimes referred to as a “grace period” if a customer needs additional time to pay or can’t pay for one or more billing cycles.
 
-**Caution** This will not change subscription status to pause. It just pause collection for that subscription. For more information, please read this [Stripe Pause Collection Documentation](https://docs.stripe.com/billing/subscriptions/pause-payment)
+**Note**:
+
+`Stripe`: This will not change subscription status to pause. It just pause collection for that subscription. For more information, please read this [Stripe Pause Collection Documentation](https://docs.stripe.com/billing/subscriptions/pause-payment)
 
 - **Parameters**:
 
@@ -1105,7 +1107,7 @@ createPlan();
 
         **Stripe Extra Params**:
 
-        - [Stripe Params Documentation - Pause Subscription](https://stripe.com/docs/api/subscriptions/pause)
+        - [Stripe Params Documentation - Pause Subscription](https://docs.stripe.com/api/subscriptions/update#update_subscription-pause_collection)
 
     - **Razorpay**:
 
@@ -1122,7 +1124,7 @@ createPlan();
 
     - Stripe: `Stripe.Subscription`
 
-        [Stripe Documentation - Pause Subscription](https://stripe.com/docs/api/subscriptions/pause)
+        [Stripe Documentation - Pause Subscription](https://docs.stripe.com/api/subscriptions/update)
 
     - Razorpay: `Subscriptions.RazorPaySubscription`
 
@@ -1146,7 +1148,11 @@ createPlan();
 
 #### `resume`
 
-**Description**: Resumes a paused subscription by ID.
+**Description**: Resumes a paused collection subscription by ID.
+
+**Note**:
+
+`Stripe`: This is not resume subscription api of stripe. This will resume collection for that subscription.
 
 - **Parameters**:
 
@@ -1169,7 +1175,7 @@ createPlan();
 
         **Stripe Extra Params**:
 
-        - [Stripe Params Documentation - Resume Subscription](https://razorpay.com/docs/api/payments/subscriptions/resume-subscription)
+        - [Stripe Params Documentation - Resume Subscription](https://docs.stripe.com/api/subscriptions/update)
 
     - **Razorpay**:
 
@@ -1186,7 +1192,7 @@ createPlan();
 
     - Stripe: `Stripe.Subscription`
 
-        [Stripe Documentation - Resume Subscription](https://stripe.com/docs/api/subscriptions/resume)
+        [Stripe Documentation - Resume Subscription](https://stripe.com/docs/api/subscriptions/update)
 
     - Razorpay: `Subscriptions.RazorPaySubscription`
 

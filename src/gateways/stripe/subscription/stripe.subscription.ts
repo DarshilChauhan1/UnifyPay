@@ -191,7 +191,14 @@ class StripeSubscription {
         stripeExtraParams,
     }: ResumeStripeSubscriptionDto): Promise<Stripe.Subscription> {
         try {
-            return await this.stripe.subscriptions.resume(subscriptionId, stripeExtraParams, stripeExtraOptions);
+            return await this.stripe.subscriptions.update(
+                subscriptionId,
+                {
+                    pause_collection: '',
+                    ...stripeExtraParams,
+                },
+                stripeExtraOptions,
+            );
         } catch (error) {
             throw error;
         }
