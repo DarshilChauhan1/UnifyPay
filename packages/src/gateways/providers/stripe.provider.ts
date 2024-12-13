@@ -10,18 +10,18 @@ import { CreateStripePlanDto } from '../stripe/plans/dto/createPlan.dto';
 import { QueryStripeOnePlanDto, QueryStripePlanDto } from '../stripe/plans/dto/queryPlan.dto';
 import { UpdateStripePlanDto } from '../stripe/plans/dto/updatePlan.dto';
 import StripePlans from '../stripe/plans/stripe.plans';
-import { CreateStripeSubscriptionDto } from '../stripe/subscription/dto/createSubscription.dto';
-import { DeleteOfferOfStripeSubscriptionDto } from '../stripe/subscription/dto/deleteSubscription.dto';
+import { CreateStripeSubscriptionDto } from '../stripe/subscriptions/dto/createSubscription.dto';
+import { DeleteOfferOfStripeSubscriptionDto } from '../stripe/subscriptions/dto/deleteSubscription.dto';
 import {
     QueryStripeOneSubscriptionDto,
     QueryStripeSubscriptionDto,
-} from '../stripe/subscription/dto/querySubscription.dto';
+} from '../stripe/subscriptions/dto/querySubscription.dto';
 import {
     CancelStripeSubscriptionDto,
     ResumeStripeSubscriptionDto,
     UpdateStripeSubscriptionDto,
-} from '../stripe/subscription/dto/updateSubcription.dto';
-import StripeSubscription from '../stripe/subscription/stripe.subscription';
+} from '../stripe/subscriptions/dto/updateSubcription.dto';
+import StripeSubscription from '../stripe/subscriptions/stripe.subscription';
 export class StripeProvider implements MergerGateways, StripeSpecificMethods {
     private stripeOrders: StripeOrders;
     private stipePlans: StripePlans;

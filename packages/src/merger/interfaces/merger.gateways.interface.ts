@@ -8,35 +8,35 @@ import { UpdateRazorpayOrderDto } from '../../gateways/razorpay/orders/dto/upate
 import { RazorpayCheckoutSession } from '../../gateways/razorpay/orders/types/CheckoutSession.types';
 import { CreateRazorpayPlanDto } from '../../gateways/razorpay/plans/dto/createPlan.dto';
 import { QueryRazorpayOnePlanDto, QueryRazorpayPlanDto } from '../../gateways/razorpay/plans/dto/queryPlan.dto';
-import { CreateRazorpaySubscriptionDto } from '../../gateways/razorpay/subscription/dto/createSubscription.dto';
+import { CreateRazorpaySubscriptionDto } from '../../gateways/razorpay/subscriptions/dto/createSubscription.dto';
 import {
     QueryRazorpayOneSubscriptionDto,
     QueryRazorpaySubscriptionDto,
-} from '../../gateways/razorpay/subscription/dto/querySubscription.dto';
+} from '../../gateways/razorpay/subscriptions/dto/querySubscription.dto';
 import {
     CancelRazorpaySubscriptionDto,
     DeleteOfferOfRazorpaySubscriptionDto,
     PauseRazorpaySubscriptionDto,
     ResumeRazorpaySubscriptionDto,
     UpdateRazorpaySubscriptionDto,
-} from '../../gateways/razorpay/subscription/dto/updateSubscription.dto';
+} from '../../gateways/razorpay/subscriptions/dto/updateSubscription.dto';
 import { CreateStripeOrderDto } from '../../gateways/stripe/orders/dto/createOrder.dto';
 import { QueryStripeOneOrderDto, QueryStripeOrderDto } from '../../gateways/stripe/orders/dto/queryOrder.dto';
 import { UpdateStripeOrderDto } from '../../gateways/stripe/orders/dto/updateOrder.dto';
 import { CreateStripePlanDto } from '../../gateways/stripe/plans/dto/createPlan.dto';
 import { QueryStripeOnePlanDto, QueryStripePlanDto } from '../../gateways/stripe/plans/dto/queryPlan.dto';
-import { CreateStripeSubscriptionDto } from '../../gateways/stripe/subscription/dto/createSubscription.dto';
-import { DeleteOfferOfStripeSubscriptionDto } from '../../gateways/stripe/subscription/dto/deleteSubscription.dto';
+import { CreateStripeSubscriptionDto } from '../../gateways/stripe/subscriptions/dto/createSubscription.dto';
+import { DeleteOfferOfStripeSubscriptionDto } from '../../gateways/stripe/subscriptions/dto/deleteSubscription.dto';
 import {
     QueryStripeOneSubscriptionDto,
     QueryStripeSubscriptionDto,
-} from '../../gateways/stripe/subscription/dto/querySubscription.dto';
+} from '../../gateways/stripe/subscriptions/dto/querySubscription.dto';
 import {
     CancelStripeSubscriptionDto,
     PauseStripeSubscriptionDto,
     ResumeStripeSubscriptionDto,
     UpdateStripeSubscriptionDto,
-} from '../../gateways/stripe/subscription/dto/updateSubcription.dto';
+} from '../../gateways/stripe/subscriptions/dto/updateSubcription.dto';
 
 export interface MergerGateways {
     // Orders

@@ -1,8 +1,8 @@
 import { Subscriptions } from 'razorpay/dist/types/subscriptions';
 import Stripe from 'stripe';
 import { GatewayProvider } from '../../../common/types/providers.types';
-import { QueryRazorpaySubscriptionDto } from '../../../gateways/razorpay/subscription/dto/querySubscription.dto';
-import { QueryStripeSubscriptionDto } from '../../../gateways/stripe/subscription/dto/querySubscription.dto';
+import { QueryRazorpaySubscriptionDto } from '../../../gateways/razorpay/subscriptions/dto/querySubscription.dto';
+import { QueryStripeSubscriptionDto } from '../../../gateways/stripe/subscriptions/dto/querySubscription.dto';
 
 export type MergerGetAllSubscription = {
     [GatewayProvider.Razorpay]: {

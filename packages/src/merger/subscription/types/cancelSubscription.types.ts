@@ -1,8 +1,8 @@
 import { Subscriptions } from 'razorpay/dist/types/subscriptions';
 import Stripe from 'stripe';
 import { GatewayProvider } from '../../../common/types/providers.types';
-import { CancelRazorpaySubscriptionDto } from '../../../gateways/razorpay/subscription/dto/updateSubscription.dto';
-import { CancelStripeSubscriptionDto } from '../../../gateways/stripe/subscription/dto/updateSubcription.dto';
+import { CancelRazorpaySubscriptionDto } from '../../../gateways/razorpay/subscriptions/dto/updateSubscription.dto';
+import { CancelStripeSubscriptionDto } from '../../../gateways/stripe/subscriptions/dto/updateSubcription.dto';
 
 export type MergerCancelSubscription = {
     [GatewayProvider.Razorpay]: {

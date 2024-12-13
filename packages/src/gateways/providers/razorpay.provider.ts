@@ -13,19 +13,19 @@ import { RazorpayPayment } from '../razorpay/payments/razorpay.payment';
 import { CreateRazorpayPlanDto } from '../razorpay/plans/dto/createPlan.dto';
 import { QueryRazorpayOnePlanDto, QueryRazorpayPlanDto } from '../razorpay/plans/dto/queryPlan.dto';
 import { RazorpayPlan } from '../razorpay/plans/razorpay.plan';
-import { CreateRazorpaySubscriptionDto } from '../razorpay/subscription/dto/createSubscription.dto';
+import { CreateRazorpaySubscriptionDto } from '../razorpay/subscriptions/dto/createSubscription.dto';
 import {
     QueryRazorpayOneSubscriptionDto,
     QueryRazorpaySubscriptionDto,
-} from '../razorpay/subscription/dto/querySubscription.dto';
+} from '../razorpay/subscriptions/dto/querySubscription.dto';
 import {
     CancelRazorpaySubscriptionDto,
     DeleteOfferOfRazorpaySubscriptionDto,
     PauseRazorpaySubscriptionDto,
     ResumeRazorpaySubscriptionDto,
     UpdateRazorpaySubscriptionDto,
-} from '../razorpay/subscription/dto/updateSubscription.dto';
-import { RazorPaySubscription } from '../razorpay/subscription/razorpay.subscription';
+} from '../razorpay/subscriptions/dto/updateSubscription.dto';
+import { RazorPaySubscription } from '../razorpay/subscriptions/razorpay.subscription';
 export class RazorpayProvider implements MergerGateways, RazorpaySpecificMethods {
     private razorPayOrder: RazorPayOrders;
     private razorPayPayment: RazorpayPayment;
