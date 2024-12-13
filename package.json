@@ -2,11 +2,11 @@
   "name": "unify-pay",
   "version": "1.0.0",
   "description": "\"Package that will integrate multiple payment system\"",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
     "build": "tsc",
-    "start": "npm run build && node dist/main.js",
-    "start:dev": "tsc-watch --onSuccess \"node dist/main.js\" --onFailure \"echo Build failed\"",
+    "start": "npm run build && node dist/src/test.js",
+    "start:dev": "tsc-watch --onSuccess \"node dist/src/test.js\" --onFailure \"echo Build failed\"",
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "husky",
     "precommit": "eslint ."
@@ -15,7 +15,12 @@
     "type": "git",
     "url": "git+https://github.com/DarshilChauhan1/Unify-Pay.git"
   },
-  "author": "chauhandarshil716@gmail.com",
+  "author": "Darshil Chauhan <chauhandarshil716@gmail.com>",
+  "contributors": [{
+    "name": "Vrushal Patel",
+    "email": "vrushalkpatel007@gmail.com",
+    "url": "https://github.com/vrushal007"
+  }],
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/DarshilChauhan1/Unify-Pay/issues"

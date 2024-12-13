@@ -18,7 +18,7 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "esModuleInterop": true, // Enables proper ES6 module interop
-    "allowSyntheticDefaultImports": true // Fixes import/export issues
+    "allowSyntheticDefaultImports": true, // Fixes import/export issues
   }
 }
 
