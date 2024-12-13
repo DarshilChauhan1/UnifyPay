@@ -1,3 +1,11 @@
+/**
+ * This library uses the Stripe and Razorpay APIs for payment operations.
+ *
+ * Stripe API Documentation: https://stripe.com/docs/api
+ * Razorpay API Documentation: https://razorpay.com/docs/api
+ *
+ * Disclaimer: This library is not affiliated with or endorsed by Stripe or Razorpay.
+ */
 import { GatewayProvider, Provider } from '../src/common/types/providers.types';
 import { RazorpayProvider } from '../src/gateways/providers/razorpay.provider';
 import { StripeProvider } from '../src/gateways/providers/stripe.provider';

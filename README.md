@@ -1278,6 +1278,17 @@ createPlan();
 
 ---
 
+## Dependencies
+
+This library integrates with the following services:
+
+- [Stripe API](https://stripe.com/docs/api) - Used for managing Stripe-related payment operations.
+- [Razorpay API](https://razorpay.com/docs/api) - Used for managing Razorpay-related payment operations.
+
+**Note**: This library is not affiliated with or endorsed by Stripe or Razorpay. It simply leverages their APIs for functionality.
+
+---
+
 ## Contribution
 
 Contributions are welcome! Please follow these steps:
