@@ -1,0 +1,12 @@
+{
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "project": "./tsconfig.json"
+    },
+    "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", "prettier"],
+    "rules": {
+        "no-unused-vars": "off", // Disable the base rule
+        "@typescript-eslint/no-explicit-any": "off", // Disable the rule for 'any' type
+        "space-before-function-paren": ["error", "never"]
+    }
+}

@@ -1,0 +1,8 @@
+/node_modules
+test.ts
+/dist
+.env
+/index.html
+.vscode
+*.idea
+package-lock.json
