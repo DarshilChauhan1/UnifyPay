@@ -19,7 +19,7 @@ A unified library for managing multiple payment gateways like Stripe and Razorpa
 Install the library using npm or yarn:
 
 ```bash
-npm install unified-pay
+npm install unified-pay-node
 ```
 
 ---

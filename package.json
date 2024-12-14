@@ -1,6 +1,6 @@
 {
-  "name": "unified-pay",
-  "version": "0.0.1",
+  "name": "unified-pay-node",
+  "version": "0.0.2",
   "description": "\"Package that will integrate multiple payment system\"",
   "main": "./dist/cjs/src/main.js",
   "type": "commonjs",
