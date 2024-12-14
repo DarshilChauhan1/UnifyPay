@@ -68,10 +68,6 @@ import { DeleteOfferOfStripeSubscriptionDto } from '../src/gateways/stripe/subsc
 
 /* ---------------- Stripe Subscriptions ---------------- */
 
-export interface Test {
-    test: string;
-}
-
 export {
     AuthorizedStatus,
     QueryRazorpayOneOrderDto,
