@@ -1,14 +1,23 @@
 {
   "name": "unified-pay",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "\"Package that will integrate multiple payment system\"",
   "main": "./dist/cjs/src/main.js",
   "type": "commonjs",
   "module": "./dist/esm/src/main.js",
   "types": "./esm/src/main.d.ts",
-  "private": true,
+  "keywords": [
+    "payment",
+    "unify",
+    "razorpay",
+    "stripe",
+    "unified payment",
+    "unify pay",
+    "payment integration",
+    "payment gateway"
+  ],
   "scripts": {
-    "build": "rm -rf dist && rm -rf unified-pay-1.0.0.tgz && npm run build:esm && npm run build:cjs && npm pack",
+    "build": "rm -rf dist && npm run build:esm && npm run build:cjs",
     "build:tsc" : "tsc",
     "start": "npm run build && node dist/esm/src/test.js",
     "start:dev": "tsc-watch --onSuccess \"node dist/src/test.js\" --onFailure \"echo Build failed\"",
@@ -25,12 +34,6 @@
       "require": "./dist/cjs/types/index.d.ts"
     }
   },
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "https://opensource.org/licenses/MIT"
-    }
-  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/DarshilChauhan1/Unify-Pay.git"
