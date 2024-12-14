@@ -19,9 +19,7 @@ A unified library for managing multiple payment gateways like Stripe and Razorpa
 Install the library using npm or yarn:
 
 ```bash
-npm install unify-pay
-# or
-yarn add unify-pay
+npm install unified-pay
 ```
 
 ---
@@ -1307,6 +1305,6 @@ This project is licensed under the MIT License.
 
 ## Support
 
-For any issues or feature requests, create an issue on [GitHub](https://github.com/your-repo/unify-pay/issues).
+For any issues or feature requests, create an issue on [GitHub](https://github.com/your-repo/unified-pay/issues).
 
 ---

@@ -36,7 +36,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/DarshilChauhan1/Unify-Pay.git"
+    "url": "git+https://github.com/DarshilChauhan1/unified-pay.git"
   },
   "author": "Darshil Chauhan <chauhandarshil716@gmail.com>",
   "contributors": [
@@ -48,9 +48,9 @@
   ],
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/DarshilChauhan1/Unify-Pay/issues"
+    "url": "https://github.com/DarshilChauhan1/unified-pay/issues"
   },
-  "homepage": "https://github.com/DarshilChauhan1/Unify-Pay#readme",
+  "homepage": "https://github.com/DarshilChauhan1/unified-pay#readme",
   "dependencies": {
     "moment": "^2.30.1",
     "razorpay": "^2.9.4",
