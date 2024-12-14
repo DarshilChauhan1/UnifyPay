@@ -8,11 +8,6 @@ import {
 } from '../src/gateways/razorpay/orders/dto/queryOrder.dto';
 import { RazorpayCheckoutSession } from '../src/gateways/razorpay/orders/types/CheckoutSession.types';
 import { UpdateRazorpayOrderDto } from '../src/gateways/razorpay/orders/dto/upateOrder.dto';
-
-/* ---------------- Razorpay Order ---------------- */
-
-/* ---------------- Razorpay Plans  ---------------- */
-
 import { CreateRazorpayPlanDto } from '../src/gateways/razorpay/plans/dto/createPlan.dto';
 import { QueryRazorpayOnePlanDto, QueryRazorpayPlanDto } from '../src/gateways/razorpay/plans/dto/queryPlan.dto';
 
@@ -72,6 +67,10 @@ import {
 import { DeleteOfferOfStripeSubscriptionDto } from '../src/gateways/stripe/subscriptions/dto/deleteSubscription.dto';
 
 /* ---------------- Stripe Subscriptions ---------------- */
+
+export interface Test {
+    test: string;
+}
 
 export {
     AuthorizedStatus,

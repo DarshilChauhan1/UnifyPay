@@ -1,0 +1,11 @@
+.git
+.husky
+node_modules
+src
+test
+coverage
+
+# Ignore temporary and log files
+*.log
+*.ts
+*.map

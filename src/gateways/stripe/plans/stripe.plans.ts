@@ -42,7 +42,6 @@ class StripePlans {
             );
             return plan;
         } catch (error) {
-            console.error(error);
             throw error;
         }
     }
@@ -60,7 +59,6 @@ class StripePlans {
             );
             return plan;
         } catch (error) {
-            console.error(error);
             throw error;
         }
     }
@@ -97,7 +95,6 @@ class StripePlans {
                 payload?.stripeExtraOptions,
             );
         } catch (error) {
-            console.error(error);
             throw error;
         }
     }
@@ -107,7 +104,6 @@ class StripePlans {
             const { planId, stripeExtraOptions, stripeExtraParams } = payload;
             return await this.stripe.prices.retrieve(planId, stripeExtraParams, stripeExtraOptions);
         } catch (error) {
-            console.error(error);
             throw error;
         }
     }

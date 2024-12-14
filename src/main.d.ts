@@ -17,11 +17,11 @@ import { MergerPlan } from './merger/plan/merger.plan';
 import { ProviderManager } from './merger/providerManager.merger';
 import { MergerSubscription } from './merger/subscription/merger.subscription';
 
-export default GatewayProvider;
+export { GatewayProvider };
 
 export class UnifyPay {
-    protected providers: Provider[];
-    private providersMap = new Map<string, MergerGateways>();
+    public providers: Provider[];
+    public providersMap = new Map<string, MergerGateways>();
     public readonly orders: MergerOrders;
     public readonly plans: MergerPlan;
     public readonly subscriptions: MergerSubscription;

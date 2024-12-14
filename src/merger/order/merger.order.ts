@@ -1,3 +1,4 @@
+import { UnifiedPayError } from '../../common/helpers/customError.error';
 import { MergerGateways } from '../interfaces/merger.gateways.interface';
 import { ProviderManager } from '../providerManager.merger';
 import { MergeCreateOrder } from './types/createOrder.types';
@@ -13,6 +14,7 @@ export class MergerOrders {
         payload: MergeCreateOrder[K]['payload'];
     }): Promise<MergeCreateOrder[K]['returnType']> {
         try {
+            if (!payload || !payload?.provider) throw new UnifiedPayError(400, 'Payload and Provider is required');
             const { provider } = payload;
             const providerInstance = this.getProvider(provider);
 
@@ -31,6 +33,7 @@ export class MergerOrders {
         payload?: MergerGetAllOrders[K]['payload'];
     }): Promise<MergerGetAllOrders[K]['returnType']> {
         try {
+            if (!payload || !payload?.provider) throw new UnifiedPayError(400, 'Payload and Provider is required');
             const { provider } = payload;
             const providerInstance = this.getProvider(provider);
 
@@ -40,7 +43,6 @@ export class MergerOrders {
 
             return providerInstance.getAllOrders(payload.payload);
         } catch (error) {
-            console.error('Error fetching orders:', error);
             throw error; // Re-throw the error after logging it
         }
     }
@@ -50,6 +52,7 @@ export class MergerOrders {
         payload: MergerGetOrderById[K]['payload'];
     }): Promise<MergerGetOrderById[K]['returnType']> {
         try {
+            if (!payload || !payload?.provider) throw new UnifiedPayError(400, 'Payload and Provider is required');
             const { provider } = payload;
             const providerInstance = this.getProvider(provider);
 
@@ -59,7 +62,6 @@ export class MergerOrders {
 
             return providerInstance.getOrderById(payload.payload);
         } catch (error) {
-            console.error('Error fetching order:', error);
             throw error; // Re-throw the error after logging it
         }
     }
@@ -69,6 +71,7 @@ export class MergerOrders {
         payload: MergerUpdateOrder[K]['payload'];
     }): Promise<MergerUpdateOrder[K]['returnType']> {
         try {
+            if (!payload || !payload?.provider) throw new UnifiedPayError(400, 'Payload and Provider is required');
             const { provider } = payload;
             const providerInstance = this.getProvider(provider);
 
@@ -78,7 +81,6 @@ export class MergerOrders {
 
             return providerInstance.updateOrder(payload.payload);
         } catch (error) {
-            console.error('Error updating order:', error);
             throw error; // Re-throw the error after logging it
         }
     }

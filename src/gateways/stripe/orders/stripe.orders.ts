@@ -99,7 +99,6 @@ export class StripeOrders {
                 payload?.stripeExtraOptions,
             );
         } catch (error) {
-            console.error(error);
             throw error;
         }
     }
@@ -110,7 +109,6 @@ export class StripeOrders {
             const checkoutSession = await this.stripe.checkout.sessions.retrieve(orderId, stripeExtraOptions);
             return checkoutSession;
         } catch (error) {
-            console.error(error);
             throw error;
         }
     }
@@ -128,7 +126,6 @@ export class StripeOrders {
             );
             return updatedCheckoutSession;
         } catch (error) {
-            console.error(error);
             throw error;
         }
     }

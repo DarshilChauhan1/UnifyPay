@@ -1,3 +1,4 @@
+import { UnifiedPayError } from '../../common/helpers/customError.error';
 import { MergerGateways } from '../interfaces/merger.gateways.interface';
 import { ProviderManager } from '../providerManager.merger';
 import { MergerCancelSubscription } from './types/cancelSubscription.types';
@@ -17,6 +18,7 @@ export class MergerSubscription {
         payload: MergerCreateSubscription[K]['payload'];
     }): Promise<MergerCreateSubscription[K]['returnType']> {
         try {
+            if (!payload || !payload?.provider) throw new UnifiedPayError(400, 'Payload and Provider is required');
             const { provider } = payload;
             const providerInstance = this.getProvider(provider);
 
@@ -28,7 +30,6 @@ export class MergerSubscription {
                 MergerCreateSubscription[K]['returnType']
             >;
         } catch (error) {
-            console.error('Error creating subscription:', error);
             throw error; // Re-throw the error after logging it
         }
     }
@@ -38,6 +39,7 @@ export class MergerSubscription {
         payload?: MergerGetAllSubscription[K]['payload'];
     }): Promise<MergerGetAllSubscription[K]['returnType']> {
         try {
+            if (!payload || !payload?.provider) throw new UnifiedPayError(400, 'Payload and Provider is required');
             const { provider } = payload;
             const providerInstance = this.getProvider(provider);
 
@@ -47,7 +49,6 @@ export class MergerSubscription {
 
             return providerInstance.getAllSubscriptions(payload.payload);
         } catch (error) {
-            console.error('Error fetching subscriptions:', error);
             throw error; // Re-throw the error after logging it
         }
     }
@@ -57,6 +58,7 @@ export class MergerSubscription {
         payload: MergerGetSubscriptionById[K]['payload'];
     }): Promise<MergerGetSubscriptionById[K]['returnType']> {
         try {
+            if (!payload || !payload?.provider) throw new UnifiedPayError(400, 'Payload and Provider is required');
             const { provider } = payload;
             const providerInstance = this.getProvider(provider);
 
@@ -66,7 +68,6 @@ export class MergerSubscription {
 
             return providerInstance.getSubscriptionById(payload.payload);
         } catch (error) {
-            console.error('Error fetching subscription:', error);
             throw error; // Re-throw the error after logging it
         }
     }
@@ -76,6 +77,7 @@ export class MergerSubscription {
         payload: MergerUpdateSubscription[K]['payload'];
     }): Promise<MergerUpdateSubscription[K]['returnType']> {
         try {
+            if (!payload || !payload?.provider) throw new UnifiedPayError(400, 'Payload and Provider is required');
             const { provider } = payload;
             const providerInstance = this.getProvider(provider);
 
@@ -85,7 +87,6 @@ export class MergerSubscription {
 
             return providerInstance.updateSubscription(payload.payload);
         } catch (error) {
-            console.error('Error updating subscription:', error);
             throw error; // Re-throw the error after logging it
         }
     }
@@ -95,6 +96,7 @@ export class MergerSubscription {
         payload: MergerCancelSubscription[K]['payload'];
     }): Promise<MergerCancelSubscription[K]['returnType']> {
         try {
+            if (!payload || !payload?.provider) throw new UnifiedPayError(400, 'Payload and Provider is required');
             const { provider } = payload;
             const providerInstance = this.getProvider(provider);
 
@@ -104,7 +106,6 @@ export class MergerSubscription {
 
             return providerInstance.cancelSubscription(payload.payload);
         } catch (error) {
-            console.error('Error canceling subscription:', error);
             throw error; // Re-throw the error after logging it
         }
     }
@@ -114,6 +115,7 @@ export class MergerSubscription {
         payload: MergerPauseSubscription[K]['payload'];
     }): Promise<MergerPauseSubscription[K]['returnType']> {
         try {
+            if (!payload || !payload?.provider) throw new UnifiedPayError(400, 'Payload and Provider is required');
             const { provider } = payload;
             const providerInstance = this.getProvider(provider);
 
@@ -123,7 +125,6 @@ export class MergerSubscription {
 
             return providerInstance.pauseSubscription(payload.payload);
         } catch (error) {
-            console.error('Error pausing subscription:', error);
             throw error; // Re-throw the error after logging it
         }
     }
@@ -133,6 +134,7 @@ export class MergerSubscription {
         payload: MergerDeleteSubscriptionOffer[K]['payload'];
     }): Promise<MergerDeleteSubscriptionOffer[K]['returnType']> {
         try {
+            if (!payload || !payload?.provider) throw new UnifiedPayError(400, 'Payload and Provider is required');
             const { provider } = payload;
             const providerInstance = this.getProvider(provider);
 
@@ -142,7 +144,6 @@ export class MergerSubscription {
 
             return providerInstance.deleteOfferOfSubscription(payload.payload);
         } catch (error) {
-            console.error('Error deleting offer from subscription:', error);
             throw error; // Re-throw the error after logging it
         }
     }
@@ -152,6 +153,7 @@ export class MergerSubscription {
         payload: MergerResumeSubscription[K]['payload'];
     }): Promise<MergerResumeSubscription[K]['returnType']> {
         try {
+            if (!payload || !payload?.provider) throw new UnifiedPayError(400, 'Payload and Provider is required');
             const { provider } = payload;
             const providerInstance = this.getProvider(provider);
 
@@ -161,7 +163,6 @@ export class MergerSubscription {
 
             return providerInstance.resumeSubscription(payload.payload);
         } catch (error) {
-            console.error('Error resuming subscription:', error);
             throw error; // Re-throw the error after logging it
         }
     }

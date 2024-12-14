@@ -1,26 +1,48 @@
 {
-  "name": "unify-pay",
+  "name": "unified-pay",
   "version": "1.0.0",
   "description": "\"Package that will integrate multiple payment system\"",
-  "main": "main.js",
+  "main": "./dist/cjs/src/main.js",
+  "type": "commonjs",
+  "module": "./dist/esm/src/main.js",
+  "types": "./esm/src/main.d.ts",
+  "private": true,
   "scripts": {
-    "build": "tsc",
-    "start": "npm run build && node dist/src/test.js",
+    "build": "rm -rf dist && rm -rf unified-pay-1.0.0.tgz && npm run build:esm && npm run build:cjs && npm pack",
+    "build:tsc" : "tsc",
+    "start": "npm run build && node dist/esm/src/test.js",
     "start:dev": "tsc-watch --onSuccess \"node dist/src/test.js\" --onFailure \"echo Build failed\"",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "prepare": "husky",
-    "precommit": "eslint ."
+    "build:esm": "tsc --outDir dist/esm",
+    "build:cjs": "tsc --module commonjs --outDir dist/cjs"
   },
+  "exports": {
+    ".": {
+      "import": "./dist/esm/src/main.js",
+      "require": "./dist/cjs/src/main.js"
+    },
+    "./types": {
+      "import": "./dist/esm/types/index.d.ts",
+      "require": "./dist/cjs/types/index.d.ts"
+    }
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/DarshilChauhan1/Unify-Pay.git"
   },
   "author": "Darshil Chauhan <chauhandarshil716@gmail.com>",
-  "contributors": [{
-    "name": "Vrushal Patel",
-    "email": "vrushalkpatel007@gmail.com",
-    "url": "https://github.com/vrushal007"
-  }],
+  "contributors": [
+    {
+      "name": "Vrushal Patel",
+      "email": "vrushalkpatel007@gmail.com",
+      "url": "https://github.com/vrushal007"
+    }
+  ],
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/DarshilChauhan1/Unify-Pay/issues"
@@ -29,7 +51,8 @@
   "dependencies": {
     "moment": "^2.30.1",
     "razorpay": "^2.9.4",
-    "stripe": "^17.2.0"
+    "stripe": "^17.2.0",
+    "tsconfig-paths": "^4.2.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.6.0",
@@ -42,7 +65,6 @@
     "globals": "^15.12.0",
     "husky": "^9.1.7",
     "lint-staged": "^15.2.10",
-    "nodemon": "^3.1.7",
     "prettier": "^3.4.1",
     "tsc-watch": "^6.2.0",
     "typescript": "^5.6.2",
@@ -54,5 +76,11 @@
       "prettier --write",
       "git add"
     ]
-  }
+  },
+  "files": [
+    "dist",
+    "package.json",
+    "README.md",
+    "LICENSE"
+  ]
 }

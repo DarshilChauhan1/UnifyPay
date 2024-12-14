@@ -1,25 +1,23 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "CommonJS",
+    "baseUrl": ".",
+    "paths": {
+      "unified-pay/types": ["types"] 
+    },
     "declaration": true,
-    "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "target": "ES2021",
+    "target": "ESNext",
     "sourceMap": true,
     "outDir": "./dist",
     "rootDir": "./",
     "incremental": true,
     "skipLibCheck": true,
-    "strictNullChecks": false,
-    "noImplicitAny": false, 
-    "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false,
-    "esModuleInterop": true, // Enables proper ES6 module interop
-    "allowSyntheticDefaultImports": true, // Fixes import/export issues
-  }
+    "esModuleInterop": true, 
+  },
+  "include": ["src/**/*", "src/types/**/*", "src/types", "types"], // Include `types` directory
 }
 
 

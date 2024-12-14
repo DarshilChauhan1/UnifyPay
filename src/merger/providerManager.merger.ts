@@ -1,3 +1,4 @@
+import { UnifiedPayError } from '../common/helpers/customError.error';
 import { GatewayProvider, Provider } from '../common/types/providers.types';
 import { RazorpayProvider } from '../gateways/providers/razorpay.provider';
 import { StripeProvider } from '../gateways/providers/stripe.provider';
@@ -11,7 +12,9 @@ export class ProviderManager {
     }
 
     private initializeProviders(providers: Provider[]): void {
+        if (!providers || providers.length == 0) throw new UnifiedPayError(400, 'Providers are required');
         providers.forEach(({ type, config }) => {
+            if (!type || !config) throw new UnifiedPayError(400, 'Provider type and config are required');
             switch (type) {
                 case GatewayProvider.Razorpay:
                     this.providersMap.set(type, new RazorpayProvider(config));
@@ -28,7 +31,7 @@ export class ProviderManager {
     public getProvider(name: string): MergerGateways {
         const provider = this.providersMap.get(name);
         if (!provider) {
-            throw new Error(`Provider ${name} is not initialized.`);
+            throw new UnifiedPayError(400, `Provider ${name ?? ''} is not initialized.`);
         }
         return provider;
     }

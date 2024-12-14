@@ -1,6 +1,6 @@
 import { Currency } from '../../../../common/types/currency.types';
 
-export interface CreateRazorPayOrderDto {
+export class CreateRazorPayOrderDto {
     amount: number;
     // ISO currency code
     currency: Currency;

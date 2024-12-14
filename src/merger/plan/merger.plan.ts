@@ -1,3 +1,4 @@
+import { UnifiedPayError } from '../../common/helpers/customError.error';
 import { MergerGateways } from '../interfaces/merger.gateways.interface';
 import { ProviderManager } from '../providerManager.merger';
 import { MergerCreatePlan } from './types/createPlan.types';
@@ -12,6 +13,7 @@ export class MergerPlan {
         payload: MergerCreatePlan[K]['payload'];
     }): Promise<MergerCreatePlan[K]['returnType']> {
         try {
+            if (!payload || !payload?.provider) throw new UnifiedPayError(400, 'Payload and Provider is required');
             const { provider } = payload;
             const providerInstance = this.getProvider(provider);
 
@@ -21,7 +23,6 @@ export class MergerPlan {
 
             return providerInstance.createPlan(payload.payload) as Promise<MergerCreatePlan[K]['returnType']>;
         } catch (error) {
-            console.error('Error creating plan:', error);
             throw error; // Re-throw the error after logging it
         }
     }
@@ -31,6 +32,7 @@ export class MergerPlan {
         payload?: MergerGetAllPlans[K]['payload'];
     }): Promise<MergerGetAllPlans[K]['returnType']> {
         try {
+            if (!payload || !payload?.provider) throw new UnifiedPayError(400, 'Payload and Provider is required');
             const { provider } = payload;
             const providerInstance = this.getProvider(provider);
 
@@ -40,7 +42,6 @@ export class MergerPlan {
 
             return providerInstance.getAllPlans(payload.payload);
         } catch (error) {
-            console.error('Error fetching plans:', error);
             throw error; // Re-throw the error after logging it
         }
     }
@@ -50,6 +51,7 @@ export class MergerPlan {
         payload: MergerGetPlanById[K]['payload'];
     }): Promise<MergerGetPlanById[K]['returnType']> {
         try {
+            if (!payload || !payload?.provider) throw new UnifiedPayError(400, 'Payload and Provider is required');
             const { provider } = payload;
             const providerInstance = this.getProvider(provider);
 
@@ -59,7 +61,6 @@ export class MergerPlan {
 
             return providerInstance.getPlanById(payload.payload);
         } catch (error) {
-            console.error('Error fetching plan:', error);
             throw error; // Re-throw the error after logging it
         }
     }
