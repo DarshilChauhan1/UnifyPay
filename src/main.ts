@@ -19,7 +19,7 @@ import { MergerSubscription } from './merger/subscription/merger.subscription';
 
 export { GatewayProvider };
 
-export class UnifyPay {
+export class UnifiedPay {
     public providers: Provider[];
     public providersMap = new Map<string, MergerGateways>();
     public readonly orders: MergerOrders;

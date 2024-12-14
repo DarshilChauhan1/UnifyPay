@@ -1,4 +1,4 @@
-# UnifyPay
+# Unified-Pay
 
 A unified library for managing multiple payment gateways like Stripe and Razorpay with support for **Orders**, **Plans**, and **Subscriptions**. Designed for developers who need a seamless and scalable integration solution across various payment providers.
 
@@ -69,13 +69,13 @@ enum GatewayProvider {
 
 ### Initialization
 
-Create an instance of `UnifyPay` by passing in an array of <b>provider that you want to use</b>. Each provider requires specific configurations to be passed in.:
+Create an instance of `UnifiedPay` by passing in an array of <b>provider that you want to use</b>. Each provider requires specific configurations to be passed in.:
 
 ```typescript
 import { GatewayProvider } from './common/types/providers.types';
-import { UnifyPay } from './main';
+import { UnifiedPay } from './main';
 
-const unify = new UnifyPay([
+const unify = new UnifiedPay([
     {
         config: {
             apiKey: '<stripe-api-key>',
