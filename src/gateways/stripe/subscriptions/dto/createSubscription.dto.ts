@@ -1,6 +1,6 @@
 import Stripe from 'stripe';
 
-export class CreateStripeSubscriptionDto {
+export interface CreateStripeSubscriptionDto {
     customerName?: string;
     customerEmail?: string;
     customerPhone?: string;

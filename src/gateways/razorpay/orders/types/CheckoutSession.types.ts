@@ -1,4 +1,4 @@
-export type RazorpayCheckoutSession = {
+export interface RazorpayCheckoutSession {
     name: string;
     description: string;
     image: string;
@@ -15,4 +15,4 @@ export type RazorpayCheckoutSession = {
     theme: {
         color?: string;
     };
-};
+}
